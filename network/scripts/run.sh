@@ -13,11 +13,11 @@
 
 NO_LOCK_REQUIRED=true
 
-. ./.env
+. ../../.env
 source "$(dirname "$0")/common.sh"
 
 # Build and run containers and network
-echo "docker-compose.yml" > ${LOCK_FILE}
+echo "docker-compose.yml" >${LOCK_FILE}
 
 echo "*************************************"
 echo "Localnet"
@@ -25,16 +25,14 @@ echo "*************************************"
 echo "Start network"
 echo "--------------------"
 
-
 echo "Starting network..."
 docker compose --profile services build --pull
 
 if [ "${1-}" = "--blockscout" -o "${1-}" = "-b" ]; then
-  docker compose -f docker-compose.yml -f $BLOCKSCOUT_DOCKER_CONFIG --profile services up --detach
+  docker compose -f ../../docker-compose.yml -f $BLOCKSCOUT_DOCKER_CONFIG --profile services up --detach
 else
   docker compose --profile services up --detach
 fi
 
-
 #list services and endpoints
-./$(dirname "$0")/list.sh
+./$(dirname "$0")/improved-list.sh

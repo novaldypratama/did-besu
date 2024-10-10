@@ -13,7 +13,7 @@
 
 NO_LOCK_REQUIRED=false
 
-. ./.env
+. ../../.env
 source "$(dirname "$0")/common.sh"
 
 echo "*************************************"
@@ -22,8 +22,9 @@ echo "*************************************"
 echo "Resuming network..."
 echo "----------------------------------"
 
-if [ -z `docker-compose -f docker-compose.yml -f $BLOCKSCOUT_DOCKER_CONFIG ps -a -q proxy` ]; then
+if [ -z $(docker-compose -f ../../docker-compose.yml -f $BLOCKSCOUT_DOCKER_CONFIG ps -a -q proxy) ]; then
   docker compose --profile services start
 else
-  docker-compose -f docker-compose.yml -f $BLOCKSCOUT_DOCKER_CONFIG --profile services start
+  docker-compose -f ../../docker-compose.yml -f $BLOCKSCOUT_DOCKER_CONFIG --profile services start
 fi
+

@@ -13,7 +13,7 @@
 
 NO_LOCK_REQUIRED=false
 
-. ./.env
+. ../../.env
 source "$(dirname "$0")/common.sh"
 
 echo "*************************************"
@@ -22,5 +22,4 @@ echo "*************************************"
 echo "Stopping network"
 echo "----------------------------------"
 
-
-docker compose -f docker-compose.yml -f $BLOCKSCOUT_DOCKER_CONFIG --profile services stop
+docker compose -f ../../docker-compose.yml -f $BLOCKSCOUT_DOCKER_CONFIG --profile services stop
