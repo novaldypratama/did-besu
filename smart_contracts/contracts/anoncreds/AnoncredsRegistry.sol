@@ -41,11 +41,7 @@ contract AnoncredsRegistry {
      * @param identity   The Issuer's DID.
      * @param actor      Actor identity address.
      */
-    modifier _validIssuer(
-        string calldata did,
-        address identity,
-        address actor
-    ) {
+    modifier _validIssuer(string calldata did, address identity, address actor) {
         if (identity != actor) revert NotIdentityOwner(actor, identity);
 
         try _didResolver.resolveMetadata(did) returns (DidMetadata memory metadata) {
