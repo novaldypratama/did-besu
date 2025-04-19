@@ -24,8 +24,10 @@ x-ethsignerProxy-def:
     [
       "--chain-id=1337",
       "--http-listen-host=0.0.0.0",
+      "--http-listen-port=8545",
       "--downstream-http-port=8545",
       "--downstream-http-host=rpcnode",
+      "--downstream-http-request-timeout=60000",
       "file-based-signer",
       "-k",
       "/opt/ethsigner/keyfile",
