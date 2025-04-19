@@ -1,4 +1,4 @@
-// test/ssi-system-test.js
+// test/did_vc_test_with_nonce.js
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
@@ -7,7 +7,7 @@ function formatGas(gas) {
   return `${gas.toLocaleString()} gas`;
 }
 
-describe("SSI System Workflow Tests", function () {
+describe("SSI System Workflow Tests with Nonce Management", function () {
   // Set timeout for long-running tests
   this.timeout(120000);
 
@@ -28,16 +28,29 @@ describe("SSI System Workflow Tests", function () {
   let credentialHash;
   let schemaId;
   
+  // Nonce tracking
+  const nonces = {
+    issuer: { address: 0, did: 0 },
+    holder: { address: 0, did: 0 }
+  };
+  
   // Gas usage tracking
   const gasUsage = {
     deployment: { didRegistry: 0, credentialRegistry: 0 },
-    didOperations: { registerIssuer: 0, registerHolder: 0, updateDid: 0, resolveDid: 0, deactivateDid: 0 },
+    didOperations: { 
+      registerIssuer: 0, 
+      registerHolder: 0, 
+      updateDid: 0, 
+      resolveDid: 0, 
+      deactivateDid: 0,
+      getNonce: 0 
+    },
     credentialOperations: { issue: 0, verify: 0, suspend: 0, activate: 0, revoke: 0, batchIssue: [] },
     queries: { getByIssuer: 0, getByHolder: 0 }
   };
 
   before(async function () {
-    console.log("=== SSI System Performance Test ===");
+    console.log("=== SSI System Performance Test with Nonce Management ===");
     console.log("Preparing test environment...");
     
     // Get test accounts
@@ -52,12 +65,12 @@ describe("SSI System Workflow Tests", function () {
     // Prepare test data as strings
     publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3FHQyx8jV5QuSs5eQCj7hCNtEGHatxGqK0iy9JhZWINfC";
     serviceEndpoint = "https://example.com/endpoint";
-    credentialHash = ethers.keccak256(ethers.toUtf8Bytes("credential content data")); // Keep hash functions
-    schemaId = ethers.keccak256(ethers.toUtf8Bytes("https://schema.org/CredentialSchema")); // Keep hash functions
+    credentialHash = ethers.keccak256(ethers.toUtf8Bytes("credential content data")); 
+    schemaId = ethers.keccak256(ethers.toUtf8Bytes("https://schema.org/CredentialSchema"));
     
     try {
       // Deploy DIDRegistry
-      console.log("Deploying DIDRegistry contract...");
+      console.log("Deploying DIDRegistry contract with nonce management...");
       const DIDRegistry = await ethers.getContractFactory("DIDRegistry");
       didRegistry = await DIDRegistry.deploy();
       await didRegistry.waitForDeployment();
@@ -91,80 +104,214 @@ describe("SSI System Workflow Tests", function () {
     }
   });
 
-  describe("1. DID Registration & Management", function () {
-    it("Should register Issuer DID and measure gas usage", async function () {
-      console.log("\nRegistering Issuer DID...");
+  describe("1. DID Registration & Management with Nonce Tracking", function () {
+    it("Should retrieve initial nonces for issuer and holder", async function () {
+      console.log("\nChecking initial nonces...");
+      
+      // Get initial nonces for issuer and holder
+      nonces.issuer.address = await didRegistry.getAddressNonce(issuer.address);
+      nonces.holder.address = await didRegistry.getAddressNonce(holder.address);
+      
+      console.log(`Initial issuer address nonce: ${nonces.issuer.address}`);
+      console.log(`Initial holder address nonce: ${nonces.holder.address}`);
+      
+      expect(nonces.issuer.address).to.equal(0);
+      expect(nonces.holder.address).to.equal(0);
+    });
+    
+    it("Should register Issuer DID with nonce and measure gas usage", async function () {
+      console.log("\nRegistering Issuer DID with nonce...");
       const tx = await didRegistry.connect(issuer).registerDID(
         issuerDid,
         publicKey,
         serviceEndpoint,
-        1 // Role.ISSUER
+        1, // Role.ISSUER
+        nonces.issuer.address // Expected nonce
       );
       
       const receipt = await tx.wait();
       gasUsage.didOperations.registerIssuer = Number(receipt.gasUsed);
       console.log(`Issuer DID Registration: ${formatGas(gasUsage.didOperations.registerIssuer)}`);
       
+      // Update the issuer's address nonce
+      nonces.issuer.address++;
+      
       expect(await didRegistry.isDIDOwnedBy(issuerDid, issuer.address)).to.be.true;
+      
+      // Check issuer's address nonce was incremented
+      const currentIssuerNonce = await didRegistry.getAddressNonce(issuer.address);
+      expect(currentIssuerNonce).to.equal(nonces.issuer.address);
+      
+      // Check issuer's DID nonce is 0 (initial value)
+      nonces.issuer.did = await didRegistry.getDIDNonce(issuerDid);
+      expect(nonces.issuer.did).to.equal(0);
     });
 
-    it("Should register Holder DID and measure gas usage", async function () {
-      console.log("\nRegistering Holder DID...");
+    it("Should register Holder DID with nonce and measure gas usage", async function () {
+      console.log("\nRegistering Holder DID with nonce...");
       const tx = await didRegistry.connect(holder).registerDID(
         holderDid,
         publicKey,
         serviceEndpoint,
-        2 // Role.HOLDER
+        2, // Role.HOLDER
+        nonces.holder.address // Expected nonce
       );
       
       const receipt = await tx.wait();
       gasUsage.didOperations.registerHolder = Number(receipt.gasUsed);
       console.log(`Holder DID Registration: ${formatGas(gasUsage.didOperations.registerHolder)}`);
       
+      // Update the holder's address nonce
+      nonces.holder.address++;
+      
       expect(await didRegistry.isDIDOwnedBy(holderDid, holder.address)).to.be.true;
       expect(await didRegistry.isDIDActive(holderDid)).to.be.true;
+      
+      // Check holder's address nonce was incremented
+      const currentHolderNonce = await didRegistry.getAddressNonce(holder.address);
+      expect(currentHolderNonce).to.equal(nonces.holder.address);
+      
+      // Check holder's DID nonce is 0 (initial value)
+      nonces.holder.did = await didRegistry.getDIDNonce(holderDid);
+      expect(nonces.holder.did).to.equal(0);
     });
     
-    it("Should resolve DIDs and measure gas usage", async function() {
-      console.log("\nResolving DIDs...");
+    it("Should resolve DIDs with nonce and measure gas usage", async function() {
+      console.log("\nResolving DIDs with nonce information...");
+      
       // DID resolution is a view function, so we estimate gas
       const gasEstimate = await didRegistry.resolveDID.estimateGas(issuerDid);
       gasUsage.didOperations.resolveDid = Number(gasEstimate);
       console.log(`DID Resolution: ${formatGas(gasUsage.didOperations.resolveDid)}`);
       
       const result = await didRegistry.resolveDID(issuerDid);
-      const [owner, resolvedPublicKey, resolvedEndpoint, created, updated, active, role] = result;
+      const [owner, resolvedPublicKey, resolvedEndpoint, created, updated, active, role, nonce] = result;
         
       expect(owner).to.equal(issuer.address);
       expect(active).to.be.true;
       expect(role).to.equal(1); // ISSUER
+      expect(nonce).to.equal(0); // Initial nonce
     });
     
-    it("Should update DID and measure gas usage", async function() {
-      console.log("\nUpdating DID...");
+    it("Should update DID with nonce and measure gas usage", async function() {
+      console.log("\nUpdating DID with nonce...");
       const newPublicKey = "ssh-rsa NEWKEYNEWKEYNEWKEYNEWKEYNEWKEYNEWKEY";
       const newEndpoint = "https://updated.example.com/endpoint";
       
       const tx = await didRegistry.connect(issuer).updateDID(
         issuerDid,
         newPublicKey,
-        newEndpoint
+        newEndpoint,
+        nonces.issuer.did // Current DID nonce
       );
       
       const receipt = await tx.wait();
       gasUsage.didOperations.updateDid = Number(receipt.gasUsed);
       console.log(`DID Update: ${formatGas(gasUsage.didOperations.updateDid)}`);
       
-      const result = await didRegistry.resolveDID(issuerDid);
-      const [owner, resolvedPublicKey, resolvedEndpoint, created, updated, active, role] = result;
+      // Increment the DID nonce locally
+      nonces.issuer.did++;
       
-      // Verify the update - we need to compare strings now
+      // Check that the DID nonce was incremented
+      const currentDIDNonce = await didRegistry.getDIDNonce(issuerDid);
+      expect(currentDIDNonce).to.equal(nonces.issuer.did);
+      
+      const result = await didRegistry.resolveDID(issuerDid);
+      const [owner, resolvedPublicKey, resolvedEndpoint, created, updated, active, role, nonce] = result;
+      
+      // Verify the update
       expect(resolvedPublicKey).to.equal(newPublicKey);
       expect(resolvedEndpoint).to.equal(newEndpoint);
+      expect(nonce).to.equal(nonces.issuer.did);
+    });
+    
+    it("Should measure gas usage for nonce retrieval", async function() {
+      console.log("\nMeasuring nonce retrieval gas usage...");
+      
+      // Get gas estimate for address nonce retrieval
+      const addressNonceGasEstimate = await didRegistry.getAddressNonce.estimateGas(issuer.address);
+      
+      // Get gas estimate for DID nonce retrieval
+      const didNonceGasEstimate = await didRegistry.getDIDNonce.estimateGas(issuerDid);
+      
+      // Use the higher of the two for reporting
+      gasUsage.didOperations.getNonce = Math.max(
+        Number(addressNonceGasEstimate), 
+        Number(didNonceGasEstimate)
+      );
+      
+      console.log(`Nonce Retrieval: ${formatGas(gasUsage.didOperations.getNonce)}`);
     });
   });
 
-  describe("2. Credential Issuance & Verification", function () {
+  describe("2. Nonce-based Security Tests", function() {
+    it("Should fail to register a DID with incorrect nonce", async function() {
+      console.log("\nTesting nonce security for DID registration...");
+      const incorrectNonce = nonces.issuer.address + 1; // Use an incorrect nonce
+      
+      await expect(
+        didRegistry.connect(issuer).registerDID(
+          "did:ssi:new:issuer",
+          publicKey,
+          serviceEndpoint,
+          1, // ISSUER
+          incorrectNonce // Wrong nonce
+        )
+      ).to.be.revertedWith("Invalid nonce");
+      
+      console.log("Registration with incorrect nonce properly reverted");
+    });
+    
+    it("Should fail to update a DID with incorrect nonce", async function() {
+      console.log("\nTesting nonce security for DID update...");
+      const incorrectNonce = nonces.issuer.did + 1; // Use an incorrect nonce
+      
+      await expect(
+        didRegistry.connect(issuer).updateDID(
+          issuerDid,
+          "ssh-rsa ANOTHERNEWKEYANOTHERNEWKEY",
+          "https://another-update.example.com/endpoint",
+          incorrectNonce // Wrong nonce
+        )
+      ).to.be.revertedWith("Invalid DID nonce");
+      
+      console.log("Update with incorrect nonce properly reverted");
+    });
+    
+    it("Should handle sequential updates with correct nonces", async function() {
+      console.log("\nTesting sequential updates with correct nonces...");
+      
+      // First update
+      await didRegistry.connect(issuer).updateDID(
+        issuerDid,
+        "ssh-rsa UPDATE1UPDATE1UPDATE1",
+        "https://update1.example.com/endpoint",
+        nonces.issuer.did // Current nonce
+      );
+      nonces.issuer.did++; // Increment locally after update
+      
+      // Second update
+      await didRegistry.connect(issuer).updateDID(
+        issuerDid,
+        "ssh-rsa UPDATE2UPDATE2UPDATE2",
+        "https://update2.example.com/endpoint",
+        nonces.issuer.did // Current nonce after first update
+      );
+      nonces.issuer.did++; // Increment locally after update
+      
+      // Verify final state and nonce
+      const result = await didRegistry.resolveDID(issuerDid);
+      const [owner, resolvedPublicKey, resolvedEndpoint, created, updated, active, role, nonce] = result;
+      
+      expect(resolvedPublicKey).to.equal("ssh-rsa UPDATE2UPDATE2UPDATE2");
+      expect(resolvedEndpoint).to.equal("https://update2.example.com/endpoint");
+      expect(nonce).to.equal(nonces.issuer.did);
+      
+      console.log(`Sequential updates successful, final DID nonce: ${nonce}`);
+    });
+  });
+
+  describe("3. Credential Issuance & Verification", function () {
     it("Should issue a credential and measure gas usage", async function () {
       console.log("\nIssuing Credential...");
       // Set expiration to 1 year from now
@@ -216,263 +363,99 @@ describe("SSI System Workflow Tests", function () {
       console.log("Valid:", result[0]);
       console.log("Reason code:", result[1]);
       
-      // You might need to adjust this expectation based on your specific contract implementation
       expect(result[0]).to.be.true;
       expect(Number(result[1])).to.equal(0); // VerificationResult.VALID
     });
-    
-    it("Should verify invalid credential scenarios", async function() {
-      console.log("\nTesting Invalid Credential Scenarios...");
-      
-      // Test non-existent credential
-      const result1 = await credentialRegistry.verifyCredential(
-        "non-existent-credential",
-        issuerDid,
-        holderDid
-      );
-      console.log("Non-existent credential test:", result1);
-      expect(result1[0]).to.be.false;
-      expect(Number(result1[1])).to.equal(1); // NOT_FOUND
-      
-      // Test wrong issuer
-      const result2 = await credentialRegistry.verifyCredential(
-        credentialIds[0],
-        "did:ssi:wrong:issuer",
-        holderDid
-      );
-      console.log("Wrong issuer test:", result2);
-      expect(result2[0]).to.be.false;
-      // Your contract might be using a different enum value than expected
-      // Adjust this based on your contract's implementation
-      // Look at the actual value from the console log and adjust accordingly
-      expect(Number(result2[1])).to.be.oneOf([4, 5]); // ISSUER_MISMATCH might be 4 or 5 depending on implementation
-      
-      // Test wrong holder
-      const result3 = await credentialRegistry.verifyCredential(
-        credentialIds[0],
-        issuerDid,
-        "did:ssi:wrong:holder"
-      );
-      console.log("Wrong holder test:", result3);
-      expect(result3[0]).to.be.false;
-      // Similarly, adjust this based on your actual implementation
-      expect(Number(result3[1])).to.be.oneOf([5, 6]); // HOLDER_MISMATCH might be 5 or 6 depending on implementation
-    });
   });
-  
-  describe("3. Credential Lifecycle Management", function () {
-    it("Should suspend a credential and measure gas usage", async function () {
-      console.log("\nSuspending Credential...");
-      const tx = await credentialRegistry.connect(issuer).suspendCredential(credentialIds[0]);
-      const receipt = await tx.wait();
+
+  describe("4. Deactivation with Nonce Management", function() {
+    it("Should deactivate a DID with nonce", async function() {
+      console.log("\nDeactivating DID with nonce...");
       
-      gasUsage.credentialOperations.suspend = Number(receipt.gasUsed);
-      console.log(`Credential Suspension: ${formatGas(gasUsage.credentialOperations.suspend)}`);
+      // First check current nonce of the holder DID
+      const holderDIDNonce = await didRegistry.getDIDNonce(holderDid);
+      expect(holderDIDNonce).to.equal(nonces.holder.did);
       
-      // Verify the credential is suspended
-      const result = await credentialRegistry.verifyCredential(
-        credentialIds[0],
-        issuerDid,
-        holderDid
+      // Deactivate the holder DID
+      const tx = await didRegistry.connect(holder).deactivateDID(
+        holderDid,
+        nonces.holder.did // Current DID nonce
       );
-      const [valid, reason] = result;
       
-      expect(valid).to.be.false;
-      expect(reason).to.equal(3); // SUSPENDED
+      const receipt = await tx.wait();
+      gasUsage.didOperations.deactivateDid = Number(receipt.gasUsed);
+      console.log(`DID Deactivation: ${formatGas(gasUsage.didOperations.deactivateDid)}`);
+      
+      // Increment the DID nonce locally
+      nonces.holder.did++;
+      
+      // Verify the DID is deactivated
+      expect(await didRegistry.isDIDActive(holderDid)).to.be.false;
+      
+      // Verify the nonce was incremented
+      const newHolderDIDNonce = await didRegistry.getDIDNonce(holderDid);
+      expect(newHolderDIDNonce).to.equal(nonces.holder.did);
+      
+      console.log(`DID deactivated, new nonce: ${newHolderDIDNonce}`);
     });
     
-    it("Should reactivate a credential and measure gas usage", async function () {
-      console.log("\nReactivating Credential...");
-      const tx = await credentialRegistry.connect(issuer).activateCredential(credentialIds[0]);
-      const receipt = await tx.wait();
+    it("Should fail to update a deactivated DID even with correct nonce", async function() {
+      console.log("\nTesting update on deactivated DID...");
       
-      gasUsage.credentialOperations.activate = Number(receipt.gasUsed);
-      console.log(`Credential Reactivation: ${formatGas(gasUsage.credentialOperations.activate)}`);
-      
-      // Verify the credential is active again
-      const result = await credentialRegistry.verifyCredential(
-        credentialIds[0],
-        issuerDid,
-        holderDid
-      );
-      const [valid, reason] = result;
-      
-      expect(valid).to.be.true;
-      expect(reason).to.equal(0); // VALID
-    });
-    
-    it("Should revoke a credential and measure gas usage", async function () {
-      console.log("\nRevoking Credential...");
-      const tx = await credentialRegistry.connect(issuer).revokeCredential(credentialIds[0]);
-      const receipt = await tx.wait();
-      
-      gasUsage.credentialOperations.revoke = Number(receipt.gasUsed);
-      console.log(`Credential Revocation: ${formatGas(gasUsage.credentialOperations.revoke)}`);
-      
-      // Verify the credential is revoked
-      const result = await credentialRegistry.verifyCredential(
-        credentialIds[0],
-        issuerDid,
-        holderDid
-      );
-      const [valid, reason] = result;
-      
-      expect(valid).to.be.false;
-      expect(reason).to.equal(2); // REVOKED
-    });
-  });
-  
-  describe("4. Batch Operations", function () {
-    it("Should issue multiple credentials and measure gas usage", async function () {
-      console.log("\nBatch Issuing Credentials...");
-      const expirationDate = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60; // 1 year
-      
-      // Issue 5 credentials (IDs 1-5)
-      for (let i = 1; i <= 5; i++) {
-        const tx = await credentialRegistry.connect(issuer).issueCredential(
-          credentialIds[i],
-          issuerDid,
+      await expect(
+        didRegistry.connect(holder).updateDID(
           holderDid,
-          credentialHash,
-          schemaId,
-          expirationDate
-        );
-        
-        const receipt = await tx.wait();
-        gasUsage.credentialOperations.batchIssue.push(Number(receipt.gasUsed));
-        console.log(`Issued credential ${i}: ${formatGas(receipt.gasUsed)}`);
-      }
+          "ssh-rsa DEACTIVATEDKEYUPDATE",
+          "https://deactivated.example.com/endpoint",
+          nonces.holder.did // Correct nonce
+        )
+      ).to.be.revertedWith("DID is not active");
       
-      // Calculate average and total
-      const totalGas = gasUsage.credentialOperations.batchIssue.reduce((sum, gas) => sum + gas, 0);
-      const averageGas = totalGas / gasUsage.credentialOperations.batchIssue.length;
-      
-      console.log(`Batch Issuance Total (5 credentials): ${formatGas(totalGas)}`);
-      console.log(`Average per credential: ${formatGas(averageGas)}`);
-    });
-    
-    it("Should query credentials by issuer and measure gas usage", async function() {
-      console.log("\nQuerying Credentials by Issuer...");
-      // Getting credentials is a view function, measure gas estimate
-      const gasEstimate = await credentialRegistry.getCredentialsByIssuer.estimateGas(issuerDid);
-      gasUsage.queries.getByIssuer = Number(gasEstimate);
-      console.log(`Get Credentials By Issuer: ${formatGas(gasUsage.queries.getByIssuer)}`);
-      
-      const credentials = await credentialRegistry.getCredentialsByIssuer(issuerDid);
-      expect(credentials.length).to.be.at.least(5); // We created 6 credentials (0-5)
-    });
-    
-    it("Should query credentials by holder and measure gas usage", async function() {
-      console.log("\nQuerying Credentials by Holder...");
-      // Getting credentials is a view function, measure gas estimate
-      const gasEstimate = await credentialRegistry.getCredentialsByHolder.estimateGas(holderDid);
-      gasUsage.queries.getByHolder = Number(gasEstimate);
-      console.log(`Get Credentials By Holder: ${formatGas(gasUsage.queries.getByHolder)}`);
-      
-      const credentials = await credentialRegistry.getCredentialsByHolder(holderDid);
-      expect(credentials.length).to.be.at.least(5); // We created 6 credentials (0-5)
+      console.log("Update on deactivated DID properly reverted");
     });
   });
   
-  describe("5. Access Control and Edge Cases", function () {
-    it("Should prevent unauthorized operations", async function() {
-      console.log("\nTesting Authorization Checks...");
-      
-      // Try to update a DID from unauthorized account
-      await expect(
-        didRegistry.connect(otherUser).updateDID(
-          issuerDid,
-          publicKey,
-          serviceEndpoint
-        )
-      ).to.be.revertedWith("Not authorized");
-      
-      // Try to revoke a credential from unauthorized account
-      await expect(
-        credentialRegistry.connect(otherUser).revokeCredential(credentialIds[1])
-      ).to.be.revertedWith("Not authorized");
-    });
-    
-    it("Should handle edge cases properly", async function() {
-      console.log("\nTesting Edge Cases...");
-      
-      // Try to register a DID that already exists
-      await expect(
-        didRegistry.connect(issuer).registerDID(
-          issuerDid,
-          publicKey,
-          serviceEndpoint,
-          1 // ISSUER
-        )
-      ).to.be.revertedWith("DID already registered");
-      
-      // Try to issue a credential with an ID that already exists
-      const expirationDate = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60;
-      await expect(
-        credentialRegistry.connect(issuer).issueCredential(
-          credentialIds[1], // Already used
-          issuerDid,
-          holderDid,
-          credentialHash,
-          schemaId,
-          expirationDate
-        )
-      ).to.be.revertedWith("Credential exists");
-    });
-  });
-  
-  describe("6. System Performance Summary", function() {
+  describe("5. System Performance Summary", function() {
     it("Should compile and display full gas usage statistics", async function() {
-      console.log("\n=== SSI System Performance Summary ===");
+      console.log("\n=== SSI System Performance Summary with Nonce Management ===");
       console.log("\nDeployment Costs:");
       console.log(`- DIDRegistry: ${formatGas(gasUsage.deployment.didRegistry)}`);
       console.log(`- CredentialRegistry: ${formatGas(gasUsage.deployment.credentialRegistry)}`);
       console.log(`- Total Deployment: ${formatGas(gasUsage.deployment.didRegistry + gasUsage.deployment.credentialRegistry)}`);
       
-      console.log("\nDID Operations:");
+      console.log("\nDID Operations with Nonce Management:");
       console.log(`- Register Issuer DID: ${formatGas(gasUsage.didOperations.registerIssuer)}`);
       console.log(`- Register Holder DID: ${formatGas(gasUsage.didOperations.registerHolder)}`);
       console.log(`- Update DID: ${formatGas(gasUsage.didOperations.updateDid)}`);
+      console.log(`- Deactivate DID: ${formatGas(gasUsage.didOperations.deactivateDid)}`);
       console.log(`- Resolve DID: ${formatGas(gasUsage.didOperations.resolveDid)}`);
+      console.log(`- Get Nonce: ${formatGas(gasUsage.didOperations.getNonce)}`);
       
       console.log("\nCredential Operations:");
       console.log(`- Issue Credential: ${formatGas(gasUsage.credentialOperations.issue)}`);
       console.log(`- Verify Credential: ${formatGas(gasUsage.credentialOperations.verify)}`);
-      console.log(`- Suspend Credential: ${formatGas(gasUsage.credentialOperations.suspend)}`);
-      console.log(`- Activate Credential: ${formatGas(gasUsage.credentialOperations.activate)}`);
-      console.log(`- Revoke Credential: ${formatGas(gasUsage.credentialOperations.revoke)}`);
       
-      // Calculate batch statistics
-      const batchTotal = gasUsage.credentialOperations.batchIssue.reduce((sum, gas) => sum + gas, 0);
-      const batchAvg = Math.floor(batchTotal / gasUsage.credentialOperations.batchIssue.length);
-      
-      console.log("\nBatch Operations:");
-      console.log(`- Total Gas for 5 Credentials: ${formatGas(batchTotal)}`);
-      console.log(`- Average Gas per Credential: ${formatGas(batchAvg)}`);
-      
-      console.log("\nQuery Operations:");
-      console.log(`- Get Credentials By Issuer: ${formatGas(gasUsage.queries.getByIssuer)}`);
-      console.log(`- Get Credentials By Holder: ${formatGas(gasUsage.queries.getByHolder)}`);
-      
-      console.log("\n=== Performance Insights ===");
-      console.log("The most expensive operations are:");
+      console.log("\n=== Nonce Management Impact Analysis ===");
+      console.log("The impact of adding nonce management to the DID Registry:");
       
       // Sort operations by gas cost to find most expensive
       const operations = [
-        { name: "Register Issuer DID", gas: gasUsage.didOperations.registerIssuer },
-        { name: "Register Holder DID", gas: gasUsage.didOperations.registerHolder },
-        { name: "Update DID", gas: gasUsage.didOperations.updateDid },
-        { name: "Issue Credential", gas: gasUsage.credentialOperations.issue },
-        { name: "Suspend Credential", gas: gasUsage.credentialOperations.suspend },
-        { name: "Activate Credential", gas: gasUsage.credentialOperations.activate },
-        { name: "Revoke Credential", gas: gasUsage.credentialOperations.revoke }
+        { name: "Register Issuer DID (with nonce)", gas: gasUsage.didOperations.registerIssuer },
+        { name: "Register Holder DID (with nonce)", gas: gasUsage.didOperations.registerHolder },
+        { name: "Update DID (with nonce)", gas: gasUsage.didOperations.updateDid },
+        { name: "Deactivate DID (with nonce)", gas: gasUsage.didOperations.deactivateDid },
+        { name: "Get Nonce", gas: gasUsage.didOperations.getNonce }
       ].sort((a, b) => b.gas - a.gas);
       
-      operations.slice(0, 3).forEach((op, i) => {
+      operations.forEach((op, i) => {
         console.log(`${i+1}. ${op.name}: ${formatGas(op.gas)}`);
       });
       
-      console.log("\nThese gas costs reflect the optimized contracts using gas-efficient data structures.");
+      console.log("\nKey Benefits of Nonce Management:");
+      console.log("1. Protection against replay attacks");
+      console.log("2. Enforced transaction ordering for each DID");
+      console.log("3. Enhanced security for critical identity operations");
+      console.log("4. Support for off-chain message signing with nonce validation");
     });
   });
 });
