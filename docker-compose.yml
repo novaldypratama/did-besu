@@ -76,25 +76,25 @@ services:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.12
 
-  # validator3:
-  #   <<: *besu-def
-  #   ports:
-  #     - 21003:8545/tcp
-  #     - 30303
-  #     - 9545
-  #   environment:
-  #     - OTEL_RESOURCE_ATTRIBUTES=service.name=validator3,service.version=${BESU_VERSION:-latest}
-  #   labels:
-  #     - "consensus=besu"
-  #   volumes:
-  #     - ./network/config/besu/:/config
-  #     - ./network/config/nodes/node-test3:/opt/besu/keys
-  #     - ./network/logs/besu:/tmp/besu
-  #   depends_on:
-  #     - validator1
-  #   networks:
-  #     quorum-dev-quickstart:
-  #       ipv4_address: 172.16.239.13
+  validator3:
+    <<: *besu-def
+    ports:
+      - 21003:8545/tcp
+      - 30303
+      - 9545
+    environment:
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=validator3,service.version=${BESU_VERSION:-latest}
+    labels:
+      - "consensus=besu"
+    volumes:
+      - ./network/config/besu/:/config
+      - ./network/config/nodes/node-test3:/opt/besu/keys
+      - ./network/logs/besu:/tmp/besu
+    depends_on:
+      - validator1
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.13
 
   # validator4:
   #   <<: *besu-def

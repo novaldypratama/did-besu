@@ -1,7 +1,7 @@
 {
   "config": {
     "chainId": 1337,
-    "berlinBlock": 0,
+    "londonBlock": 0,
     "zeroBaseFee": true,
     "clique": {
       "blockperiodseconds": 15,
@@ -10,17 +10,50 @@
   },
   "coinbase": "0x0000000000000000000000000000000000000000",
   "difficulty": "0x1",
-  "extraData": "0x000000000000000000000000000000000000000000000000000000000000000021307fd33e7daebeff0c4bead2a4976527dc5c710000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  "extraData": "0x000000000000000000000000000000000000000000000000000000000000000021307fd33e7daebeff0c4bead2a4976527dc5c7100a20e0d51d6f9a8692d884016769bad98192db8af5962e987b0fa88c5e6455c33317d3d316319e80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
   "gasLimit": "0xa00000",
   "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "nonce": "0x0",
   "timestamp": "0x5c51a607",
   "alloc": {
-    "0x21307fd33e7daebeff0c4bead2a4976527dc5c71": {
-      "balance": "100000000000000000000000"
+    "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73": {
+      "privateKey": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
+      "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+      "balance": "200000000000000000000"
     },
-    "0x00a20e0d51d6f9a8692d884016769bad98192db8": {
-      "balance": "100000000000000000000000"
+    "0x627306090abaB3A6e1400e9345bC60c78a8BEf57": {
+      "privateKey": "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3",
+      "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+      "balance": "0x130EE8E7179044400000"
+    },
+    "0xf17f52151EbEF6C7334FAD080c5704D77216b732": {
+      "privateKey": "0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f",
+      "comment": "private key and this comment are ignored.  In a real chain, the private key should NOT be stored",
+      "balance": "90000000000000000000000"
+    },
+    "0xc9c913c8c3c1cd416d80a0abf475db2062f161f6": {
+      "comment": "rpcnode",
+      "balance": "100000000000000000000"
+    },
+    "0x06d06c366b213f716b51bca6dc1874afc05467d0": {
+      "comment": "node-test1",
+      "balance": "100000000000000000000"
+    },
+    "0x2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c": {
+      "comment": "node-test2",
+      "balance": "100000000000000000000"
+    },
+    "0x8dd478dee59d3b7c16a2e34cb5d321ed23d2677d": {
+      "comment": "node-test3",
+      "balance": "100000000000000000000"
+    },
+    "0x9b790656b9ec0db1936ed84b3bea605873558198": {
+      "comment": "ethsigner account",
+      "balance": "100000000000000000000"
+    },
+    "0xe43f47c497e0eFC3fe96a85B2041aFF2F0d317A5": {
+      "comment": "my metamask account",
+      "balance": "100000000000000000000"
     }
   }
 }
