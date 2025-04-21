@@ -1,0 +1,191 @@
+'use strict';
+
+const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+const { Web3 } = require('web3');
+
+/**
+ * Workload module for benchmarking DID Registry registerDID operations
+ */
+class RegisterDIDWorkload extends WorkloadModuleBase {
+    constructor() {
+        super();
+        this.contractId = '';
+        this.didCount = 0;
+        this.accounts = [];
+        this.web3 = new Web3();
+    }
+
+    /**
+     * Initialize the workload module
+     */
+    async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
+        await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
+        
+        this.contractId = 'DIDRegistry';
+        this.workerIndex = workerIndex;
+        this.roundIndex = roundIndex;
+        
+        // Debug log the structure of sutContext to understand what's available
+        console.log(`Worker ${workerIndex}: SUT Context structure: ${JSON.stringify(Object.keys(sutContext || {}))}`);
+        if (sutContext && sutContext.networkConfig) {
+            console.log(`Worker ${workerIndex}: Network config keys: ${JSON.stringify(Object.keys(sutContext.networkConfig))}`);
+        }
+        
+        // Get accounts with enhanced error handling and fallbacks
+        this.accounts = this.getAccountsFromConfig(sutContext, workerIndex);
+        
+        // Use gas limit from arguments if provided
+        this.gasLimit = roundArguments.gasLimit || 3000000;
+        
+        console.log(`Worker ${workerIndex}: Initialized with ${this.accounts.length} accounts: ${JSON.stringify(this.accounts)}`);
+    }
+
+    /**
+     * Extract accounts from the Caliper network configuration with improved fallbacks
+     */
+    getAccountsFromConfig(sutContext, workerIndex) {
+        // Set default fallback accounts derived from workerIndex (deterministic)
+        // These are example accounts - they won't actually work without private keys
+        const fallbackAccounts = [
+            '0x06d06c366b213f716b51bca6dc1874afc05467d0', // From genesis file
+            '0x2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c'  // From genesis file
+        ];
+        
+        // Debug log to see what we're working with
+        console.log(`Worker ${workerIndex}: Attempting to extract accounts from configuration`);
+        
+        // If no context provided, use fallbacks and warn
+        if (!sutContext) {
+            console.warn(`Worker ${workerIndex}: No sutContext provided, using fallback accounts`);
+            return [fallbackAccounts[workerIndex % fallbackAccounts.length]];
+        }
+        
+        // Try to access ethereum configuration (direct or embedded)
+        let ethConfig = null;
+        
+        if (sutContext.networkConfig) {
+            if (sutContext.networkConfig.ethereum) {
+                ethConfig = sutContext.networkConfig.ethereum;
+                console.log(`Worker ${workerIndex}: Found direct ethereum config`);
+            } else if (sutContext.networkConfig.caliper && sutContext.networkConfig.caliper.blockchain === 'ethereum') {
+                ethConfig = sutContext.networkConfig;
+                console.log(`Worker ${workerIndex}: Found caliper ethereum config`);
+            }
+        }
+        
+        // If we found ethereum config, try to extract accounts
+        if (ethConfig) {
+            console.log(`Worker ${workerIndex}: Ethereum config keys: ${JSON.stringify(Object.keys(ethConfig))}`);
+            
+            // Check for accounts array
+            if (ethConfig.accounts && Array.isArray(ethConfig.accounts)) {
+                const addresses = ethConfig.accounts.map(acc => acc.address);
+                console.log(`Worker ${workerIndex}: Found ${addresses.length} accounts in accounts array`);
+                if (addresses.length > 0) return addresses;
+            }
+            
+            // Check for fromAddress
+            if (ethConfig.fromAddress) {
+                console.log(`Worker ${workerIndex}: Found fromAddress: ${ethConfig.fromAddress}`);
+                return [ethConfig.fromAddress];
+            }
+            
+            // Check for contractDeployerAddresses
+            if (ethConfig.contractDeployerAddresses && Array.isArray(ethConfig.contractDeployerAddresses)) {
+                console.log(`Worker ${workerIndex}: Found ${ethConfig.contractDeployerAddresses.length} contractDeployerAddresses`);
+                if (ethConfig.contractDeployerAddresses.length > 0) return [...ethConfig.contractDeployerAddresses];
+            }
+            
+            // If we have a URL, try to extract the address from there (unusual but possible)
+            if (ethConfig.url) {
+                console.log(`Worker ${workerIndex}: Found URL but no accounts, will use fallback account`);
+            }
+        }
+        
+        // If we get here, we couldn't find accounts in the expected places
+        console.warn(`Worker ${workerIndex}: No accounts found in config, using fallback account. This may cause transaction failures!`);
+        return [fallbackAccounts[workerIndex % fallbackAccounts.length]];
+    }
+
+    /**
+     * Generate a unique, deterministic DID for testing
+     */
+    generateDID() {
+        const did = `did:test:${this.workerIndex}:${this.roundIndex}:${this.didCount++}`;
+        return did;
+    }
+
+    /**
+     * Generate random bytes for testing
+     */
+    generateBytes(length) {
+        let result = '0x';
+        const chars = '0123456789abcdef';
+        for (let i = 0; i < length * 2; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    }
+
+    /**
+     * Submit a transaction to the SUT
+     */
+    async submitTransaction() {
+        const did = this.generateDID();
+        const publicKey = this.generateBytes(32);
+        const serviceEndpoint = this.generateBytes(32);
+        
+        // Role.ISSUER=1, Role.HOLDER=2
+        const role = Math.random() > 0.5 ? 1 : 2;
+        
+        // Account index to use for this transaction
+        const accountIndex = this.workerIndex % this.accounts.length;
+        
+        // Transaction arguments for the contract method
+        const args = [did, publicKey, serviceEndpoint, role];
+        
+        // Transaction configuration
+        const txArgs = {
+            from: this.accounts[accountIndex],
+            gas: this.gasLimit || 3000000,
+            gasPrice: '0',
+            chainId: this.sutContext?.networkConfig?.ethereum?.chainId || 1337
+        };
+    
+        // Validate txArgs before sending
+        if (!txArgs.from || !this.accounts.length) {
+            console.error(`Worker ${this.workerIndex}: No valid account available for transaction`);
+            throw new Error('No valid account available');
+        }
+    
+        console.log(`Worker ${this.workerIndex}: Submitting transaction with txArgs: ${JSON.stringify(txArgs)}`);
+        console.log(`Worker ${this.workerIndex}: Calling method 'registerDID' with args: ${JSON.stringify(args)}`);
+    
+        try {
+            const request = {
+                contract: this.contractId, // 'DIDRegistry'
+                verb: 'registerDID',      // Use 'verb' instead of 'method' to match connector expectations
+                args: args,
+                txConfig: txArgs
+            };
+            console.log(`Worker ${this.workerIndex}: Full request object: ${JSON.stringify(request)}`);
+            
+            const result = await this.sutAdapter.sendRequests(request);
+            console.log(`Worker ${this.workerIndex}: Transaction successful for DID: ${did}`);
+            return did;
+        } catch (error) {
+            console.error(`Worker ${this.workerIndex}: Error in registerDID transaction: ${error.stack}`);
+            throw error;
+        }
+    }
+}
+
+/**
+ * Create a new instance of the workload module
+ * @return {RegisterDIDWorkload}
+ */
+function createWorkloadModule() {
+    return new RegisterDIDWorkload();
+}
+
+module.exports.createWorkloadModule = createWorkloadModule;

@@ -1,0 +1,49 @@
+---
+name: BesuNetwork
+version: '1.0'
+mutual-tls: false
+caliper:
+  blockchain: ethereum
+
+contracts:
+  DIDRegistry:
+    path: contracts/DIDRegistry.json
+    abi-file: contracts/DIDRegistry.json
+    
+  CredentialRegistry:
+    path: contracts/CredentialRegistry.json
+    abi-file: contracts/CredentialRegistry.json
+
+ethereum:
+  url: 'ws://localhost:8546'  # Using the bootnode IP from static-nodes.json
+  contractDeployerAddress: '0x21307fd33e7daebeff0c4bead2a4976527dc5c71'  # From genesis allocation
+  contractDeployerAddressPassword: ''
+  # You'll need to provide the actual private key for the address above
+  contractDeployerAddressPrivateKey: 'd2d2a47b83a3059379ea3de28245e1c864b07e41b2777307f42206a3d4af3a51'  
+  fromAddress: '0x21307fd33e7daebeff0c4bead2a4976527dc5c71'
+  fromAddressPassword: ''
+  # Same private key as above
+  fromAddressPrivateKey: 'd2d2a47b83a3059379ea3de28245e1c864b07e41b2777307f42206a3d4af3a51'  
+  transactionConfirmationBlocks: 2
+  chainId: 1337  # From CLIQUEgenesis.json
+  gasPrice: 0    # Set to 0 as per your config.toml min-gas-price
+  gas: 10000000
+  
+  # Besu-specific client options based on genesis config
+  clientOptions:
+    consensus: 'clique'
+    blockTime: 15           # From clique.blockperiodseconds
+    epochLength: 30000      # From clique.epochlength
+    networkId: 1337         # Same as chainId for simplicity
+    
+    # Network details from config.toml and static-nodes.json
+    bootNodes:
+      - enode://930b2554dffb0acab714000061f2c0dcc55ebdf9bf46d5550ed1ed37ccd2996399b19177bd39125ff574acc71230c53ad2d80ae0c9837fdc0b378d08ab24fbd4@172.16.239.11:30303
+    
+    # Additional Besu-specific options
+    revertReasonEnabled: true
+    metricsEnabled: true
+    metricsPort: 9545
+    
+  # Monitoring options
+  monitored: true

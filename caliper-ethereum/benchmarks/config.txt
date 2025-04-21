@@ -1,0 +1,90 @@
+---
+test:
+  name: SSI System Performance Test
+  description: Benchmark the performance of SSI operations on the Indy-Besu network with CLIQUE consensus
+  workers:
+    type: local
+    number: 2  # Adjusted for CLIQUE consensus which has lower throughput than QBFT
+
+  rounds:
+    # DID Registry Operations
+    - label: registerDID
+      description: Register new DIDs in the SSI system
+      txNumber: 30
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5  # Reduced TPS for CLIQUE consensus with 15-second block time
+      workload:
+        module: benchmarks/registerDID.js
+        arguments:
+          assets: 30
+
+    - label: updateDID
+      description: Update existing DIDs in the system
+      txNumber: 30
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5
+      workload:
+        module: benchmarks/updateDID.js
+        arguments:
+          assets: 30
+
+    - label: resolveDID
+      description: Resolve DIDs to get their documents (read-only)
+      txNumber: 50
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 20  # Can be higher as it's a read operation
+      workload:
+        module: benchmarks/resolveDID.js
+        arguments:
+          assets: 100
+
+    # Credential Registry Operations
+    - label: issueCredential
+      description: Issue new verifiable credentials
+      txNumber: 30
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 4
+      workload:
+        module: benchmarks/issueCredential.js
+        arguments:
+          assets: 25
+
+    - label: verifyCredential
+      description: Verify the validity of credentials (read-only)
+      txNumber: 50
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 20
+      workload:
+        module: benchmarks/verifyCredential.js
+        arguments:
+          assets: 100
+          
+    # Added batch test
+    - label: batchOperations
+      description: Test a mix of operations to simulate real-world load
+      txNumber: 50
+      rateControl:
+        type: fixed-feedback-rate
+        opts:
+          tps: 5
+          unfinished_per_client: 10
+      workload:
+        module: benchmarks/batchOperations.js
+        arguments:
+          assets: 50
+          mix: 
+            registerDID: 0.2
+            updateDID: 0.1
+            resolveDID: 0.3
+            issueCredential: 0.2
+            verifyCredential: 0.2

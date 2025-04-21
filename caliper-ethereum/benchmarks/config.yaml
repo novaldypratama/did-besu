@@ -1,0 +1,89 @@
+---
+# Global configuration parameters
+networkParams: &network-params
+  accounts:
+    - address: "0x06d06c366b213f716b51bca6dc1874afc05467d0"
+      privateKey: "b37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed" # Replace with actual private key
+    - address: "0x2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c"
+      privateKey: "270bbbfd7748547ec9bc983e16864d37a303720ae76044114dc00cb42ee0c446" # Replace with actual private key
+  chainId: 1337
+  consensusAlgorithm: "CLIQUE"
+  blockTime: 15  # Seconds per block
+
+# Global test parameters
+constants: &constants
+  txNumbers:
+    small: 10
+    medium: 20
+    large: 50
+  
+# Common gas limits
+gasLimits: &gas-limits
+  registerDID: 3000000
+  updateDID: 3000000
+  resolveDID: 1000000
+  issueCredential: 4000000
+  verifyCredential: 3000000
+
+# Common workload arguments
+commonArgs: &common-args
+  accounts:
+    - "0x21307fd33e7daebeff0c4bead2a4976527dc5c71"
+    - "0x00a20e0d51d6f9a8692d884016769bad98192db8"
+  contractAddresses:
+    DIDRegistry: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"  # Replace with actual address
+    CredentialRegistry: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"  # Replace with actual address
+
+# DID Registry operation arguments
+didArgs: &did-args
+  initialDIDs: 5
+  batchSize: 2  # Process in small batches for CLIQUE
+  <<: *common-args
+
+# Credential Registry operation arguments
+credentialArgs: &credential-args
+  initialDIDs: 5
+  initialCredentials: 2
+  schemaTypes: 3
+  expirationDays: 365
+  <<: *common-args
+
+# Test configuration
+test:
+  name: SSI System Performance on Besu (Fixed Configuration)
+  description: Benchmark SSI operations using enhanced configuration for Besu with CLIQUE consensus
+  workers:
+    type: local
+    number: 2  # Using 2 workers for parallel processing
+
+  # Start with diagnostic round to validate setup
+  rounds:
+    # Basic DID operations
+    - label: registerDID
+      description: Register new DIDs in the SSI system
+      txNumber: 5
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2  # Conservative TPS for CLIQUE's 15-second block time
+      workload:
+        module: benchmarks/registerDID.js  # Use our Ethereum-specific implementation
+        arguments:
+          gasLimit: 3000000
+          <<: *did-args
+
+  # Monitoring configuration  
+  monitor:
+    type:
+      - prometheus
+    prometheus:
+      url: "http://localhost:9090"
+      metrics:
+        include:
+          - besu_blockchain_difficulty_total
+          - besu_blockchain_height
+          - process_cpu_seconds_total
+          - process_resident_memory_bytes
+          - txpool_pending
+          - txpool_queued
+    interval: 5
