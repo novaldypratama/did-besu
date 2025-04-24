@@ -1,5 +1,4 @@
-x-besu-def: 
-  &besu-def
+x-besu-def: &besu-def
   restart: "on-failure"
   image: hyperledger/besu:${BESU_VERSION:-latest}
   env_file:
@@ -17,22 +16,37 @@ x-besu-def:
       --rpc-http-api=EEA,WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,PERM,${BESU_CONS_ALGO:-QBFT} \
       --rpc-ws-api=EEA,WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,PERM,${BESU_CONS_ALGO:-QBFT} ;
 
-x-ethsignerProxy-def: 
-  &ethsignerProxy-def
-  image: consensys/ethsigner:${ETHSIGNER_VERSION:-latest}
+# x-ethsignerProxy-def:
+#   &ethsignerProxy-def
+#   image: consensys/ethsigner:${ETHSIGNER_VERSION:-latest}
+#   command:
+#     [
+#       "--chain-id=1337",
+#       "--http-listen-host=0.0.0.0",
+#       "--http-listen-port=8545",
+#       "--downstream-http-port=8545",
+#       "--downstream-http-host=rpcnode",
+#       "--downstream-http-request-timeout=60000",
+#       "file-based-signer",
+#       "-k",
+#       "/opt/ethsigner/keyfile",
+#       "-p",
+#       "/opt/ethsigner/passwordfile",
+#     ]
+#   ports:
+#     - 8545
+
+x-web3signerProxy-def: &web3signerProxy-def
+  image: consensys/web3signer:${WEB3SIGNER_VERSION:-latest}
   command:
     [
-      "--chain-id=1337",
-      "--http-listen-host=0.0.0.0",
-      "--http-listen-port=8545",
+      "--config-file=/opt/web3signer/config.yaml",
+      "eth1",
+      "--downstream-http-host=0.0.0.0",
       "--downstream-http-port=8545",
-      "--downstream-http-host=rpcnode",
+      "--downstream-http-proxy-host=rpcnode",
+      "--downstream-http-proxy-port=8545",
       "--downstream-http-request-timeout=60000",
-      "file-based-signer",
-      "-k",
-      "/opt/ethsigner/keyfile",
-      "-p",
-      "/opt/ethsigner/passwordfile",
     ]
   ports:
     - 8545
@@ -76,25 +90,25 @@ services:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.12
 
-  validator3:
-    <<: *besu-def
-    ports:
-      - 21003:8545/tcp
-      - 30303
-      - 9545
-    environment:
-      - OTEL_RESOURCE_ATTRIBUTES=service.name=validator3,service.version=${BESU_VERSION:-latest}
-    labels:
-      - "consensus=besu"
-    volumes:
-      - ./network/config/besu/:/config
-      - ./network/config/nodes/node-test3:/opt/besu/keys
-      - ./network/logs/besu:/tmp/besu
-    depends_on:
-      - validator1
-    networks:
-      quorum-dev-quickstart:
-        ipv4_address: 172.16.239.13
+  # validator3:
+  #   <<: *besu-def
+  #   ports:
+  #     - 21003:8545/tcp
+  #     - 30303
+  #     - 9545
+  #   environment:
+  #     - OTEL_RESOURCE_ATTRIBUTES=service.name=validator3,service.version=${BESU_VERSION:-latest}
+  #   labels:
+  #     - "consensus=besu"
+  #   volumes:
+  #     - ./network/config/besu/:/config
+  #     - ./network/config/nodes/node-test3:/opt/besu/keys
+  #     - ./network/logs/besu:/tmp/besu
+  #   depends_on:
+  #     - validator1
+  #   networks:
+  #     quorum-dev-quickstart:
+  #       ipv4_address: 172.16.239.13
 
   # validator4:
   #   <<: *besu-def
@@ -153,11 +167,25 @@ services:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.15
 
-  # web3signerProxy:
-  #   <<: *web3signerProxy-def
+  web3signerProxy:
+    <<: *web3signerProxy-def
+    volumes:
+      - ./network/config/web3signer/config.yaml:/opt/web3signer/config.yaml
+      - ./network/config/web3signer/keys:/opt/web3signer/keys
+      - ./network/config/web3signer/data:/opt/web3signer/data
+    depends_on:
+      - rpcnode
+    ports:
+      - 18545:8545/tcp
+    networks:
+      quorum-dev-quickstart:
+        ipv4_address: 172.16.239.40
+
+  # ethsignerProxy:
+  #   <<: *ethsignerProxy-def
   #   volumes:
-  #     - ./network/config/web3signer/password:/opt/web3signer/passwordfile
-  #     - ./network/config/web3signer/key:/opt/web3signer/keyfile
+  #     - ./network/config/ethsigner/password:/opt/ethsigner/passwordfile
+  #     - ./network/config/ethsigner/key:/opt/ethsigner/keyfile
   #   depends_on:
   #     - validator1
   #     - rpcnode
@@ -166,20 +194,6 @@ services:
   #   networks:
   #     quorum-dev-quickstart:
   #       ipv4_address: 172.16.239.40
-
-  ethsignerProxy:
-    <<: *ethsignerProxy-def
-    volumes:
-      - ./network/config/ethsigner/password:/opt/ethsigner/passwordfile
-      - ./network/config/ethsigner/key:/opt/ethsigner/keyfile
-    depends_on:
-      - validator1
-      - rpcnode
-    ports:
-      - 18545:8545/tcp
-    networks:
-      quorum-dev-quickstart:
-        ipv4_address: 172.16.239.40
 
   prometheus:
     image: "prom/prometheus"

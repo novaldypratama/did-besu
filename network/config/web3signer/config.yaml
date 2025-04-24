@@ -1,0 +1,14 @@
+# Chain
+eth1.chain-id: 1337
+
+# Data Path
+data-path: "/opt/web3signer/data"
+
+# Signing key locations
+key-store-path: "/opt/web3signer/keys"
+
+# HTTP Configuration
+http-listen-host: "0.0.0.0"
+http-listen-port: 8545
+http-host-allowlist: "*"
+http-cors-origins: "*"
