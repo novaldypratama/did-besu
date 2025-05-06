@@ -7,9 +7,9 @@ caliper:
     path: report.html
     format: html
   logging:
-    template: '%timestamp%%level%%message%'
+    template: "%timestamp%%level%%message%"
     formats:
-      timestamp: 'YYYY-MM-DD HH:mm:ss.SSS'
+      timestamp: "YYYY-MM-DD HH:mm:ss.SSS"
     targets:
       console:
         target: console
@@ -21,13 +21,20 @@ caliper:
         level: debug
         filename: caliper.log
   prometheus:
-    url: http://localhost:9090   # Connect to Prometheus for additional metrics
+    url: http://localhost:9090 # Connect to Prometheus for additional metrics
     metrics:
-      include: [
-        'besu_blockchain_difficulty_total',
-        'besu_blockchain_height',
-        'process_cpu_seconds_total',
-        'process_resident_memory_bytes',
-        'txpool_pending',
-        'txpool_queued'
-      ]
+      include:
+        [
+          "besu_blockchain_difficulty_total",
+          "besu_blockchain_height",
+          "process_cpu_seconds_total",
+          "process_resident_memory_bytes",
+          "txpool_pending",
+          "txpool_queued",
+        ]
+
+besu:
+  transactionSettings:
+    useRawTransactions: true # Enable client-side signing -- We need to sign transactions for Besu
+    receiptTimeout: 300000 # Wait timeout for transaction receipts
+    confirmations: 2 # Number of confirmations required

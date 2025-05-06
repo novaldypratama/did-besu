@@ -1,0 +1,140 @@
+{
+  "caliper": {
+    "blockchain": "ethereum"
+  },
+  "ethereum": {
+    "url": "ws://172.16.239.15:8546",
+    "contractDeployerAddresses": "0x06d06c366B213f716b51BCA6Dc1874aFc05467d0",
+    "contractDeployerAddressPrivateKeys": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed",
+    "gas": {
+      "limit": 20000000,
+      "price": 0
+    },
+    "fromAddress": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
+    "fromAddressPrivateKey": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed",
+    "transactionConfirmationBlocks": 2,
+    "accounts": [
+      {
+        "address": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
+        "privateKey": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63"
+      },
+      {
+        "address": "0x627306090abaB3A6e1400e9345bC60c78a8BEf57",
+        "privateKey": "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"
+      },
+      {
+        "address": "0xf17f52151EbEF6C7334FAD080c5704D77216b732",
+        "privateKey": "0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f"
+      },
+      {
+        "address": "0xc9c913c8c3c1cd416d80a0abf475db2062f161f6",
+        "privateKey": "0x60bbe10a196a4e71451c0f6e9ec9beab454c2a5ac0542aa5b8b733ff5719fec3"
+      },
+      {
+        "address": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
+        "privateKey": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed"
+      },
+      {
+        "address": "0x2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c",
+        "privateKey": "0x270bbbfd7748547ec9bc983e16864d37a303720ae76044114dc00cb42ee0c446"
+      },
+      {
+        "address": "0x8dd478dee59d3b7c16a2e34cb5d321ed23d2677d",
+        "privateKey": "0x8a5fb061550c3db1a78665259a44222d33e14246c914c1b70bdf43ce05d2b119"
+      },
+      {
+        "address": "0x9b790656b9ec0db1936ed84b3bea605873558198",
+        "privateKey": "0x797bbe0373132e8c5483515b68ecbb6d3581b56f0205b653ad2b30a559e83891"
+      },
+      {
+        "address": "0xe43f47c497e0eFC3fe96a85B2041aFF2F0d317A5",
+        "privateKey": "0x69df614162f5c1ed4f00a924ece67035a86a2011a2f72a381273599e8c49a1c0"
+      }
+    ],
+    "contracts": {
+      "SimpleContract": {
+        "constructorArgs": [],
+        "deploy": false,
+        "estimateGas": true,
+        "gas": {
+          "limit": 20000000,
+          "price": 0
+        },
+        "address": "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256",
+        "functions": {
+          "open": {
+            "gas": 70000
+          },
+          "query": {
+            "gas": 100000
+          },
+          "transfer": {
+            "gas": 70000
+          }
+        },
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "string",
+                "name": "acc_id",
+                "type": "string"
+              },
+              {
+                "internalType": "int256",
+                "name": "amount",
+                "type": "int256"
+              }
+            ],
+            "name": "open",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "string",
+                "name": "acc_id",
+                "type": "string"
+              }
+            ],
+            "name": "query",
+            "outputs": [
+              {
+                "internalType": "int256",
+                "name": "amount",
+                "type": "int256"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "string",
+                "name": "acc_from",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "acc_to",
+                "type": "string"
+              },
+              {
+                "internalType": "int256",
+                "name": "amount",
+                "type": "int256"
+              }
+            ],
+            "name": "transfer",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          }
+        ]
+      }
+    }
+  }
+}

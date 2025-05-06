@@ -1,0 +1,45 @@
+simpleArgs: &simple-args
+  initialMoney: 10000
+  moneyToTransfer: 100
+  numberOfAccounts: &number-of-accounts 1000
+
+test:
+  name: Caliper benchmarking for open account, query balance, and transfer money
+  description: >
+    Test performance of Hyperledger Besu network with simple account opening,
+    querying, and transferring transactions.
+  workers:
+    number: 1
+  rounds:
+    - label: open
+      description: Open an account through the deployed contract
+      txNumber: *number-of-accounts
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 15
+      workload:
+        module: benchmarks/simple-test/open.js
+        arguments: *simple-args
+
+    - label: query
+      description: Query money from existing account
+      txNumber: *number-of-accounts
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 15
+      workload:
+        module: benchmarks/simple-test/query.js
+        arguments: *simple-args
+
+    - label: transfer
+      description: Transfer money between accounts
+      txNumber: *number-of-accounts
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 15
+      workload:
+        module: benchmarks/simple-test/transfer.js
+        arguments: *simple-args

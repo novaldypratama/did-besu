@@ -5,9 +5,10 @@ echo "Extracting contract ABIs..."
 # You may need to adjust these paths based on your setup
 cp ../smartcontract/artifacts/contracts/DidRegistry.sol/DIDRegistry.json caliper-benchmarks/contracts/DIDRegistry.json
 cp ../smartcontract/artifacts/contracts/VerifiableCredentialsRegistry.sol/CredentialRegistry.json caliper-benchmarks/contracts/CredentialRegistry.json
+# cp ../smartcontract/artifacts/contracts/SimpleContract.sol/SimpleContract.json caliper-benchmarks/contracts/SimpleContract.json
 
 # Create a script to check if Besu is ready
-cat > check-besu.js << 'EOL'
+cat >check-besu.js <<'EOL'
 const { Web3 } = require('web3');
 const axios = require('axios');
 
@@ -45,8 +46,8 @@ EOL
 echo "Checking if Besu node is ready..."
 node check-besu.js
 if [ $? -ne 0 ]; then
-    echo "Besu node is not ready. Please make sure it's running and synced."
-    exit 1
+  echo "Besu node is not ready. Please make sure it's running and synced."
+  exit 1
 fi
 
 # Bind Caliper to Ethereum
