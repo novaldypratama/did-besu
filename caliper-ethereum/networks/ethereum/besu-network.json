@@ -4,14 +4,15 @@
   },
   "ethereum": {
     "url": "ws://172.16.239.15:8546",
-    "contractDeployerAddresses": "0x9b790656b9eC0Db1936eD84B3beA605873558198",
-    "contractDeployerAddressPrivateKeys": "0x797bbe0373132e8c5483515b68ecbb6d3581b56f0205b653ad2b30a559e83891",
+    "contractDeployerAddresses": "0x06d06c366B213f716b51BCA6Dc1874aFc05467d0",
+    "contractDeployerAddressPrivateKeys": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed",
     "gas": {
-      "limit": 4000000,
+      "limit": 20000000,
       "price": 0
     },
-    "fromAddress": "0x9b790656b9eC0Db1936eD84B3beA605873558198",
-    "transactionConfirmationBlocks": 5,
+    "fromAddress": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
+    "fromAddressPrivateKey": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed",
+    "transactionConfirmationBlocks": 2,
     "accounts": [
       {
         "address": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
@@ -56,15 +57,18 @@
         "deploy": false,
         "estimateGas": true,
         "gas": {
-          "limit": 3000000,
+          "limit": 6000000,
           "price": 0
         },
-        "address": "0x51A21A51aa59B0b4BF99Ea7a79c7293d601FF689",
+        "address": "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256",
         "functions": {
           "registerDID": {
             "gas": 3000000
           },
           "updateDID": {
+            "gas": 3000000
+          },
+          "deactivateDID": {
             "gas": 3000000
           },
           "resolveDID": {
@@ -415,18 +419,27 @@
       },
       "CredentialRegistry": {
         "constructorArgs": [
-          "0x51A21A51aa59B0b4BF99Ea7a79c7293d601FF689"
+          "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256"
         ],
         "deploy": false,
         "estimateGas": true,
         "gas": {
-          "limit": 4000000,
+          "limit": 10000000,
           "price": 0
         },
-        "address": "0x270B9Fd8033ec1ef33BC93d35A1c1a350f5C2aB3",
+        "address": "0xA5134e42CF382152894d040a0e89F2E4231062d8",
         "functions": {
           "issueCredential": {
             "gas": 4000000
+          },
+          "revokeCredential": {
+            "gas": 2000000
+          },
+          "activeCredential": {
+            "gas": 2000000
+          },
+          "suspendCredential": {
+            "gas": 2000000
           },
           "verifyCredential": {
             "gas": 3000000
