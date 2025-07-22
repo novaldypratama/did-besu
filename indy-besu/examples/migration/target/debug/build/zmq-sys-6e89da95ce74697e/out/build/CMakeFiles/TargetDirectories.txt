@@ -1,0 +1,11 @@
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/objects.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/libzmq-static.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/clang-format.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/clang-format-check.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/clang-format-diff.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/edit_cache.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/rebuild_cache.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/list_install_components.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/install.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/install/local.dir
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/install/strip.dir

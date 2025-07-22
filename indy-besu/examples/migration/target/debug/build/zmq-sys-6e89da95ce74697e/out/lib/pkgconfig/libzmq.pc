@@ -1,0 +1,12 @@
+prefix=/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out
+exec_prefix=/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out
+libdir=/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/lib
+includedir=/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/include
+
+Name: libzmq
+Description: 0MQ c++ library
+Version: 4.3.2
+Libs: -L${libdir} -lzmq
+Libs.private: -lstdc++  -lrt
+Requires.private: 
+Cflags: -I${includedir} 

@@ -1,0 +1,2159 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Linux - 5.15.153.1-microsoft-standard-WSL2 - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/cc 
+      Build flags: -ffunction-sections;-fdata-sections;-fPIC;-m64
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is GNU, found in:
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/3.30.2/CompilerIdC/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: -ffunction-sections;-fdata-sections;-fPIC;-m64
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/3.30.2/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-G4xadB"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-G4xadB"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-G4xadB'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_18564/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_18564.dir/build.make CMakeFiles/cmTC_18564.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-G4xadB'
+        Building C object CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -ffunction-sections -fdata-sections -fPIC -m64    -v -o CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.30/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-9QDOt0/gcc-9-9.4.0/debian/tmp-nvptx/usr,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+        Thread model: posix
+        gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+         /usr/lib/gcc/x86_64-linux-gnu/9/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.30/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -m64 -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -version -ffunction-sections -fdata-sections -fPIC -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccOqiuOv.s
+        GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-linux-gnu/9/include
+         /usr/local/include
+         /usr/include/x86_64-linux-gnu
+         /usr/include
+        End of search list.
+        GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: 01da938ff5dc2163489aa33cb3b747a7
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+         as -v --64 -o CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o /tmp/ccOqiuOv.s
+        GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+        Linking C executable cmTC_18564
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_18564.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64   -v -Wl,-v -rdynamic CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -o cmTC_18564
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-9QDOt0/gcc-9-9.4.0/debian/tmp-nvptx/usr,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+        Thread model: posix
+        gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-rdynamic' '-o' 'cmTC_18564' '-mtune=generic' '-march=x86-64'
+         /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccKXaYV9.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_18564 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. -v CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
+        collect2 version 9.4.0
+        /usr/bin/ld -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccKXaYV9.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_18564 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. -v CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
+        GNU ld (GNU Binutils for Ubuntu) 2.34
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-rdynamic' '-o' 'cmTC_18564' '-mtune=generic' '-march=x86-64'
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-G4xadB'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/usr/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-linux-gnu/9/include]
+          add: [/usr/local/include]
+          add: [/usr/include/x86_64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/9/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/9/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/gcc/x86_64-linux-gnu/9/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/usr/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-G4xadB']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_18564/fast]
+        ignore line: [/usr/bin/make  -f CMakeFiles/cmTC_18564.dir/build.make CMakeFiles/cmTC_18564.dir/build]
+        ignore line: [make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-G4xadB']
+        ignore line: [Building C object CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -ffunction-sections -fdata-sections -fPIC -m64    -v -o CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.30/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-9QDOt0/gcc-9-9.4.0/debian/tmp-nvptx/usr hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.30/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -m64 -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -version -ffunction-sections -fdata-sections -fPIC -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccOqiuOv.s]
+        ignore line: [GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/x86_64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [Compiler executable checksum: 01da938ff5dc2163489aa33cb3b747a7]
+        ignore line: [COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o /tmp/ccOqiuOv.s]
+        ignore line: [GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+        ignore line: [Linking C executable cmTC_18564]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_18564.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64   -v -Wl -v -rdynamic CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -o cmTC_18564]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-9QDOt0/gcc-9-9.4.0/debian/tmp-nvptx/usr hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-rdynamic' '-o' 'cmTC_18564' '-mtune=generic' '-march=x86-64']
+        link line: [ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccKXaYV9.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_18564 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. -v CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccKXaYV9.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-export-dynamic] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_18564] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib]
+          arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+        ignore line: [collect2 version 9.4.0]
+        ignore line: [/usr/bin/ld -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccKXaYV9.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_18564 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. -v CMakeFiles/cmTC_18564.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+        linker tool for 'C': /usr/bin/ld
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o] ==> [/usr/lib/x86_64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9] ==> [/usr/lib/gcc/x86_64-linux-gnu/9]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/usr/lib/x86_64-linux-gnu/Scrt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/usr/share/cmake-3.30/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the C compiler's linker: "/usr/bin/ld" "-v"
+      GNU ld (GNU Binutils for Ubuntu) 2.34
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Li4EXx"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Li4EXx"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Li4EXx'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_60396/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_60396.dir/build.make CMakeFiles/cmTC_60396.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Li4EXx'
+        Building CXX object CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64    -v -o CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.30/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-9QDOt0/gcc-9-9.4.0/debian/tmp-nvptx/usr,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+        Thread model: posix
+        gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+         /usr/lib/gcc/x86_64-linux-gnu/9/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.30/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -m64 -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -version -ffunction-sections -fdata-sections -fPIC -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccd5NMZ8.s
+        GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring duplicate directory "/usr/include/x86_64-linux-gnu/c++/9"
+        ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/include/c++/9
+         /usr/include/x86_64-linux-gnu/c++/9
+         /usr/include/c++/9/backward
+         /usr/lib/gcc/x86_64-linux-gnu/9/include
+         /usr/local/include
+         /usr/include/x86_64-linux-gnu
+         /usr/include
+        End of search list.
+        GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: 3d1eba838554fa2348dba760e4770469
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+         as -v --64 -o CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccd5NMZ8.s
+        GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+        Linking CXX executable cmTC_60396
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_60396.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64   -v -Wl,-v -rdynamic CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_60396
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-9QDOt0/gcc-9-9.4.0/debian/tmp-nvptx/usr,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+        Thread model: posix
+        gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-rdynamic' '-o' 'cmTC_60396' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+         /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAceIVZ.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_60396 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. -v CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
+        collect2 version 9.4.0
+        /usr/bin/ld -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAceIVZ.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_60396 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. -v CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
+        GNU ld (GNU Binutils for Ubuntu) 2.34
+        COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-rdynamic' '-o' 'cmTC_60396' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Li4EXx'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/usr/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/include/c++/9]
+          add: [/usr/include/x86_64-linux-gnu/c++/9]
+          add: [/usr/include/c++/9/backward]
+          add: [/usr/lib/gcc/x86_64-linux-gnu/9/include]
+          add: [/usr/local/include]
+          add: [/usr/include/x86_64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/include/c++/9] ==> [/usr/include/c++/9]
+        collapse include dir [/usr/include/x86_64-linux-gnu/c++/9] ==> [/usr/include/x86_64-linux-gnu/c++/9]
+        collapse include dir [/usr/include/c++/9/backward] ==> [/usr/include/c++/9/backward]
+        collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/9/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/9/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/include/c++/9;/usr/include/x86_64-linux-gnu/c++/9;/usr/include/c++/9/backward;/usr/lib/gcc/x86_64-linux-gnu/9/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/usr/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Li4EXx']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_60396/fast]
+        ignore line: [/usr/bin/make  -f CMakeFiles/cmTC_60396.dir/build.make CMakeFiles/cmTC_60396.dir/build]
+        ignore line: [make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Li4EXx']
+        ignore line: [Building CXX object CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64    -v -o CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.30/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-9QDOt0/gcc-9-9.4.0/debian/tmp-nvptx/usr hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.30/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -m64 -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -version -ffunction-sections -fdata-sections -fPIC -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccd5NMZ8.s]
+        ignore line: [GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring duplicate directory "/usr/include/x86_64-linux-gnu/c++/9"]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/include/c++/9]
+        ignore line: [ /usr/include/x86_64-linux-gnu/c++/9]
+        ignore line: [ /usr/include/c++/9/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/x86_64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.2) version 9.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [Compiler executable checksum: 3d1eba838554fa2348dba760e4770469]
+        ignore line: [COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccd5NMZ8.s]
+        ignore line: [GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-o' 'CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+        ignore line: [Linking CXX executable cmTC_60396]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_60396.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64   -v -Wl -v -rdynamic CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_60396]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.2' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-9QDOt0/gcc-9-9.4.0/debian/tmp-nvptx/usr hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.2) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-ffunction-sections' '-fdata-sections' '-fPIC' '-m64' '-v' '-rdynamic' '-o' 'cmTC_60396' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+        link line: [ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAceIVZ.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_60396 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. -v CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccAceIVZ.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-export-dynamic] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_60396] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib]
+          arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+        ignore line: [collect2 version 9.4.0]
+        ignore line: [/usr/bin/ld -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAceIVZ.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_60396 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. -v CMakeFiles/cmTC_60396.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+        linker tool for 'CXX': /usr/bin/ld
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o] ==> [/usr/lib/x86_64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9] ==> [/usr/lib/gcc/x86_64-linux-gnu/9]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> [/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/x86_64-linux-gnu/Scrt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/usr/share/cmake-3.30/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/usr/share/cmake-3.30/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the CXX compiler's linker: "/usr/bin/ld" "-v"
+      GNU ld (GNU Binutils for Ubuntu) 2.34
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "/usr/share/cmake-3.30/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "CMakeLists.txt:19 (include)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-xRC98y"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-xRC98y"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-xRC98y'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_09e8d/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_09e8d.dir/build.make CMakeFiles/cmTC_09e8d.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-xRC98y'
+        Building C object CMakeFiles/cmTC_09e8d.dir/src.c.o
+        /usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -ffunction-sections -fdata-sections -fPIC -m64  -o CMakeFiles/cmTC_09e8d.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-xRC98y/src.c
+        Linking C executable cmTC_09e8d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_09e8d.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64  -rdynamic CMakeFiles/cmTC_09e8d.dir/src.c.o -o cmTC_09e8d
+        /usr/bin/ld: CMakeFiles/cmTC_09e8d.dir/src.c.o: in function `main':
+        src.c:(.text.main+0x34): undefined reference to `pthread_create'
+        /usr/bin/ld: src.c:(.text.main+0x40): undefined reference to `pthread_detach'
+        /usr/bin/ld: src.c:(.text.main+0x4c): undefined reference to `pthread_cancel'
+        /usr/bin/ld: src.c:(.text.main+0x5d): undefined reference to `pthread_join'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_09e8d.dir/build.make:99: cmTC_09e8d] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-xRC98y'
+        make: *** [Makefile:127: cmTC_09e8d/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "/usr/share/cmake-3.30/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "CMakeLists.txt:19 (include)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-cque9z"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-cque9z"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-cque9z'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_166de/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_166de.dir/build.make CMakeFiles/cmTC_166de.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-cque9z'
+        Building C object CMakeFiles/cmTC_166de.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -ffunction-sections -fdata-sections -fPIC -m64 -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_166de.dir/CheckFunctionExists.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-cque9z/CheckFunctionExists.c
+        Linking C executable cmTC_166de
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_166de.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -DCHECK_FUNCTION_EXISTS=pthread_create -rdynamic CMakeFiles/cmTC_166de.dir/CheckFunctionExists.c.o -o cmTC_166de  -lpthreads
+        /usr/bin/ld: cannot find -lpthreads
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_166de.dir/build.make:99: cmTC_166de] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-cque9z'
+        make: *** [Makefile:127: cmTC_166de/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "/usr/share/cmake-3.30/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "CMakeLists.txt:19 (include)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-tQD06x"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-tQD06x"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-tQD06x'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_bec78/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_bec78.dir/build.make CMakeFiles/cmTC_bec78.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-tQD06x'
+        Building C object CMakeFiles/cmTC_bec78.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -ffunction-sections -fdata-sections -fPIC -m64 -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_bec78.dir/CheckFunctionExists.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-tQD06x/CheckFunctionExists.c
+        Linking C executable cmTC_bec78
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bec78.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -DCHECK_FUNCTION_EXISTS=pthread_create -rdynamic CMakeFiles/cmTC_bec78.dir/CheckFunctionExists.c.o -o cmTC_bec78  -lpthread
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-tQD06x'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXCompilerFlag.cmake:34 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:63 (check_cxx_compiler_flag)"
+    checks:
+      - "Performing Test COMPILER_SUPPORTS_CXX11"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-yDMZKw"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-yDMZKw"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "COMPILER_SUPPORTS_CXX11"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-yDMZKw'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_74b69/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_74b69.dir/build.make CMakeFiles/cmTC_74b69.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-yDMZKw'
+        Building CXX object CMakeFiles/cmTC_74b69.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_SUPPORTS_CXX11  -ffunction-sections -fdata-sections -fPIC -m64    -std=gnu++11 -o CMakeFiles/cmTC_74b69.dir/src.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-yDMZKw/src.cxx
+        Linking CXX executable cmTC_74b69
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_74b69.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64  -rdynamic CMakeFiles/cmTC_74b69.dir/src.cxx.o -o cmTC_74b69
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-yDMZKw'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCCompilerFlag.cmake:51 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:67 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test COMPILER_SUPPORTS_C11"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eZJBkz"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eZJBkz"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "COMPILER_SUPPORTS_C11"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eZJBkz'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_aea9d/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_aea9d.dir/build.make CMakeFiles/cmTC_aea9d.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eZJBkz'
+        Building C object CMakeFiles/cmTC_aea9d.dir/src.c.o
+        /usr/bin/cc -DCOMPILER_SUPPORTS_C11  -ffunction-sections -fdata-sections -fPIC -m64    -std=gnu11 -o CMakeFiles/cmTC_aea9d.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eZJBkz/src.c
+        Linking C executable cmTC_aea9d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aea9d.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64  -rdynamic CMakeFiles/cmTC_aea9d.dir/src.c.o -o cmTC_aea9d
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eZJBkz'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXCompilerFlag.cmake:34 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:74 (check_cxx_compiler_flag)"
+    checks:
+      - "Performing Test CXX_HAS_TAUT_WARNING"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-VJ9UVx"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-VJ9UVx"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "CXX_HAS_TAUT_WARNING"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-VJ9UVx'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_713b1/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_713b1.dir/build.make CMakeFiles/cmTC_713b1.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-VJ9UVx'
+        Building CXX object CMakeFiles/cmTC_713b1.dir/src.cxx.o
+        /usr/bin/c++ -DCXX_HAS_TAUT_WARNING  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11    -Wno-tautological-constant-compare -o CMakeFiles/cmTC_713b1.dir/src.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-VJ9UVx/src.cxx
+        Linking CXX executable cmTC_713b1
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_713b1.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11  -rdynamic CMakeFiles/cmTC_713b1.dir/src.cxx.o -o cmTC_713b1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-VJ9UVx'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCCompilerFlag.cmake:51 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:78 (check_c_compiler_flag)"
+    checks:
+      - "Performing Test CC_HAS_TAUT_WARNING"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-AJGJuy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-AJGJuy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "CC_HAS_TAUT_WARNING"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-AJGJuy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3fc7e/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_3fc7e.dir/build.make CMakeFiles/cmTC_3fc7e.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-AJGJuy'
+        Building C object CMakeFiles/cmTC_3fc7e.dir/src.c.o
+        /usr/bin/cc -DCC_HAS_TAUT_WARNING  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11    -Wno-tautological-constant-compare -o CMakeFiles/cmTC_3fc7e.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-AJGJuy/src.c
+        Linking C executable cmTC_3fc7e
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3fc7e.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11  -rdynamic CMakeFiles/cmTC_3fc7e.dir/src.c.o -o cmTC_3fc7e
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-AJGJuy'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:156 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for kqueue"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-k5DDdB"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-k5DDdB"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_KQUEUE"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-k5DDdB'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_12ec5/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_12ec5.dir/build.make CMakeFiles/cmTC_12ec5.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-k5DDdB'
+        Building CXX object CMakeFiles/cmTC_12ec5.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_12ec5.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-k5DDdB/CheckSymbolExists.cxx
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-k5DDdB/CheckSymbolExists.cxx:2:10: fatal error: sys/event.h: No such file or directory
+            2 | #include <sys/event.h>
+              |          ^~~~~~~~~~~~~
+        compilation terminated.
+        make[1]: *** [CMakeFiles/cmTC_12ec5.dir/build.make:78: CMakeFiles/cmTC_12ec5.dir/CheckSymbolExists.cxx.o] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-k5DDdB'
+        make: *** [Makefile:127: cmTC_12ec5/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:163 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for epoll_create"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-W7MsnA"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-W7MsnA"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_EPOLL"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-W7MsnA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_8cd58/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_8cd58.dir/build.make CMakeFiles/cmTC_8cd58.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-W7MsnA'
+        Building CXX object CMakeFiles/cmTC_8cd58.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_8cd58.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-W7MsnA/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_8cd58
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8cd58.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_8cd58.dir/CheckSymbolExists.cxx.o -o cmTC_8cd58
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-W7MsnA'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:166 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for epoll_create1"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-NxMFeA"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-NxMFeA"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_EPOLL_CLOEXEC"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-NxMFeA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7eb95/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_7eb95.dir/build.make CMakeFiles/cmTC_7eb95.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-NxMFeA'
+        Building CXX object CMakeFiles/cmTC_7eb95.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_7eb95.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-NxMFeA/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_7eb95
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7eb95.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_7eb95.dir/CheckSymbolExists.cxx.o -o cmTC_7eb95
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-NxMFeA'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:251 (check_include_files)"
+    checks:
+      - "Looking for include file windows.h"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8apf9y"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8apf9y"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_WINDOWS"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8apf9y'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_13174/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_13174.dir/build.make CMakeFiles/cmTC_13174.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8apf9y'
+        Building C object CMakeFiles/cmTC_13174.dir/ZMQ_HAVE_WINDOWS.c.o
+        /usr/bin/cc   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_13174.dir/ZMQ_HAVE_WINDOWS.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8apf9y/ZMQ_HAVE_WINDOWS.c
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8apf9y/ZMQ_HAVE_WINDOWS.c:2:10: fatal error: windows.h: No such file or directory
+            2 | #include <windows.h>
+              |          ^~~~~~~~~~~
+        compilation terminated.
+        make[1]: *** [CMakeFiles/cmTC_13174.dir/build.make:78: CMakeFiles/cmTC_13174.dir/ZMQ_HAVE_WINDOWS.c.o] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8apf9y'
+        make: *** [Makefile:127: cmTC_13174/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:300 (check_include_files)"
+    checks:
+      - "Looking for include file condition_variable"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-biQtwy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-biQtwy"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_STL_CONDITION_VARIABLE"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-biQtwy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_c934a/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_c934a.dir/build.make CMakeFiles/cmTC_c934a.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-biQtwy'
+        Building CXX object CMakeFiles/cmTC_c934a.dir/ZMQ_HAVE_STL_CONDITION_VARIABLE.cpp.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_c934a.dir/ZMQ_HAVE_STL_CONDITION_VARIABLE.cpp.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-biQtwy/ZMQ_HAVE_STL_CONDITION_VARIABLE.cpp
+        Linking CXX executable cmTC_c934a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c934a.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_c934a.dir/ZMQ_HAVE_STL_CONDITION_VARIABLE.cpp.o -o cmTC_c934a
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-biQtwy'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:338 (check_include_files)"
+    checks:
+      - "Looking for include file ifaddrs.h"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FccR0w"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FccR0w"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_IFADDRS"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FccR0w'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_846f0/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_846f0.dir/build.make CMakeFiles/cmTC_846f0.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FccR0w'
+        Building C object CMakeFiles/cmTC_846f0.dir/ZMQ_HAVE_IFADDRS.c.o
+        /usr/bin/cc   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_846f0.dir/ZMQ_HAVE_IFADDRS.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FccR0w/ZMQ_HAVE_IFADDRS.c
+        Linking C executable cmTC_846f0
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_846f0.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_846f0.dir/ZMQ_HAVE_IFADDRS.c.o -o cmTC_846f0
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FccR0w'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:339 (check_include_files)"
+    checks:
+      - "Looking for include file sys/uio.h"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-x88dKw"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-x88dKw"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_UIO"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-x88dKw'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_0084e/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_0084e.dir/build.make CMakeFiles/cmTC_0084e.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-x88dKw'
+        Building C object CMakeFiles/cmTC_0084e.dir/ZMQ_HAVE_UIO.c.o
+        /usr/bin/cc   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_0084e.dir/ZMQ_HAVE_UIO.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-x88dKw/ZMQ_HAVE_UIO.c
+        Linking C executable cmTC_0084e
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0084e.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_0084e.dir/ZMQ_HAVE_UIO.c.o -o cmTC_0084e
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-x88dKw'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:340 (check_include_files)"
+    checks:
+      - "Looking for include file sys/eventfd.h"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-srDW5x"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-srDW5x"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_EVENTFD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-srDW5x'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9a91d/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_9a91d.dir/build.make CMakeFiles/cmTC_9a91d.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-srDW5x'
+        Building C object CMakeFiles/cmTC_9a91d.dir/ZMQ_HAVE_EVENTFD.c.o
+        /usr/bin/cc   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_9a91d.dir/ZMQ_HAVE_EVENTFD.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-srDW5x/ZMQ_HAVE_EVENTFD.c
+        Linking C executable cmTC_9a91d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9a91d.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_9a91d.dir/ZMQ_HAVE_EVENTFD.c.o -o cmTC_9a91d
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-srDW5x'
+        
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:21 (check_c_source_runs)"
+      - "CMakeLists.txt:342 (zmq_check_efd_cloexec)"
+    checks:
+      - "Performing Test ZMQ_HAVE_EVENTFD_CLOEXEC"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-dCjqTw"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-dCjqTw"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_EVENTFD_CLOEXEC_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-dCjqTw'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_da09f/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_da09f.dir/build.make CMakeFiles/cmTC_da09f.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-dCjqTw'
+        Building C object CMakeFiles/cmTC_da09f.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_EVENTFD_CLOEXEC  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_da09f.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-dCjqTw/src.c
+        Linking C executable cmTC_da09f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_da09f.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_da09f.dir/src.c.o -o cmTC_da09f
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-dCjqTw'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_EVENTFD_CLOEXEC_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:361 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for SO_PEERCRED"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eeXO6w"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eeXO6w"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_SO_PEERCRED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eeXO6w'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_33ca4/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_33ca4.dir/build.make CMakeFiles/cmTC_33ca4.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eeXO6w'
+        Building CXX object CMakeFiles/cmTC_33ca4.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_33ca4.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eeXO6w/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_33ca4
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_33ca4.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_33ca4.dir/CheckSymbolExists.cxx.o -o cmTC_33ca4
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-eeXO6w'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:362 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for LOCAL_PEERCRED"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-zxuyoz"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-zxuyoz"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_LOCAL_PEERCRED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-zxuyoz'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_bd0f3/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_bd0f3.dir/build.make CMakeFiles/cmTC_bd0f3.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-zxuyoz'
+        Building CXX object CMakeFiles/cmTC_bd0f3.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_bd0f3.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-zxuyoz/CheckSymbolExists.cxx
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-zxuyoz/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-zxuyoz/CheckSymbolExists.cxx:8:19: error: ‘LOCAL_PEERCRED’ was not declared in this scope; did you mean ‘SO_PEERCRED’?
+            8 |   return ((int*)(&LOCAL_PEERCRED))[argc];
+              |                   ^~~~~~~~~~~~~~
+              |                   SO_PEERCRED
+        At global scope:
+        cc1plus: warning: unrecognized command line option ‘-Wno-tautological-constant-compare’
+        make[1]: *** [CMakeFiles/cmTC_bd0f3.dir/build.make:78: CMakeFiles/cmTC_bd0f3.dir/CheckSymbolExists.cxx.o] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-zxuyoz'
+        make: *** [Makefile:127: cmTC_bd0f3/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:390 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for clock_gettime"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-5jJXky"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-5jJXky"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_CLOCK_GETTIME"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-5jJXky'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_05586/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_05586.dir/build.make CMakeFiles/cmTC_05586.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-5jJXky'
+        Building CXX object CMakeFiles/cmTC_05586.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_05586.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-5jJXky/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_05586
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_05586.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_05586.dir/CheckSymbolExists.cxx.o -o cmTC_05586  -lrt
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-5jJXky'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:393 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for fork"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-g3Pr7x"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-g3Pr7x"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_FORK"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-g3Pr7x'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_f4741/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_f4741.dir/build.make CMakeFiles/cmTC_f4741.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-g3Pr7x'
+        Building CXX object CMakeFiles/cmTC_f4741.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_f4741.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-g3Pr7x/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_f4741
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f4741.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_f4741.dir/CheckSymbolExists.cxx.o -o cmTC_f4741
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-g3Pr7x'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:394 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for gethrtimei"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4YZ4bB"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4YZ4bB"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_GETHRTIME"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4YZ4bB'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e6ee7/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_e6ee7.dir/build.make CMakeFiles/cmTC_e6ee7.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4YZ4bB'
+        Building CXX object CMakeFiles/cmTC_e6ee7.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_e6ee7.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4YZ4bB/CheckSymbolExists.cxx
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4YZ4bB/CheckSymbolExists.cxx: In function ‘int main(int, char**)’:
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4YZ4bB/CheckSymbolExists.cxx:8:19: error: ‘gethrtimei’ was not declared in this scope; did you mean ‘getitimer’?
+            8 |   return ((int*)(&gethrtimei))[argc];
+              |                   ^~~~~~~~~~
+              |                   getitimer
+        At global scope:
+        cc1plus: warning: unrecognized command line option ‘-Wno-tautological-constant-compare’
+        make[1]: *** [CMakeFiles/cmTC_e6ee7.dir/build.make:78: CMakeFiles/cmTC_e6ee7.dir/CheckSymbolExists.cxx.o] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4YZ4bB'
+        make: *** [Makefile:127: cmTC_e6ee7/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:395 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for mkdtemp"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-exvtry"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-exvtry"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_MKDTEMP"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-exvtry'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_6cb82/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_6cb82.dir/build.make CMakeFiles/cmTC_6cb82.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-exvtry'
+        Building CXX object CMakeFiles/cmTC_6cb82.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_6cb82.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-exvtry/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_6cb82
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6cb82.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_6cb82.dir/CheckSymbolExists.cxx.o -o cmTC_6cb82
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-exvtry'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:396 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for accept4"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-p8qLdy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-p8qLdy"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_ACCEPT4"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-p8qLdy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d23df/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_d23df.dir/build.make CMakeFiles/cmTC_d23df.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-p8qLdy'
+        Building CXX object CMakeFiles/cmTC_d23df.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_d23df.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-p8qLdy/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_d23df
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d23df.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_d23df.dir/CheckSymbolExists.cxx.o -o cmTC_d23df
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-p8qLdy'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/CheckSymbolExists.cmake:154 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSymbolExists.cmake:72 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "CMakeLists.txt:397 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for strnlen"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-9Kaocy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-9Kaocy"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_STRNLEN"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-9Kaocy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_c8b51/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_c8b51.dir/build.make CMakeFiles/cmTC_c8b51.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-9Kaocy'
+        Building CXX object CMakeFiles/cmTC_c8b51.dir/CheckSymbolExists.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_c8b51.dir/CheckSymbolExists.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-9Kaocy/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_c8b51
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c8b51.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_c8b51.dir/CheckSymbolExists.cxx.o -o cmTC_c8b51
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-9Kaocy'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXCompilerFlag.cmake:34 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:406 (check_cxx_compiler_flag)"
+      - "CMakeLists.txt:446 (zmq_check_cxx_flag_prepend)"
+    checks:
+      - "Performing Test HAVE_FLAG_-Wall"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-awYHHz"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-awYHHz"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_FLAG_-Wall"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-awYHHz'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_fc4bc/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_fc4bc.dir/build.make CMakeFiles/cmTC_fc4bc.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-awYHHz'
+        Building CXX object CMakeFiles/cmTC_fc4bc.dir/src.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare    -DHAVE_FLAG_-Wall -Wall -o CMakeFiles/cmTC_fc4bc.dir/src.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-awYHHz/src.cxx
+        <command-line>: warning: ISO C++11 requires whitespace after the macro name
+        cc1plus: warning: unrecognized command line option '-Wno-tautological-constant-compare'
+        Linking CXX executable cmTC_fc4bc
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fc4bc.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_fc4bc.dir/src.cxx.o -o cmTC_fc4bc
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-awYHHz'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXCompilerFlag.cmake:34 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:406 (check_cxx_compiler_flag)"
+      - "CMakeLists.txt:450 (zmq_check_cxx_flag_prepend)"
+    checks:
+      - "Performing Test HAVE_FLAG_-Wextra"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Xxz7Fy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Xxz7Fy"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_FLAG_-Wextra"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Xxz7Fy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_bcf29/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_bcf29.dir/build.make CMakeFiles/cmTC_bcf29.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Xxz7Fy'
+        Building CXX object CMakeFiles/cmTC_bcf29.dir/src.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare    -DHAVE_FLAG_-Wextra -Wextra -o CMakeFiles/cmTC_bcf29.dir/src.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Xxz7Fy/src.cxx
+        <command-line>: warning: ISO C++11 requires whitespace after the macro name
+        cc1plus: warning: unrecognized command line option '-Wno-tautological-constant-compare'
+        Linking CXX executable cmTC_bcf29
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bcf29.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_bcf29.dir/src.cxx.o -o cmTC_bcf29
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Xxz7Fy'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXCompilerFlag.cmake:34 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:406 (check_cxx_compiler_flag)"
+      - "CMakeLists.txt:458 (zmq_check_cxx_flag_prepend)"
+    checks:
+      - "Performing Test HAVE_FLAG_-Wno-long-long"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8s82Rw"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8s82Rw"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_FLAG_-Wno-long-long"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8s82Rw'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_0e49f/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_0e49f.dir/build.make CMakeFiles/cmTC_0e49f.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8s82Rw'
+        Building CXX object CMakeFiles/cmTC_0e49f.dir/src.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare    -DHAVE_FLAG_-Wno-long-long -Wno-long-long -o CMakeFiles/cmTC_0e49f.dir/src.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8s82Rw/src.cxx
+        <command-line>: warning: ISO C++11 requires whitespace after the macro name
+        cc1plus: warning: unrecognized command line option '-Wno-tautological-constant-compare'
+        Linking CXX executable cmTC_0e49f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0e49f.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_0e49f.dir/src.cxx.o -o cmTC_0e49f
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-8s82Rw'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXCompilerFlag.cmake:34 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:406 (check_cxx_compiler_flag)"
+      - "CMakeLists.txt:459 (zmq_check_cxx_flag_prepend)"
+    checks:
+      - "Performing Test HAVE_FLAG_-Wno-uninitialized"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-T7FxOA"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-T7FxOA"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_FLAG_-Wno-uninitialized"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-T7FxOA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_37101/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_37101.dir/build.make CMakeFiles/cmTC_37101.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-T7FxOA'
+        Building CXX object CMakeFiles/cmTC_37101.dir/src.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare    -DHAVE_FLAG_-Wno-uninitialized -Wno-uninitialized -o CMakeFiles/cmTC_37101.dir/src.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-T7FxOA/src.cxx
+        <command-line>: warning: ISO C++11 requires whitespace after the macro name
+        cc1plus: warning: unrecognized command line option '-Wno-tautological-constant-compare'
+        Linking CXX executable cmTC_37101
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_37101.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_37101.dir/src.cxx.o -o cmTC_37101
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-T7FxOA'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXCompilerFlag.cmake:34 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:406 (check_cxx_compiler_flag)"
+      - "CMakeLists.txt:462 (zmq_check_cxx_flag_prepend)"
+    checks:
+      - "Performing Test HAVE_FLAG_-pedantic"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-7PAL8y"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-7PAL8y"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "HAVE_FLAG_-pedantic"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-7PAL8y'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_30b2a/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_30b2a.dir/build.make CMakeFiles/cmTC_30b2a.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-7PAL8y'
+        Building CXX object CMakeFiles/cmTC_30b2a.dir/src.cxx.o
+        /usr/bin/c++   -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare    -DHAVE_FLAG_-pedantic -pedantic -o CMakeFiles/cmTC_30b2a.dir/src.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-7PAL8y/src.cxx
+        <command-line>: warning: ISO C++11 requires whitespace after the macro name
+        cc1plus: warning: unrecognized command line option '-Wno-tautological-constant-compare'
+        Linking CXX executable cmTC_30b2a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_30b2a.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_30b2a.dir/src.cxx.o -o cmTC_30b2a
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-7PAL8y'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.30/Modules/CheckCXXSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:299 (check_cxx_source_compiles)"
+      - "CMakeLists.txt:514 (zmq_check_noexcept)"
+    checks:
+      - "Performing Test ZMQ_HAVE_NOEXCEPT"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-GijsdA"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-GijsdA"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_NOEXCEPT"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-GijsdA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d2c31/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_d2c31.dir/build.make CMakeFiles/cmTC_d2c31.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-GijsdA'
+        Building CXX object CMakeFiles/cmTC_d2c31.dir/src.cxx.o
+        /usr/bin/c++ -DZMQ_HAVE_NOEXCEPT  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_d2c31.dir/src.cxx.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-GijsdA/src.cxx
+        Linking CXX executable cmTC_d2c31
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d2c31.dir/link.txt --verbose=1
+        /usr/bin/c++  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu++11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_d2c31.dir/src.cxx.o -o cmTC_d2c31
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-GijsdA'
+        
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:5 (check_c_source_runs)"
+      - "CMakeLists.txt:519 (zmq_check_sock_cloexec)"
+    checks:
+      - "Performing Test ZMQ_HAVE_SOCK_CLOEXEC"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HfY3Ox"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HfY3Ox"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_SOCK_CLOEXEC_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HfY3Ox'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b4a99/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_b4a99.dir/build.make CMakeFiles/cmTC_b4a99.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HfY3Ox'
+        Building C object CMakeFiles/cmTC_b4a99.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_SOCK_CLOEXEC  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_b4a99.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HfY3Ox/src.c
+        Linking C executable cmTC_b4a99
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b4a99.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_b4a99.dir/src.c.o -o cmTC_b4a99
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HfY3Ox'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_SOCK_CLOEXEC_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:36 (check_c_source_runs)"
+      - "CMakeLists.txt:520 (zmq_check_o_cloexec)"
+    checks:
+      - "Performing Test ZMQ_HAVE_O_CLOEXEC"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-hQRSQy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-hQRSQy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_O_CLOEXEC_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-hQRSQy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_c04ce/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_c04ce.dir/build.make CMakeFiles/cmTC_c04ce.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-hQRSQy'
+        Building C object CMakeFiles/cmTC_c04ce.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_O_CLOEXEC  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_c04ce.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-hQRSQy/src.c
+        Linking C executable cmTC_c04ce
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c04ce.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_c04ce.dir/src.c.o -o cmTC_c04ce
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-hQRSQy'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_O_CLOEXEC_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:53 (check_c_source_runs)"
+      - "CMakeLists.txt:521 (zmq_check_so_bindtodevice)"
+    checks:
+      - "Performing Test ZMQ_HAVE_SO_BINDTODEVICE"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4xl0zy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4xl0zy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_SO_BINDTODEVICE_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4xl0zy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_890d6/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_890d6.dir/build.make CMakeFiles/cmTC_890d6.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4xl0zy'
+        Building C object CMakeFiles/cmTC_890d6.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_SO_BINDTODEVICE  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_890d6.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4xl0zy/src.c
+        Linking C executable cmTC_890d6
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_890d6.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_890d6.dir/src.c.o -o cmTC_890d6
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-4xl0zy'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_SO_BINDTODEVICE_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:74 (check_c_source_runs)"
+      - "CMakeLists.txt:522 (zmq_check_so_keepalive)"
+    checks:
+      - "Performing Test ZMQ_HAVE_SO_KEEPALIVE"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-nuJhUz"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-nuJhUz"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_SO_KEEPALIVE_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-nuJhUz'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_f16d9/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_f16d9.dir/build.make CMakeFiles/cmTC_f16d9.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-nuJhUz'
+        Building C object CMakeFiles/cmTC_f16d9.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_SO_KEEPALIVE  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_f16d9.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-nuJhUz/src.c
+        Linking C executable cmTC_f16d9
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f16d9.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_f16d9.dir/src.c.o -o cmTC_f16d9
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-nuJhUz'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_SO_KEEPALIVE_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:93 (check_c_source_runs)"
+      - "CMakeLists.txt:523 (zmq_check_tcp_keepcnt)"
+    checks:
+      - "Performing Test ZMQ_HAVE_TCP_KEEPCNT"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HhonZy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HhonZy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_TCP_KEEPCNT_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HhonZy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b669b/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_b669b.dir/build.make CMakeFiles/cmTC_b669b.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HhonZy'
+        Building C object CMakeFiles/cmTC_b669b.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_TCP_KEEPCNT  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_b669b.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HhonZy/src.c
+        Linking C executable cmTC_b669b
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b669b.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_b669b.dir/src.c.o -o cmTC_b669b
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-HhonZy'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_TCP_KEEPCNT_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:115 (check_c_source_runs)"
+      - "CMakeLists.txt:524 (zmq_check_tcp_keepidle)"
+    checks:
+      - "Performing Test ZMQ_HAVE_TCP_KEEPIDLE"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Qr2Qcz"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Qr2Qcz"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_TCP_KEEPIDLE_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Qr2Qcz'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b8306/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_b8306.dir/build.make CMakeFiles/cmTC_b8306.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Qr2Qcz'
+        Building C object CMakeFiles/cmTC_b8306.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_TCP_KEEPIDLE  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_b8306.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Qr2Qcz/src.c
+        Linking C executable cmTC_b8306
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b8306.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_b8306.dir/src.c.o -o cmTC_b8306
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-Qr2Qcz'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_TCP_KEEPIDLE_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:138 (check_c_source_runs)"
+      - "CMakeLists.txt:525 (zmq_check_tcp_keepintvl)"
+    checks:
+      - "Performing Test ZMQ_HAVE_TCP_KEEPINTVL"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-6viFvy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-6viFvy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_TCP_KEEPINTVL_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-6viFvy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a044f/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_a044f.dir/build.make CMakeFiles/cmTC_a044f.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-6viFvy'
+        Building C object CMakeFiles/cmTC_a044f.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_TCP_KEEPINTVL  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_a044f.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-6viFvy/src.c
+        Linking C executable cmTC_a044f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a044f.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_a044f.dir/src.c.o -o cmTC_a044f
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-6viFvy'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_TCP_KEEPINTVL_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:162 (check_c_source_runs)"
+      - "CMakeLists.txt:526 (zmq_check_tcp_keepalive)"
+    checks:
+      - "Performing Test ZMQ_HAVE_TCP_KEEPALIVE"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_TCP_KEEPALIVE_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_33045/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_33045.dir/build.make CMakeFiles/cmTC_33045.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz'
+        Building C object CMakeFiles/cmTC_33045.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_TCP_KEEPALIVE  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_33045.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz/src.c
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz/src.c: In function ‘main’:
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz/src.c:13:42: error: ‘TCP_KEEPALIVE’ undeclared (first use in this function); did you mean ‘SO_KEEPALIVE’?
+           13 |        ((rc = setsockopt(s, IPPROTO_TCP, TCP_KEEPALIVE,(char*) &opt, sizeof(int))) == -1)
+              |                                          ^~~~~~~~~~~~~
+              |                                          SO_KEEPALIVE
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz/src.c:13:42: note: each undeclared identifier is reported only once for each function it appears in
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz/src.c: At top level:
+        cc1: warning: unrecognized command line option ‘-Wno-tautological-constant-compare’
+        make[1]: *** [CMakeFiles/cmTC_33045.dir/build.make:78: CMakeFiles/cmTC_33045.dir/src.c.o] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-3jcgWz'
+        make: *** [Makefile:127: cmTC_33045/fast] Error 2
+        
+      exitCode: 2
+    runResult:
+      variable: "ZMQ_HAVE_TCP_KEEPALIVE_EXITCODE"
+      cached: true
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:185 (check_c_source_runs)"
+      - "CMakeLists.txt:527 (zmq_check_tcp_tipc)"
+    checks:
+      - "Performing Test ZMQ_HAVE_TIPC"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-UcTfWw"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-UcTfWw"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_TIPC_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-UcTfWw'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_02d8c/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_02d8c.dir/build.make CMakeFiles/cmTC_02d8c.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-UcTfWw'
+        Building C object CMakeFiles/cmTC_02d8c.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_TIPC  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_02d8c.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-UcTfWw/src.c
+        Linking C executable cmTC_02d8c
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_02d8c.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_02d8c.dir/src.c.o -o cmTC_02d8c
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-UcTfWw'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_TIPC_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:214 (check_c_source_runs)"
+      - "CMakeLists.txt:528 (zmq_check_pthread_setname)"
+    checks:
+      - "Performing Test ZMQ_HAVE_PTHREAD_SETNAME_1"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_PTHREAD_SETNAME_1_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_c2c42/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_c2c42.dir/build.make CMakeFiles/cmTC_c2c42.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz'
+        Building C object CMakeFiles/cmTC_c2c42.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_PTHREAD_SETNAME_1  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare -D_GNU_SOURCE -Werror -pthread -o CMakeFiles/cmTC_c2c42.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz/src.c
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz/src.c: In function ‘main’:
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz/src.c:6:25: error: passing argument 1 of ‘pthread_setname_np’ makes integer from pointer without a cast [-Werror=int-conversion]
+            6 |     pthread_setname_np ("foo");
+              |                         ^~~~~
+              |                         |
+              |                         char *
+        In file included from /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz/src.c:2:
+        /usr/include/pthread.h:427:42: note: expected ‘pthread_t’ {aka ‘long unsigned int’} but argument is of type ‘char *’
+          427 | extern int pthread_setname_np (pthread_t __target_thread, const char *__name)
+              |                                ~~~~~~~~~~^~~~~~~~~~~~~~~
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz/src.c:6:5: error: too few arguments to function ‘pthread_setname_np’
+            6 |     pthread_setname_np ("foo");
+              |     ^~~~~~~~~~~~~~~~~~
+        In file included from /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz/src.c:2:
+        /usr/include/pthread.h:427:12: note: declared here
+          427 | extern int pthread_setname_np (pthread_t __target_thread, const char *__name)
+              |            ^~~~~~~~~~~~~~~~~~
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz/src.c: At top level:
+        cc1: error: unrecognized command line option ‘-Wno-tautological-constant-compare’ [-Werror]
+        cc1: all warnings being treated as errors
+        make[1]: *** [CMakeFiles/cmTC_c2c42.dir/build.make:78: CMakeFiles/cmTC_c2c42.dir/src.c.o] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-v5eARz'
+        make: *** [Makefile:127: cmTC_c2c42/fast] Error 2
+        
+      exitCode: 2
+    runResult:
+      variable: "ZMQ_HAVE_PTHREAD_SETNAME_1_EXITCODE"
+      cached: true
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:225 (check_c_source_runs)"
+      - "CMakeLists.txt:528 (zmq_check_pthread_setname)"
+    checks:
+      - "Performing Test ZMQ_HAVE_PTHREAD_SETNAME_2"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-EdMDSA"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-EdMDSA"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_PTHREAD_SETNAME_2_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-EdMDSA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_deadb/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_deadb.dir/build.make CMakeFiles/cmTC_deadb.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-EdMDSA'
+        Building C object CMakeFiles/cmTC_deadb.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_PTHREAD_SETNAME_2  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare -D_GNU_SOURCE -Werror -pthread -o CMakeFiles/cmTC_deadb.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-EdMDSA/src.c
+        Linking C executable cmTC_deadb
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_deadb.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare -D_GNU_SOURCE -Werror -pthread -rdynamic CMakeFiles/cmTC_deadb.dir/src.c.o -o cmTC_deadb
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-EdMDSA'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_PTHREAD_SETNAME_2_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:236 (check_c_source_runs)"
+      - "CMakeLists.txt:528 (zmq_check_pthread_setname)"
+    checks:
+      - "Performing Test ZMQ_HAVE_PTHREAD_SETNAME_3"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_PTHREAD_SETNAME_3_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_498ca/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_498ca.dir/build.make CMakeFiles/cmTC_498ca.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA'
+        Building C object CMakeFiles/cmTC_498ca.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_PTHREAD_SETNAME_3  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare -D_GNU_SOURCE -Werror -pthread -o CMakeFiles/cmTC_498ca.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA/src.c
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA/src.c: In function ‘main’:
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA/src.c:6:5: error: too many arguments to function ‘pthread_setname_np’
+            6 |     pthread_setname_np (pthread_self(), "foo", (void *)0);
+              |     ^~~~~~~~~~~~~~~~~~
+        In file included from /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA/src.c:2:
+        /usr/include/pthread.h:427:12: note: declared here
+          427 | extern int pthread_setname_np (pthread_t __target_thread, const char *__name)
+              |            ^~~~~~~~~~~~~~~~~~
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA/src.c: At top level:
+        cc1: error: unrecognized command line option ‘-Wno-tautological-constant-compare’ [-Werror]
+        cc1: all warnings being treated as errors
+        make[1]: *** [CMakeFiles/cmTC_498ca.dir/build.make:78: CMakeFiles/cmTC_498ca.dir/src.c.o] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-KgYaSA'
+        make: *** [Makefile:127: cmTC_498ca/fast] Error 2
+        
+      exitCode: 2
+    runResult:
+      variable: "ZMQ_HAVE_PTHREAD_SETNAME_3_EXITCODE"
+      cached: true
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:247 (check_c_source_runs)"
+      - "CMakeLists.txt:528 (zmq_check_pthread_setname)"
+    checks:
+      - "Performing Test ZMQ_HAVE_PTHREAD_SET_NAME"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_PTHREAD_SET_NAME_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_f53fb/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_f53fb.dir/build.make CMakeFiles/cmTC_f53fb.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z'
+        Building C object CMakeFiles/cmTC_f53fb.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_PTHREAD_SET_NAME  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare -D_GNU_SOURCE -Werror -pthread -o CMakeFiles/cmTC_f53fb.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z/src.c
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z/src.c: In function ‘main’:
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z/src.c:6:5: error: implicit declaration of function ‘pthread_set_name_np’; did you mean ‘pthread_setname_np’? [-Werror=implicit-function-declaration]
+            6 |     pthread_set_name_np (pthread_self(), "foo");
+              |     ^~~~~~~~~~~~~~~~~~~
+              |     pthread_setname_np
+        /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z/src.c: At top level:
+        cc1: error: unrecognized command line option ‘-Wno-tautological-constant-compare’ [-Werror]
+        cc1: all warnings being treated as errors
+        make[1]: *** [CMakeFiles/cmTC_f53fb.dir/build.make:78: CMakeFiles/cmTC_f53fb.dir/src.c.o] Error 1
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-vExQ6z'
+        make: *** [Makefile:127: cmTC_f53fb/fast] Error 2
+        
+      exitCode: 2
+    runResult:
+      variable: "ZMQ_HAVE_PTHREAD_SET_NAME_EXITCODE"
+      cached: true
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:265 (check_c_source_runs)"
+      - "CMakeLists.txt:529 (zmq_check_pthread_setaffinity)"
+    checks:
+      - "Performing Test ZMQ_HAVE_PTHREAD_SETAFFINITY"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-BFadgy"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-BFadgy"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_PTHREAD_SETAFFINITY_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-BFadgy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e31e2/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_e31e2.dir/build.make CMakeFiles/cmTC_e31e2.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-BFadgy'
+        Building C object CMakeFiles/cmTC_e31e2.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_PTHREAD_SETAFFINITY  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare -D_GNU_SOURCE -Werror -pthread -o CMakeFiles/cmTC_e31e2.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-BFadgy/src.c
+        Linking C executable cmTC_e31e2
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e31e2.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare -D_GNU_SOURCE -Werror -pthread -rdynamic CMakeFiles/cmTC_e31e2.dir/src.c.o -o cmTC_e31e2
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-BFadgy'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_PTHREAD_SETAFFINITY_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/usr/share/cmake-3.30/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/usr/share/cmake-3.30/Modules/CheckCSourceRuns.cmake:52 (cmake_check_source_runs)"
+      - "builds/cmake/Modules/ZMQSourceRunChecks.cmake:283 (check_c_source_runs)"
+      - "CMakeLists.txt:530 (zmq_check_getrandom)"
+    checks:
+      - "Performing Test ZMQ_HAVE_GETRANDOM"
+    directories:
+      source: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FWYBVx"
+      binary: "/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FWYBVx"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare"
+      CMAKE_MODULE_PATH: "/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor;/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zeromq-src-0.1.10+4.3.2/vendor/builds/cmake/Modules"
+    buildResult:
+      variable: "ZMQ_HAVE_GETRANDOM_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FWYBVx'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_35d14/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_35d14.dir/build.make CMakeFiles/cmTC_35d14.dir/build
+        make[1]: Entering directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FWYBVx'
+        Building C object CMakeFiles/cmTC_35d14.dir/src.c.o
+        /usr/bin/cc -DZMQ_HAVE_GETRANDOM  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -o CMakeFiles/cmTC_35d14.dir/src.c.o -c /home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FWYBVx/src.c
+        Linking C executable cmTC_35d14
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_35d14.dir/link.txt --verbose=1
+        /usr/bin/cc  -ffunction-sections -fdata-sections -fPIC -m64 -std=gnu11 -Wno-tautological-constant-compare  -rdynamic CMakeFiles/cmTC_35d14.dir/src.c.o -o cmTC_35d14
+        make[1]: Leaving directory '/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/build/CMakeFiles/CMakeScratch/TryCompile-FWYBVx'
+        
+      exitCode: 0
+    runResult:
+      variable: "ZMQ_HAVE_GETRANDOM_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+...

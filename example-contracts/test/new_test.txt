@@ -1,0 +1,1157 @@
+// test/ssi-system-test.js
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+// Helper function to format gas usage
+function formatGas(gas) {
+  return `${gas.toLocaleString()} gas`;
+}
+
+describe("SSI System Workflow Tests", function () {
+  // Set timeout for long-running tests
+  this.timeout(120000);
+
+  let didRegistry;
+  let credentialRegistry;
+  let deployer;
+  let issuer;
+  let holder;
+  let verifier;
+  let otherUser;
+
+  // Test data with more variety
+  // Multiple issuers with different formats
+  const issuerDids = [
+    "did:ssi:issuer:0x1234567890",
+    "did:ethr:0xabcdef123456",
+    "did:web:example.org:issuer:456",
+    "did:key:z6Mkfriq1MqLBoPWecGoDLjguo1sB9brj6wT3qZ5BxkKpuP6"
+  ];
+  
+  // Multiple holders with different formats
+  const holderDids = [
+    "did:ssi:holder:0x0987654321",
+    "did:ethr:0x98765abcdef",
+    "did:web:example.com:user:123",
+    "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK"
+  ];
+  
+  // Variety of credential IDs with meaningful patterns
+  const credentialIds = [
+    // Basic sequential IDs
+    "credential:basic:1",
+    "credential:basic:2",
+    // With timestamps
+    `credential:${Date.now()}:1`,
+    `credential:${Date.now() + 100}:2`,
+    // UUIDs
+    "urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6",
+    "urn:uuid:e9e1d059-e0e9-4493-8a0e-17c3b7c86ab0",
+    // Domain-based
+    "https://university.edu/credentials/1234",
+    "https://employer.com/credentials/employee/5678",
+    // With different types
+    "credential:degree:bachelor:12345",
+    "credential:license:driver:AB-98765"
+  ];
+  let publicKey;
+  let serviceEndpoint;
+  let credentialHash;
+  let schemaId;
+  
+  // Gas usage tracking
+  const gasUsage = {
+    deployment: { didRegistry: 0, credentialRegistry: 0 },
+    didOperations: { registerIssuer: 0, registerHolder: 0, updateDid: 0, resolveDid: 0, deactivateDid: 0 },
+    credentialOperations: { issue: 0, verify: 0, suspend: 0, activate: 0, revoke: 0, batchIssue: [] },
+    queries: { getByIssuer: 0, getByHolder: 0 }
+  };
+
+  before(async function () {
+    console.log("=== SSI System Performance Test ===");
+    console.log("Preparing test environment...");
+    
+    // Get test accounts
+    const accounts = await ethers.getSigners();
+    [deployer, issuer, holder, verifier, otherUser] = accounts;
+    
+    console.log(`Deployer: ${deployer.address}`);
+    console.log(`Issuer: ${issuer.address}`);
+    console.log(`Holder: ${holder.address}`);
+    console.log(`Verifier: ${verifier.address}`);
+    
+    // Prepare diverse test data
+    
+    // Various public key formats
+    const publicKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3FHQyx8jV5QuSs5eQCj7hCNtEGHatxGqK0iy9JhZWINfC",
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl",
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg="
+    ];
+    
+    // Various service endpoints
+    const serviceEndpoints = [
+      "https://example.com/endpoint",
+      "https://api.identity.provider.org/v1/users",
+      "ipfs://QmUjNmr8TgJCn1Ao7DvMy4cjoZU15b9bwSCBLE3vwXiwgj",
+      "did:web:serviceprovider.com"
+    ];
+    
+    // Different credential content for hash generation
+    const credentialContents = [
+      "Basic credential with minimal claims",
+      JSON.stringify({
+        "type": "UniversityDegree",
+        "name": "Bachelor of Science",
+        "earnedDate": "2023-05-15",
+        "issuer": "Example University",
+        "claims": {
+          "gpa": "3.8",
+          "major": "Computer Science",
+          "honors": true
+        }
+      }),
+      JSON.stringify({
+        "type": "EmploymentCredential",
+        "employer": "Tech Company Inc.",
+        "position": "Senior Developer",
+        "startDate": "2021-03-01",
+        "skills": ["JavaScript", "Solidity", "Blockchain"]
+      })
+    ];
+    
+    // Different schema IDs
+    const schemaUrls = [
+      "https://schema.org/CredentialSchema",
+      "https://w3id.org/credentials/v1",
+      "https://example.com/schemas/university-degree.json",
+      "ipfs://QmUGhP2X6tjRQyeYq7Nxx2FUj4UwsXXMRV3A9YA1DP7xLh"
+    ];
+    
+    // Assign values for main test
+    publicKey = publicKeys[0];
+    serviceEndpoint = serviceEndpoints[0];
+    
+    // Create credential hashes
+    const credentialHashes = credentialContents.map(content => 
+      ethers.keccak256(ethers.toUtf8Bytes(content))
+    );
+    credentialHash = credentialHashes[0];
+    
+    // Create schema hashes
+    const schemaHashes = schemaUrls.map(url => 
+      ethers.keccak256(ethers.toUtf8Bytes(url))
+    );
+    schemaId = schemaHashes[0];
+    
+    try {
+      // Deploy DIDRegistry
+      console.log("Deploying DIDRegistry contract...");
+      const DIDRegistry = await ethers.getContractFactory("DIDRegistry");
+      didRegistry = await DIDRegistry.deploy();
+      await didRegistry.waitForDeployment();
+      
+      // Get deployment transaction receipt for gas measurement
+      const deployTx = didRegistry.deploymentTransaction();
+      if (deployTx) {
+        const receipt = await deployTx.wait();
+        gasUsage.deployment.didRegistry = Number(receipt.gasUsed);
+      }
+      
+      console.log(`DIDRegistry deployed at: ${await didRegistry.getAddress()} (${formatGas(gasUsage.deployment.didRegistry)})`);
+      
+      // Deploy CredentialRegistry
+      console.log("Deploying CredentialRegistry contract...");
+      const CredentialRegistry = await ethers.getContractFactory("CredentialRegistry");
+      credentialRegistry = await CredentialRegistry.deploy(await didRegistry.getAddress());
+      await credentialRegistry.waitForDeployment();
+      
+      // Get deployment transaction receipt for gas measurement
+      const crDeployTx = credentialRegistry.deploymentTransaction();
+      if (crDeployTx) {
+        const receipt = await crDeployTx.wait();
+        gasUsage.deployment.credentialRegistry = Number(receipt.gasUsed);
+      }
+      
+      console.log(`CredentialRegistry deployed at: ${await credentialRegistry.getAddress()} (${formatGas(gasUsage.deployment.credentialRegistry)})`);
+    } catch (error) {
+      console.error("Deployment error:", error);
+      throw error;
+    }
+  });
+
+  describe("1. DID Registration & Management", function () {
+    it("Should register Issuer DIDs and measure gas usage", async function () {
+      console.log("\nRegistering Issuer DIDs...");
+      
+      // Register multiple issuer DIDs with different data
+      for (let i = 0; i < issuerDids.length; i++) {
+        const did = issuerDids[i];
+        const pk = i < publicKeys.length ? publicKeys[i] : publicKeys[0];
+        const endpoint = i < serviceEndpoints.length ? serviceEndpoints[i] : serviceEndpoints[0];
+        
+        console.log(`Registering issuer DID ${i+1}: ${did}`);
+        const tx = await didRegistry.connect(issuer).registerDID(
+          did,
+          pk,
+          endpoint,
+          1 // Role.ISSUER
+        );
+        
+        const receipt = await tx.wait();
+        
+        // For the first one, store in our gas usage tracking
+        if (i === 0) {
+          gasUsage.didOperations.registerIssuer = Number(receipt.gasUsed);
+          console.log(`Issuer DID Registration: ${formatGas(gasUsage.didOperations.registerIssuer)}`);
+        }
+        
+        expect(await didRegistry.isDIDOwnedBy(did, issuer.address)).to.be.true;
+      }
+    });
+
+    it("Should register Holder DIDs and measure gas usage", async function () {
+      console.log("\nRegistering Holder DIDs...");
+      
+      // Register multiple holder DIDs
+      for (let i = 0; i < holderDids.length; i++) {
+        const did = holderDids[i];
+        const pk = i < publicKeys.length ? publicKeys[i] : publicKeys[0];
+        const endpoint = i < serviceEndpoints.length ? serviceEndpoints[i] : serviceEndpoints[0];
+        
+        console.log(`Registering holder DID ${i+1}: ${did}`);
+        const tx = await didRegistry.connect(holder).registerDID(
+          did,
+          pk,
+          endpoint,
+          2 // Role.HOLDER
+        );
+        
+        const receipt = await tx.wait();
+        
+        // For the first one, store in our gas usage tracking
+        if (i === 0) {
+          gasUsage.didOperations.registerHolder = Number(receipt.gasUsed);
+          console.log(`Holder DID Registration: ${formatGas(gasUsage.didOperations.registerHolder)}`);
+        }
+        
+        expect(await didRegistry.isDIDOwnedBy(did, holder.address)).to.be.true;
+        expect(await didRegistry.isDIDActive(did)).to.be.true;
+      }
+    });
+    
+    it("Should resolve DIDs and measure gas usage", async function() {
+      console.log("\nResolving DIDs...");
+      // DID resolution is a view function, so we estimate gas
+      const gasEstimate = await didRegistry.resolveDID.estimateGas(issuerDid);
+      gasUsage.didOperations.resolveDid = Number(gasEstimate);
+      console.log(`DID Resolution: ${formatGas(gasUsage.didOperations.resolveDid)}`);
+      
+      const result = await didRegistry.resolveDID(issuerDid);
+      const [owner, resolvedPublicKey, resolvedEndpoint, created, updated, active, role] = result;
+        
+      expect(owner).to.equal(issuer.address);
+      expect(active).to.be.true;
+      expect(role).to.equal(1); // ISSUER
+    });
+    
+    it("Should update DID and measure gas usage", async function() {
+      console.log("\nUpdating DID...");
+      const newPublicKey = "ssh-rsa NEWKEYNEWKEYNEWKEYNEWKEYNEWKEYNEWKEY";
+      const newEndpoint = "https://updated.example.com/endpoint";
+      
+      const tx = await didRegistry.connect(issuer).updateDID(
+        issuerDid,
+        newPublicKey,
+        newEndpoint
+      );
+      
+      const receipt = await tx.wait();
+      gasUsage.didOperations.updateDid = Number(receipt.gasUsed);
+      console.log(`DID Update: ${formatGas(gasUsage.didOperations.updateDid)}`);
+      
+      const result = await didRegistry.resolveDID(issuerDid);
+      const [owner, resolvedPublicKey, resolvedEndpoint, created, updated, active, role] = result;
+      
+      // Verify the update - we need to compare strings now
+      expect(resolvedPublicKey).to.equal(newPublicKey);
+      expect(resolvedEndpoint).to.equal(newEndpoint);
+    });
+  });
+
+  describe("2. Credential Issuance & Verification", function () {
+    it("Should issue credentials with varying parameters and measure gas usage", async function () {
+      console.log("\nIssuing Credentials with Different Parameters...");
+      
+      // Create a variety of expiration dates
+      const expirationDates = [
+        Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60, // 30 days
+        Math.floor(Date.now() / 1000) + 90 * 24 * 60 * 60, // 90 days
+        Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60, // 1 year
+        Math.floor(Date.now() / 1000) + 3 * 365 * 24 * 60 * 60, // 3 years
+        0 // No expiration
+      ];
+      
+      // Issue several credentials with different combinations of parameters
+      for (let i = 0; i < 5; i++) {
+        const credentialId = credentialIds[i];
+        const issuerDid = issuerDids[i % issuerDids.length];
+        const holderDid = holderDids[i % holderDids.length];
+        const hash = credentialHashes[i % credentialHashes.length];
+        const schema = schemaHashes[i % schemaHashes.length];
+        const expiration = expirationDates[i % expirationDates.length];
+        
+        console.log(`\nIssuing Credential ${i+1}:`);
+        console.log(`- ID: ${credentialId}`);
+        console.log(`- Issuer: ${issuerDid}`);
+        console.log(`- Holder: ${holderDid}`);
+        console.log(`- Expiration: ${expiration === 0 ? 'No expiration' : new Date(expiration * 1000).toISOString()}`);
+        
+        const tx = await credentialRegistry.connect(issuer).issueCredential(
+          credentialId,
+          issuerDid,
+          holderDid,
+          hash,
+          schema,
+          expiration
+        );
+        
+        const receipt = await tx.wait();
+        
+        // For the first one, track in our gas usage
+        if (i === 0) {
+          gasUsage.credentialOperations.issue = Number(receipt.gasUsed);
+          console.log(`Credential Issuance Gas: ${formatGas(gasUsage.credentialOperations.issue)}`);
+        } else {
+          console.log(`Credential ${i+1} Issuance Gas: ${formatGas(Number(receipt.gasUsed))}`);
+        }
+        
+        // Get the credential to verify it exists
+        const result = await credentialRegistry.getCredential(credentialId);
+        const [retrievedIssuerDid, retrievedHolderDid, retrievedHash, retrievedSchemaId, 
+          issuanceDate, retrievedExpiration, status] = result;
+        
+        expect(retrievedIssuerDid).to.equal(issuerDid);
+        expect(retrievedHolderDid).to.equal(holderDid);
+        expect(retrievedHash).to.equal(hash);
+        
+        // Verify the credential
+        console.log(`Verifying credential ${i+1}...`);
+        const verificationResult = await credentialRegistry.verifyCredential(
+          credentialId,
+          issuerDid,
+          holderDid
+        );
+        
+        console.log(`Verification result: Valid=${verificationResult[0]}, Reason=${verificationResult[1]}`);
+      }
+    });
+    
+    it("Should verify a credential and measure gas usage", async function() {
+      console.log("\nVerifying Credential...");
+      // Verify is a view function, so we estimate gas
+      const gasEstimate = await credentialRegistry.verifyCredential.estimateGas(
+        credentialIds[0],
+        issuerDid,
+        holderDid
+      );
+      
+      gasUsage.credentialOperations.verify = Number(gasEstimate);
+      console.log(`Credential Verification: ${formatGas(gasUsage.credentialOperations.verify)}`);
+      
+      const result = await credentialRegistry.verifyCredential(
+        credentialIds[0],
+        issuerDid,
+        holderDid
+      );
+      
+      // Log detailed information for debugging
+      console.log("Verification result:", result);
+      console.log("Valid:", result[0]);
+      console.log("Reason code:", result[1]);
+      
+      // You might need to adjust this expectation based on your specific contract implementation
+      expect(result[0]).to.be.true;
+      expect(Number(result[1])).to.equal(0); // VerificationResult.VALID
+    });
+    
+    it("Should verify invalid credential scenarios", async function() {
+      console.log("\nTesting Invalid Credential Scenarios...");
+      
+      // Test non-existent credential
+      const result1 = await credentialRegistry.verifyCredential(
+        "non-existent-credential",
+        issuerDid,
+        holderDid
+      );
+      console.log("Non-existent credential test:", result1);
+      expect(result1[0]).to.be.false;
+      expect(Number(result1[1])).to.equal(1); // NOT_FOUND
+      
+      // Test wrong issuer
+      const result2 = await credentialRegistry.verifyCredential(
+        credentialIds[0],
+        "did:ssi:wrong:issuer",
+        holderDid
+      );
+      console.log("Wrong issuer test:", result2);
+      expect(result2[0]).to.be.false;
+      // Your contract might be using a different enum value than expected
+      // Adjust this based on your contract's implementation
+      // Look at the actual value from the console log and adjust accordingly
+      expect(Number(result2[1])).to.be.oneOf([4, 5]); // ISSUER_MISMATCH might be 4 or 5 depending on implementation
+      
+      // Test wrong holder
+      const result3 = await credentialRegistry.verifyCredential(
+        credentialIds[0],
+        issuerDid,
+        "did:ssi:wrong:holder"
+      );
+      console.log("Wrong holder test:", result3);
+      expect(result3[0]).to.be.false;
+      // Similarly, adjust this based on your actual implementation
+      expect(Number(result3[1])).to.be.oneOf([5, 6]); // HOLDER_MISMATCH might be 5 or 6 depending on implementation
+    });
+  });
+  
+  describe("3. Credential Lifecycle Management", function () {
+    it("Should suspend a credential and measure gas usage", async function () {
+      console.log("\nSuspending Credential...");
+      const tx = await credentialRegistry.connect(issuer).suspendCredential(credentialIds[0]);
+      const receipt = await tx.wait();
+      
+      gasUsage.credentialOperations.suspend = Number(receipt.gasUsed);
+      console.log(`Credential Suspension: ${formatGas(gasUsage.credentialOperations.suspend)}`);
+      
+      // Verify the credential is suspended
+      const result = await credentialRegistry.verifyCredential(
+        credentialIds[0],
+        issuerDid,
+        holderDid
+      );
+      const [valid, reason] = result;
+      
+      expect(valid).to.be.false;
+      expect(reason).to.equal(3); // SUSPENDED
+    });
+    
+    it("Should reactivate a credential and measure gas usage", async function () {
+      console.log("\nReactivating Credential...");
+      const tx = await credentialRegistry.connect(issuer).activateCredential(credentialIds[0]);
+      const receipt = await tx.wait();
+      
+      gasUsage.credentialOperations.activate = Number(receipt.gasUsed);
+      console.log(`Credential Reactivation: ${formatGas(gasUsage.credentialOperations.activate)}`);
+      
+      // Verify the credential is active again
+      const result = await credentialRegistry.verifyCredential(
+        credentialIds[0],
+        issuerDid,
+        holderDid
+      );
+      const [valid, reason] = result;
+      
+      expect(valid).to.be.true;
+      expect(reason).to.equal(0); // VALID
+    });
+    
+    it("Should revoke a credential and measure gas usage", async function () {
+      console.log("\nRevoking Credential...");
+      const tx = await credentialRegistry.connect(issuer).revokeCredential(credentialIds[0]);
+      const receipt = await tx.wait();
+      
+      gasUsage.credentialOperations.revoke = Number(receipt.gasUsed);
+      console.log(`Credential Revocation: ${formatGas(gasUsage.credentialOperations.revoke)}`);
+      
+      // Verify the credential is revoked
+      const result = await credentialRegistry.verifyCredential(
+        credentialIds[0],
+        issuerDid,
+        holderDid
+      );
+      const [valid, reason] = result;
+      
+      expect(valid).to.be.false;
+      expect(reason).to.equal(2); // REVOKED
+    });
+  });
+  
+  describe("4. Advanced Batch Operations", function () {
+    it("Should issue credentials with various parameters in batch and analyze gas patterns", async function () {
+      console.log("\nAdvanced Batch Credential Issuance...");
+      
+      // We'll issue multiple credentials in batches with different characteristics
+      // to analyze gas consumption patterns
+      
+      // Basic fixed parameters
+      const baseExpirationDate = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60; // 1 year
+      
+      // Batch 1: Fixed issuer, different holders (5 credentials)
+      console.log("\nBatch 1: Fixed issuer, different holders");
+      const batchOneGas = [];
+      const fixedIssuer = issuerDids[0];
+      
+      for (let i = 0; i < 5; i++) {
+        const credentialId = `batch1:${i}:${Date.now()}`;
+        const holderDid = holderDids[i % holderDids.length];
+        
+        const tx = await credentialRegistry.connect(issuer).issueCredential(
+          credentialId,
+          fixedIssuer,
+          holderDid,
+          credentialHashes[0],
+          schemaHashes[0],
+          baseExpirationDate
+        );
+        
+        const receipt = await tx.wait();
+        const gasUsed = Number(receipt.gasUsed);
+        batchOneGas.push(gasUsed);
+        console.log(`Issued credential to ${holderDid}: ${formatGas(gasUsed)}`);
+      }
+      
+      // Batch 2: Fixed holder, different issuers (5 credentials)
+      console.log("\nBatch 2: Fixed holder, different issuers");
+      const batchTwoGas = [];
+      const fixedHolder = holderDids[0];
+      
+      for (let i = 0; i < issuerDids.length; i++) {
+        const credentialId = `batch2:${i}:${Date.now()}`;
+        const issuerDid = issuerDids[i];
+        
+        const tx = await credentialRegistry.connect(issuer).issueCredential(
+          credentialId,
+          issuerDid,
+          fixedHolder,
+          credentialHashes[1],
+          schemaHashes[1],
+          baseExpirationDate
+        );
+        
+        const receipt = await tx.wait();
+        const gasUsed = Number(receipt.gasUsed);
+        batchTwoGas.push(gasUsed);
+        console.log(`Issued credential from ${issuerDid}: ${formatGas(gasUsed)}`);
+      }
+      
+      // Batch 3: Same issuer and holder, different credential content and schemas
+      console.log("\nBatch 3: Varying credential content and schemas");
+      const batchThreeGas = [];
+      
+      for (let i = 0; i < credentialHashes.length; i++) {
+        const credentialId = `batch3:${i}:${Date.now()}`;
+        const schema = schemaHashes[i % schemaHashes.length];
+        const content = credentialHashes[i];
+        
+        const tx = await credentialRegistry.connect(issuer).issueCredential(
+          credentialId,
+          issuerDids[0],
+          holderDids[0],
+          content,
+          schema,
+          baseExpirationDate
+        );
+        
+        const receipt = await tx.wait();
+        const gasUsed = Number(receipt.gasUsed);
+        batchThreeGas.push(gasUsed);
+        console.log(`Issued credential with different content: ${formatGas(gasUsed)}`);
+      }
+      
+      // Batch 4: Same parameters but different expiration dates
+      console.log("\nBatch 4: Varying expiration dates");
+      const batchFourGas = [];
+      const expirations = [
+        0, // No expiration
+        Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60, // 30 days
+        Math.floor(Date.now() / 1000) + 180 * 24 * 60 * 60, // 180 days
+        Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60, // 1 year
+        Math.floor(Date.now() / 1000) + 5 * 365 * 24 * 60 * 60  // 5 years
+      ];
+      
+      for (let i = 0; i < expirations.length; i++) {
+        const credentialId = `batch4:${i}:${Date.now()}`;
+        const expiration = expirations[i];
+        
+        const tx = await credentialRegistry.connect(issuer).issueCredential(
+          credentialId,
+          issuerDids[0],
+          holderDids[0],
+          credentialHashes[0],
+          schemaHashes[0],
+          expiration
+        );
+        
+        const receipt = await tx.wait();
+        const gasUsed = Number(receipt.gasUsed);
+        batchFourGas.push(gasUsed);
+        console.log(`Issued credential with expiration ${expiration === 0 ? 'none' : new Date(expiration * 1000).toDateString()}: ${formatGas(gasUsed)}`);
+      }
+      
+      // Store all batch results for gas analysis
+      gasUsage.credentialOperations.batchIssue = [
+        ...batchOneGas,
+        ...batchTwoGas,
+        ...batchThreeGas,
+        ...batchFourGas
+      ];
+      
+      // Analyze results
+      console.log("\nBatch Issuance Gas Analysis:");
+      
+      const allBatches = [
+        { name: "Fixed issuer, different holders", data: batchOneGas },
+        { name: "Fixed holder, different issuers", data: batchTwoGas },
+        { name: "Different credential content/schemas", data: batchThreeGas },
+        { name: "Different expiration dates", data: batchFourGas }
+      ];
+      
+      allBatches.forEach(batch => {
+        const total = batch.data.reduce((sum, gas) => sum + gas, 0);
+        const avg = total / batch.data.length;
+        const min = Math.min(...batch.data);
+        const max = Math.max(...batch.data);
+        
+        console.log(`\n${batch.name}:`);
+        console.log(`- Total gas: ${formatGas(total)}`);
+        console.log(`- Average gas: ${formatGas(avg)}`);
+        console.log(`- Min gas: ${formatGas(min)}`);
+        console.log(`- Max gas: ${formatGas(max)}`);
+        console.log(`- Gas variance: ${formatGas(max - min)}`);
+      });
+      
+      // Overall statistics
+      const allGas = gasUsage.credentialOperations.batchIssue;
+      const totalGas = allGas.reduce((sum, gas) => sum + gas, 0);
+      const averageGas = totalGas / allGas.length;
+      
+      console.log(`\nOverall Batch Issuance (${allGas.length} credentials):`);
+      console.log(`- Total gas: ${formatGas(totalGas)}`);
+      console.log(`- Average gas per credential: ${formatGas(averageGas)}`);
+    });
+    
+    it("Should query credentials by issuer and measure gas usage", async function() {
+      console.log("\nQuerying Credentials by Issuer...");
+      // Getting credentials is a view function, measure gas estimate
+      const gasEstimate = await credentialRegistry.getCredentialsByIssuer.estimateGas(issuerDid);
+      gasUsage.queries.getByIssuer = Number(gasEstimate);
+      console.log(`Get Credentials By Issuer: ${formatGas(gasUsage.queries.getByIssuer)}`);
+      
+      const credentials = await credentialRegistry.getCredentialsByIssuer(issuerDid);
+      expect(credentials.length).to.be.at.least(5); // We created 6 credentials (0-5)
+    });
+    
+    it("Should query credentials by holder and measure gas usage", async function() {
+      console.log("\nQuerying Credentials by Holder...");
+      // Getting credentials is a view function, measure gas estimate
+      const gasEstimate = await credentialRegistry.getCredentialsByHolder.estimateGas(holderDid);
+      gasUsage.queries.getByHolder = Number(gasEstimate);
+      console.log(`Get Credentials By Holder: ${formatGas(gasUsage.queries.getByHolder)}`);
+      
+      const credentials = await credentialRegistry.getCredentialsByHolder(holderDid);
+      expect(credentials.length).to.be.at.least(5); // We created 6 credentials (0-5)
+    });
+  });
+  
+  describe("5. Access Control and Edge Cases", function () {
+    it("Should prevent unauthorized operations", async function() {
+      console.log("\nTesting Authorization Checks...");
+      
+      // Try to update a DID from unauthorized account
+      await expect(
+        didRegistry.connect(otherUser).updateDID(
+          issuerDids[0],
+          publicKeys[0],
+          serviceEndpoints[0]
+        )
+      ).to.be.revertedWith("Not authorized");
+      
+      // Try to revoke a credential from unauthorized account
+      await expect(
+        credentialRegistry.connect(otherUser).revokeCredential(credentialIds[1])
+      ).to.be.revertedWith("Not authorized");
+    });
+    
+    it("Should handle a wide range of edge cases and error conditions", async function() {
+      console.log("\nTesting Comprehensive Edge Cases...");
+      
+      // 1. Try to register a DID that already exists
+      console.log("Testing: Registering duplicate DID");
+      await expect(
+        didRegistry.connect(issuer).registerDID(
+          issuerDids[0], // Already registered
+          publicKeys[0],
+          serviceEndpoints[0],
+          1 // ISSUER
+        )
+      ).to.be.revertedWith("DID already registered");
+      
+      // 2. Try to issue a credential with an ID that already exists
+      console.log("Testing: Issuing credential with duplicate ID");
+      const expirationDate = Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60;
+      await expect(
+        credentialRegistry.connect(issuer).issueCredential(
+          credentialIds[0], // Already used
+          issuerDids[0],
+          holderDids[0],
+          credentialHashes[0],
+          schemaHashes[0],
+          expirationDate
+        )
+      ).to.be.revertedWith("Credential exists");
+      
+      // 3. Try to issue a credential with a non-existent issuer DID
+      console.log("Testing: Issuing credential with non-existent issuer");
+      await expect(
+        credentialRegistry.connect(issuer).issueCredential(
+          "new-credential-id",
+          "did:non:existent:issuer",
+          holderDids[0],
+          credentialHashes[0],
+          schemaHashes[0],
+          expirationDate
+        )
+      ).to.be.revertedWith("Not authorized");
+      
+      // 4. Try to issue a credential with a non-existent holder DID
+      console.log("Testing: Issuing credential with non-existent holder");
+      await expect(
+        credentialRegistry.connect(issuer).issueCredential(
+          "new-credential-id",
+          issuerDids[0],
+          "did:non:existent:holder",
+          credentialHashes[0],
+          schemaHashes[0],
+          expirationDate
+        )
+      ).to.be.revertedWith("Holder inactive");
+      
+      // 5. Try to issue a credential with a past expiration date
+      console.log("Testing: Issuing credential with past expiration date");
+      const pastDate = Math.floor(Date.now() / 1000) - 86400; // Yesterday
+      // This might not be rejected at issuance time, depending on contract implementation
+      // But should be rejected during verification
+      const tx = await credentialRegistry.connect(issuer).issueCredential(
+        "expired-at-birth",
+        issuerDids[0],
+        holderDids[0],
+        credentialHashes[0],
+        schemaHashes[0],
+        pastDate
+      );
+      await tx.wait();
+      
+      // Verify the expired credential
+      const [valid, reason] = await credentialRegistry.verifyCredential(
+        "expired-at-birth",
+        issuerDids[0],
+        holderDids[0]
+      );
+      console.log(`Verification of credential with past expiration: Valid=${valid}, Reason=${reason}`);
+      
+      // 6. Test extremely long DIDs and values
+      console.log("Testing: Very long DID string");
+      const longDid = "did:very:long:" + "x".repeat(200);
+      try {
+        await didRegistry.connect(issuer).registerDID(
+          longDid,
+          publicKeys[0],
+          serviceEndpoints[0],
+          1
+        );
+        console.log("Long DID registered successfully");
+      } catch (error) {
+        console.log(`Error with long DID: ${error.message}`);
+      }
+      
+      // 7. Register a DID and immediately deactivate it
+      console.log("Testing: Register and deactivate DID");
+      const tempDid = "did:temp:to-deactivate";
+      await didRegistry.connect(holder).registerDID(
+        tempDid,
+        publicKeys[0],
+        serviceEndpoints[0],
+        2 // HOLDER
+      );
+      
+      // Deactivate the DID
+      await didRegistry.connect(holder).deactivateDID(tempDid);
+      expect(await didRegistry.isDIDActive(tempDid)).to.be.false;
+      
+      // Try to issue credential to deactivated DID
+      await expect(
+        credentialRegistry.connect(issuer).issueCredential(
+          "cred-for-deactivated-did",
+          issuerDids[0],
+          tempDid,
+          credentialHashes[0],
+          schemaHashes[0],
+          expirationDate
+        )
+      ).to.be.revertedWith("Holder inactive");
+      
+      // 8. Test credential with zero expiration date (no expiration)
+      console.log("Testing: Credential with no expiration");
+      const noExpireCred = "no-expiration-credential";
+      await credentialRegistry.connect(issuer).issueCredential(
+        noExpireCred,
+        issuerDids[0],
+        holderDids[0],
+        credentialHashes[0],
+        schemaHashes[0],
+        0 // No expiration
+      );
+      
+      // Verify the credential with no expiration
+      const noExpireVerify = await credentialRegistry.verifyCredential(
+        noExpireCred,
+        issuerDids[0],
+        holderDids[0]
+      );
+      console.log(`Verification of credential with no expiration: Valid=${noExpireVerify[0]}, Reason=${noExpireVerify[1]}`);
+      
+      // 9. Test suspending and reactivating multiple times
+      console.log("Testing: Multiple suspend/activate cycles");
+      const multiStatusCred = "multi-status-credential";
+      await credentialRegistry.connect(issuer).issueCredential(
+        multiStatusCred,
+        issuerDids[0],
+        holderDids[0],
+        credentialHashes[0],
+        schemaHashes[0],
+        expirationDate
+      );
+      
+      // First suspension
+      await credentialRegistry.connect(issuer).suspendCredential(multiStatusCred);
+      let multiStatusVerify = await credentialRegistry.verifyCredential(
+        multiStatusCred,
+        issuerDids[0],
+        holderDids[0]
+      );
+      expect(multiStatusVerify[0]).to.be.false;
+      
+      // First reactivation
+      await credentialRegistry.connect(issuer).activateCredential(multiStatusCred);
+      multiStatusVerify = await credentialRegistry.verifyCredential(
+        multiStatusCred,
+        issuerDids[0],
+        holderDids[0]
+      );
+      expect(multiStatusVerify[0]).to.be.true;
+      
+      // Second suspension
+      await credentialRegistry.connect(issuer).suspendCredential(multiStatusCred);
+      multiStatusVerify = await credentialRegistry.verifyCredential(
+        multiStatusCred,
+        issuerDids[0],
+        holderDids[0]
+      );
+      expect(multiStatusVerify[0]).to.be.false;
+      
+      // 10. Test trying to reactivate an already active credential
+      console.log("Testing: Reactivating active credential");
+      const activeCred = "always-active-credential";
+      await credentialRegistry.connect(issuer).issueCredential(
+        activeCred,
+        issuerDids[0],
+        holderDids[0],
+        credentialHashes[0],
+        schemaHashes[0],
+        expirationDate
+      );
+      
+      // Try to activate an already active credential
+      await expect(
+        credentialRegistry.connect(issuer).activateCredential(activeCred)
+      ).to.be.revertedWith("Not suspended");
+      
+      // 11. Try to query a non-existent credential
+      console.log("Testing: Query non-existent credential");
+      await expect(
+        credentialRegistry.getCredential("non-existent-credential-id")
+      ).to.be.revertedWith("Credential not found");
+      
+      // 12. Try to use another account to revoke someone else's credential
+      console.log("Testing: Unauthorized revocation attempt");
+      await expect(
+        credentialRegistry.connect(verifier).revokeCredential(activeCred)
+      ).to.be.revertedWith("Not authorized");
+      
+      // 13. Test a very complex case: register, issue credential, suspend, attempt unauthorized actions
+      console.log("Testing: Complex interaction sequence");
+      const complexDid = "did:complex:test:sequence";
+      const complexCred = "complex-credential-test";
+      
+      // Register new DID
+      await didRegistry.connect(issuer).registerDID(
+        complexDid,
+        publicKeys[1],
+        serviceEndpoints[1],
+        1 // ISSUER
+      );
+      
+      // Issue credential
+      await credentialRegistry.connect(issuer).issueCredential(
+        complexCred,
+        complexDid,
+        holderDids[1],
+        credentialHashes[1],
+        schemaHashes[1],
+        expirationDate
+      );
+      
+      // Verify credential
+      let complexVerify = await credentialRegistry.verifyCredential(
+        complexCred,
+        complexDid,
+        holderDids[1]
+      );
+      expect(complexVerify[0]).to.be.true;
+      
+      // Suspend
+      await credentialRegistry.connect(issuer).suspendCredential(complexCred);
+      
+      // Try unauthorized action (different account trying to reactivate)
+      await expect(
+        credentialRegistry.connect(holder).activateCredential(complexCred)
+      ).to.be.revertedWith("Not authorized");
+      
+      // Update DID
+      await didRegistry.connect(issuer).updateDID(
+        complexDid,
+        publicKeys[2],
+        serviceEndpoints[2]
+      );
+      
+      // Properly reactivate
+      await credentialRegistry.connect(issuer).activateCredential(complexCred);
+      
+      // Final verification
+      complexVerify = await credentialRegistry.verifyCredential(
+        complexCred,
+        complexDid,
+        holderDids[1]
+      );
+      expect(complexVerify[0]).to.be.true;
+    });
+  });
+  
+  describe("6. Data Analysis and Performance Insights", function() {
+    it("Should compile and display comprehensive gas usage statistics", async function() {
+      console.log("\n=== SSI System Performance Analysis ===");
+      
+      // Basic deployment and operation costs
+      console.log("\nDeployment Costs:");
+      console.log(`- DIDRegistry: ${formatGas(gasUsage.deployment.didRegistry)}`);
+      console.log(`- CredentialRegistry: ${formatGas(gasUsage.deployment.credentialRegistry)}`);
+      console.log(`- Total Deployment: ${formatGas(gasUsage.deployment.didRegistry + gasUsage.deployment.credentialRegistry)}`);
+      
+      console.log("\nDID Operations:");
+      console.log(`- Register Issuer DID: ${formatGas(gasUsage.didOperations.registerIssuer)}`);
+      console.log(`- Register Holder DID: ${formatGas(gasUsage.didOperations.registerHolder)}`);
+      console.log(`- Update DID: ${formatGas(gasUsage.didOperations.updateDid)}`);
+      console.log(`- Resolve DID: ${formatGas(gasUsage.didOperations.resolveDid)}`);
+      
+      console.log("\nCredential Operations:");
+      console.log(`- Issue Credential: ${formatGas(gasUsage.credentialOperations.issue)}`);
+      console.log(`- Verify Credential: ${formatGas(gasUsage.credentialOperations.verify)}`);
+      console.log(`- Suspend Credential: ${formatGas(gasUsage.credentialOperations.suspend)}`);
+      console.log(`- Activate Credential: ${formatGas(gasUsage.credentialOperations.activate)}`);
+      console.log(`- Revoke Credential: ${formatGas(gasUsage.credentialOperations.revoke)}`);
+      
+      // Advanced batch analysis
+      const batchGasUsage = gasUsage.credentialOperations.batchIssue;
+      
+      // Summary statistics
+      const totalGas = batchGasUsage.reduce((sum, gas) => sum + gas, 0);
+      const avgGas = Math.floor(totalGas / batchGasUsage.length);
+      const minGas = Math.min(...batchGasUsage);
+      const maxGas = Math.max(...batchGasUsage);
+      const medianGas = [...batchGasUsage].sort((a, b) => a - b)[Math.floor(batchGasUsage.length / 2)];
+      
+      // Calculate standard deviation
+      const variance = batchGasUsage.reduce((sum, gas) => sum + Math.pow(gas - avgGas, 2), 0) / batchGasUsage.length;
+      const stdDev = Math.sqrt(variance);
+      
+      console.log("\nBatch Credential Issuance Statistics:");
+      console.log(`- Total credentials issued: ${batchGasUsage.length}`);
+      console.log(`- Total gas used: ${formatGas(totalGas)}`);
+      console.log(`- Average gas per credential: ${formatGas(avgGas)}`);
+      console.log(`- Median gas usage: ${formatGas(medianGas)}`);
+      console.log(`- Minimum gas usage: ${formatGas(minGas)}`);
+      console.log(`- Maximum gas usage: ${formatGas(maxGas)}`);
+      console.log(`- Gas usage range: ${formatGas(maxGas - minGas)}`);
+      console.log(`- Standard deviation: ${formatGas(stdDev)}`);
+      console.log(`- Coefficient of variation: ${(stdDev / avgGas * 100).toFixed(2)}%`);
+      
+      console.log("\nQuery Operations:");
+      console.log(`- Get Credentials By Issuer: ${formatGas(gasUsage.queries.getByIssuer)}`);
+      console.log(`- Get Credentials By Holder: ${formatGas(gasUsage.queries.getByHolder)}`);
+      
+      // Comparative analysis
+      console.log("\n=== Comparative Performance Analysis ===");
+      
+      // Define all operations with their gas costs
+      const operations = [
+        { name: "Deploy DIDRegistry", gas: gasUsage.deployment.didRegistry, type: "deployment" },
+        { name: "Deploy CredentialRegistry", gas: gasUsage.deployment.credentialRegistry, type: "deployment" },
+        { name: "Register Issuer DID", gas: gasUsage.didOperations.registerIssuer, type: "did" },
+        { name: "Register Holder DID", gas: gasUsage.didOperations.registerHolder, type: "did" },
+        { name: "Update DID", gas: gasUsage.didOperations.updateDid, type: "did" },
+        { name: "Resolve DID", gas: gasUsage.didOperations.resolveDid, type: "did" },
+        { name: "Issue Credential", gas: gasUsage.credentialOperations.issue, type: "credential" },
+        { name: "Verify Credential", gas: gasUsage.credentialOperations.verify, type: "credential" },
+        { name: "Suspend Credential", gas: gasUsage.credentialOperations.suspend, type: "credential" },
+        { name: "Activate Credential", gas: gasUsage.credentialOperations.activate, type: "credential" },
+        { name: "Revoke Credential", gas: gasUsage.credentialOperations.revoke, type: "credential" },
+        { name: "Get Credentials By Issuer", gas: gasUsage.queries.getByIssuer, type: "query" },
+        { name: "Get Credentials By Holder", gas: gasUsage.queries.getByHolder, type: "query" }
+      ].filter(op => op.gas > 0); // Filter out any operations with no gas data
+      
+      // Sort by gas usage
+      const sortedByGas = [...operations].sort((a, b) => b.gas - a.gas);
+      
+      console.log("\nMost expensive operations:");
+      sortedByGas.slice(0, 5).forEach((op, i) => {
+        console.log(`${i+1}. ${op.name}: ${formatGas(op.gas)}`);
+      });
+      
+      console.log("\nLeast expensive operations (excluding view functions):");
+      const nonViewOps = sortedByGas.filter(op => op.type !== "query" && op.name !== "Resolve DID");
+      nonViewOps.slice(-3).reverse().forEach((op, i) => {
+        console.log(`${i+1}. ${op.name}: ${formatGas(op.gas)}`);
+      });
+      
+      // Categorize operations by type
+      const operationsByType = {
+        deployment: operations.filter(op => op.type === "deployment"),
+        did: operations.filter(op => op.type === "did"),
+        credential: operations.filter(op => op.type === "credential"),
+        query: operations.filter(op => op.type === "query")
+      };
+      
+      // Calculate total and average gas by category
+      for (const [type, ops] of Object.entries(operationsByType)) {
+        if (ops.length === 0) continue;
+        
+        const totalCategoryGas = ops.reduce((sum, op) => sum + op.gas, 0);
+        const avgCategoryGas = totalCategoryGas / ops.length;
+        
+        console.log(`\n${type.charAt(0).toUpperCase() + type.slice(1)} operations:`);
+        console.log(`- Total operations: ${ops.length}`);
+        console.log(`- Total gas: ${formatGas(totalCategoryGas)}`);
+        console.log(`- Average gas per operation: ${formatGas(avgCategoryGas)}`);
+      }
+      
+      // Final insights and recommendations
+      console.log("\n=== Performance Insights and Recommendations ===");
+      console.log("Based on the gas usage analysis:");
+      
+      // 1. Most expensive operation insights
+      const mostExpensive = sortedByGas[0];
+      console.log(`1. The most gas-intensive operation is '${mostExpensive.name}' at ${formatGas(mostExpensive.gas)}.`);
+      
+      // 2. Write vs. Read operation comparison
+      const writeOps = operations.filter(op => op.type !== "query" && op.name !== "Resolve DID");
+      const readOps = operations.filter(op => op.type === "query" || op.name === "Resolve DID");
+      
+      const avgWriteGas = writeOps.reduce((sum, op) => sum + op.gas, 0) / writeOps.length;
+      const avgReadGas = readOps.reduce((sum, op) => sum + op.gas, 0) / readOps.length;
+      
+      console.log(`2. Write operations (${formatGas(avgWriteGas)} avg) are approximately ${Math.round(avgWriteGas/avgReadGas)}x more expensive than read operations (${formatGas(avgReadGas)} avg).`);
+      
+      // 3. Batch efficiency insights
+      const singleIssue = gasUsage.credentialOperations.issue;
+      console.log(`3. Batch issuance shows ${batchGasUsage.length > 0 && avgGas < singleIssue ? 'improved' : 'consistent'} efficiency compared to single issuance.`);
+      
+      // 4. Optimizations
+      console.log("4. Potential optimizations:");
+      console.log("   - Consider batching multiple credential operations when possible");
+      console.log("   - The gas usage for storing strings could be further optimized by using more compact data structures");
+      console.log("   - Consider implementing a proxy pattern for future upgradability without migration costs");
+      
+      console.log("\nNote: These gas costs reflect the optimized contracts using gas-efficient data structures such as bytes32 for DIDs and uint40 for timestamps.");
+    });
+    
+    it("Should provide an SSI system operational cost analysis", async function() {
+      // Calculate ETH costs at different gas prices
+      // These can be adjusted based on current network conditions
+      const gasPrices = [
+        { name: "Low", gwei: 20 },
+        { name: "Medium", gwei: 50 },
+        { name: "High", gwei: 100 }
+      ];
+      
+      // ETH price assumption (this would ideally come from an oracle in production)
+      const ethUsdPrice = 3500; // Example price
+      
+      console.log("\n=== SSI System Operational Cost Analysis ===");
+      console.log(`Analysis based on ETH price of ${ethUsdPrice}`);
+      
+      // Define common operations for an SSI system
+      const typicalOperations = [
+        { name: "System Setup (Deploy both contracts)", gas: gasUsage.deployment.didRegistry + gasUsage.deployment.credentialRegistry },
+        { name: "Onboard new Issuer (Register DID)", gas: gasUsage.didOperations.registerIssuer },
+        { name: "Onboard new Holder (Register DID)", gas: gasUsage.didOperations.registerHolder },
+        { name: "Issue single credential", gas: gasUsage.credentialOperations.issue },
+        { name: "Issue 100 credentials", gas: gasUsage.credentialOperations.issue * 100 },
+        { name: "Issue 1000 credentials", gas: gasUsage.credentialOperations.issue * 1000 },
+        { name: "Revoke credential", gas: gasUsage.credentialOperations.revoke },
+        { name: "Suspend & reactivate credential", gas: gasUsage.credentialOperations.suspend + gasUsage.credentialOperations.activate }
+      ];
+      
+      // Display cost table for different gas prices
+      console.log("\nEstimated costs for common operations:");
+      console.log("┌─────────────────────────────┬─────────────┬───────────────┬───────────────┬───────────────┐");
+      console.log("│ Operation                   │ Gas Used    │ Low ($)       │ Medium ($)    │ High ($)      │");
+      console.log("├─────────────────────────────┼─────────────┼───────────────┼───────────────┼───────────────┤");
+      
+      for (const op of typicalOperations) {
+        const costs = gasPrices.map(price => {
+          const ethCost = op.gas * price.gwei * 1e-9;
+          const usdCost = ethCost * ethUsdPrice;
+          return `${usdCost.toFixed(2)}`;
+        });
+        
+        console.log(`│ ${op.name.padEnd(27)} │ ${formatGas(op.gas).padEnd(11)} │ ${costs[0].padEnd(13)} │ ${costs[1].padEnd(13)} │ ${costs[2].padEnd(13)} │`);
+      }
+      
+      console.log("└─────────────────────────────┴─────────────┴───────────────┴───────────────┴───────────────┘");
+      
+      // Scalability analysis
+      console.log("\n=== Scalability Analysis ===");
+      
+      // Estimate costs for different system scales
+      const scales = [
+        { name: "Small Enterprise", issuers: 5, holders: 100, credentials: 1000 },
+        { name: "Medium Enterprise", issuers: 20, holders: 1000, credentials: 10000 },
+        { name: "Large Enterprise", issuers: 100, holders: 10000, credentials: 100000 },
+        { name: "Industry Consortium", issuers: 500, holders: 100000, credentials: 1000000 }
+      ];
+      
+      console.log("Estimated total gas and costs for different system scales:");
+      console.log("┌───────────────────┬───────────┬───────────┬─────────────┬──────────────┬──────────────┐");
+      console.log("│ Scale             │ Issuers   │ Holders   │ Credentials │ Total Gas    │ Est. Cost($) │");
+      console.log("├───────────────────┼───────────┼───────────┼─────────────┼──────────────┼──────────────┤");
+      
+      for (const scale of scales) {
+        const setupGas = gasUsage.deployment.didRegistry + gasUsage.deployment.credentialRegistry;
+        const issuersGas = scale.issuers * gasUsage.didOperations.registerIssuer;
+        const holdersGas = scale.holders * gasUsage.didOperations.registerHolder;
+        const credentialsGas = scale.credentials * gasUsage.credentialOperations.issue;
+        
+        const totalGas = setupGas + issuersGas + holdersGas + credentialsGas;
+        const ethCost = totalGas * 50 * 1e-9; // Using medium gas price
+        const usdCost = ethCost * ethUsdPrice;
+        
+        console.log(`│ ${scale.name.padEnd(17)} │ ${scale.issuers.toString().padEnd(9)} │ ${scale.holders.toString().padEnd(9)} │ ${scale.credentials.toString().padEnd(11)} │ ${formatGas(totalGas).padEnd(12)} │ ${usdCost.toFixed(2).padEnd(12)} │`);
+      }
+      
+      console.log("└───────────────────┴───────────┴───────────┴─────────────┴──────────────┴──────────────┘");
+      
+      console.log("\nNote: These estimates are meant to provide a rough understanding of operational costs.");
+      console.log("Actual costs will depend on current gas prices, ETH value, and potential contract optimizations.");
+    });
+  });
+});

@@ -1,0 +1,11 @@
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/vdr/target/debug/deps/libbitflags-ebddf34507c66bb7.rmeta: /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/iter.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/parser.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/traits.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/public.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/internal.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/external.rs
+
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/vdr/target/debug/deps/bitflags-ebddf34507c66bb7.d: /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/iter.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/parser.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/traits.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/public.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/internal.rs /home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/external.rs
+
+/home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/lib.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/iter.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/parser.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/traits.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/public.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/internal.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/bitflags-2.4.2/src/external.rs:

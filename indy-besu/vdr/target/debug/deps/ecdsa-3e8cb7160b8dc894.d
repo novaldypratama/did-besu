@@ -1,0 +1,12 @@
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/vdr/target/debug/deps/libecdsa-3e8cb7160b8dc894.rmeta: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/normalized.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/recovery.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/der.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/hazmat.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/signing.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/verifying.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/../README.md
+
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/vdr/target/debug/deps/ecdsa-3e8cb7160b8dc894.d: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/normalized.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/recovery.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/der.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/hazmat.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/signing.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/verifying.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/../README.md
+
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/lib.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/normalized.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/recovery.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/der.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/hazmat.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/signing.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/verifying.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ecdsa-0.16.9/src/../README.md:

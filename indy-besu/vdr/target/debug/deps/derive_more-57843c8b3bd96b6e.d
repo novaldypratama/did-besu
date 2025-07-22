@@ -1,0 +1,10 @@
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/vdr/target/debug/deps/libderive_more-57843c8b3bd96b6e.rmeta: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/add.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/ops.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/as.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/str.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/../README.md
+
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/vdr/target/debug/deps/derive_more-57843c8b3bd96b6e.d: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/add.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/ops.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/as.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/str.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/../README.md
+
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/lib.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/add.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/ops.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/as.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/str.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/derive_more-1.0.0/src/../README.md:

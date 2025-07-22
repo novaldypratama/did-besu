@@ -1,0 +1,10 @@
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/thesis-did/target/debug/deps/liberror_chain-5f32f349a95bdf7c.rmeta: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/quick_error.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/error_chain.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/quick_main.rs
+
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/thesis-did/target/debug/deps/liberror_chain-5f32f349a95bdf7c.rlib: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/quick_error.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/error_chain.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/quick_main.rs
+
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/thesis-did/target/debug/deps/error_chain-5f32f349a95bdf7c.d: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/quick_error.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/error_chain.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/quick_main.rs
+
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/lib.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/quick_error.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/error_chain.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/error-chain-0.10.0/src/quick_main.rs:

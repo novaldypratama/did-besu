@@ -1,0 +1,11 @@
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/vdr/target/debug/deps/libfragile-6f2745325ba24eb2.rmeta: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/errors.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/fragile.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/registry.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/semisticky.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/sticky.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/thread_id.rs
+
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/vdr/target/debug/deps/fragile-6f2745325ba24eb2.d: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/errors.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/fragile.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/registry.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/semisticky.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/sticky.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/thread_id.rs
+
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/lib.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/errors.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/fragile.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/registry.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/semisticky.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/sticky.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fragile-2.0.0/src/thread_id.rs:

@@ -1,0 +1,26 @@
+[package]
+name = "thesis-did"
+description = "An execution script demonstrating the implementation of decentralized identity (did:indy & did:eth) on ETH-based protocol indy-besu"
+version = "0.1.0"
+authors = ["novaldypratama <novaldypratama@mail.ugm.ac.id>"]
+edition = "2021"
+
+[dependencies]
+alloy = { version = "0.5.2", features = ["full"] }
+aries-askar = "0.3.1"
+async-std = "1.13.0"
+async-trait = "0.1.83"
+bs58 = "0.5.1"
+indy-besu-vdr = { path = "../../vdr", features = [
+  "default",
+  "ledger_test",
+  "basic_signer",
+  "wasm",
+], optional = true }
+indy-vdr = { git = 'https://github.com/hyperledger/indy-vdr.git', version = "0.4.2" }
+serde = "1.0.210"
+serde_json = "1.0.132"
+urlencoding = "2.1.3"
+
+[patch.crates-io]
+web3 = { git = 'https://www.github.com/DSRCorporation/rust-web3.git' }

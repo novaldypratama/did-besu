@@ -1,0 +1,11 @@
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/thesis-did/target/debug/deps/libsec1-d6abddd7e0ec0357.rmeta: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/point.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/error.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/parameters.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/private_key.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/traits.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/../README.md
+
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/thesis-did/target/debug/deps/sec1-d6abddd7e0ec0357.d: /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/lib.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/point.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/error.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/parameters.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/private_key.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/traits.rs /home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/../README.md
+
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/lib.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/point.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/error.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/parameters.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/private_key.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/traits.rs:
+/home/novaldyph/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sec1-0.7.3/src/../README.md:

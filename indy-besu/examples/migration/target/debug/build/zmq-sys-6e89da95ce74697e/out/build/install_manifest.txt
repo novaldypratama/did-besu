@@ -1,0 +1,12 @@
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/lib/pkgconfig/libzmq.pc
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/lib/libzmq.a
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/include/zmq.h
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/include/zmq_utils.h
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/share/zmq/AUTHORS.txt
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/share/zmq/COPYING.txt
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/share/zmq/COPYING.LESSER.txt
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/share/zmq/NEWS.txt
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/share/cmake/ZeroMQ/ZeroMQTargets.cmake
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/share/cmake/ZeroMQ/ZeroMQTargets-debug.cmake
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/share/cmake/ZeroMQ/ZeroMQConfig.cmake
+/home/novaldyph/did-prototype/did-demo/did-indy-besu/examples/migration/target/debug/build/zmq-sys-6e89da95ce74697e/out/share/cmake/ZeroMQ/ZeroMQConfigVersion.cmake
