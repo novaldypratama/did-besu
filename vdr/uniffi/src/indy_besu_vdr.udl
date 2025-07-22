@@ -1,3 +1,0 @@
-// This file is required for UNI-FFI binding generation
-namespace indy_besu_vdr {};
-
