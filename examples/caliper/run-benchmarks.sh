@@ -3,9 +3,9 @@
 # Extract contract ABIs
 echo "Extracting contract ABIs..."
 # You may need to adjust these paths based on your setup
-# cp ../smartcontract/artifacts/contracts/DidRegistry.sol/DIDRegistry.json caliper-benchmarks/contracts/DIDRegistry.json
-# cp ../smartcontract/artifacts/contracts/VerifiableCredentialsRegistry.sol/CredentialRegistry.json caliper-benchmarks/contracts/CredentialRegistry.json
-cp ../smartcontract/artifacts/contracts/SimpleContract.sol/SimpleContract.json caliper-benchmarks/contracts/SimpleContract.json
+# cp ../early-contracts-dev/artifacts/contracts/DidRegistry.sol/DIDRegistry.json caliper-benchmarks/contracts/DIDRegistry.json
+# cp ../early-contracts-dev/artifacts/contracts/VerifiableCredentialsRegistry.sol/CredentialRegistry.json caliper-benchmarks/contracts/CredentialRegistry.json
+cp ../early-contracts-dev/artifacts/contracts/SimpleContract.sol/SimpleContract.json caliper-benchmarks/contracts/SimpleContract.json
 
 # Create a script to check if Besu is ready
 # cat >check-besu.js <<'EOL'
