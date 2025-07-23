@@ -2,7 +2,7 @@
 
 /**
  * Class for managing SSI entities state (DIDs and Credentials).
- * Similar to SimpleState but specialized for SSI operations.
+ * Improved with better error handling and robustness
  */
 class DIDState {
   /**
@@ -14,8 +14,16 @@ class DIDState {
    * @param {number} verifierCount - Target number of verifiers to create.
    */
   constructor(workerIndex, didPrefix, issuerCount, holderCount, verifierCount) {
-    this.workerIndex = workerIndex;
+    // Validate and set worker index
+    this.workerIndex = typeof workerIndex === 'number' ? workerIndex : 0;
+
+    // Validate and set DID prefix with default fallback
     this.didPrefix = didPrefix || 'did:besu:';
+
+    // Error checking to ensure didPrefix is properly formatted
+    if (!this.didPrefix.endsWith(':')) {
+      this.didPrefix = `${this.didPrefix}:`;
+    }
 
     // Store created DIDs by type
     this.issuers = [];
@@ -29,10 +37,32 @@ class DIDState {
     this.verifierCount = 0;
     this.credentialCount = 0;
 
-    // Target counts
-    this.targetIssuerCount = issuerCount || 5;
-    this.targetHolderCount = holderCount || 10;
-    this.targetVerifierCount = verifierCount || 2;
+    // Target counts (with validation)
+    this.targetIssuerCount = this._validateCount(issuerCount, 2, 'issuerCount');
+    this.targetHolderCount = this._validateCount(holderCount, 2, 'holderCount');
+    this.targetVerifierCount = this._validateCount(verifierCount, 2, 'verifierCount');
+
+    // Track creation timestamps for uniqueness
+    this.lastTimestamp = Date.now();
+
+    console.log(`Worker ${this.workerIndex}: DIDState initialized with targets - Issuers: ${this.targetIssuerCount}, Holders: ${this.targetHolderCount}, Verifiers: ${this.targetVerifierCount}`);
+  }
+
+  /**
+   * Validates a count parameter and returns a safe value
+   * @param {number|string} count - The count to validate
+   * @param {number} defaultValue - Default value if invalid
+   * @param {string} paramName - Parameter name for logging
+   * @returns {number} - Validated count
+   * @private
+   */
+  _validateCount(count, defaultValue, paramName) {
+    const parsedCount = parseInt(count);
+    if (isNaN(parsedCount) || parsedCount < 0) {
+      console.warn(`Worker ${this.workerIndex}: Invalid ${paramName} (${count}), using default: ${defaultValue}`);
+      return defaultValue;
+    }
+    return parsedCount;
   }
 
   /**
@@ -42,8 +72,24 @@ class DIDState {
    * @private
    */
   _generateDID(type) {
-    const timestamp = Date.now();
-    return `${this.didPrefix}${type}:${this.workerIndex}:${timestamp}:${this._getUniqueCount()}`;
+    // Ensure type is valid, defaulting to 'entity' if not
+    const validTypes = ['issuer', 'holder', 'verifier'];
+    if (!validTypes.includes(type)) {
+      console.warn(`Worker ${this.workerIndex}: Invalid DID type "${type}", defaulting to "entity"`);
+      type = 'entity';
+    }
+
+    // Ensure unique timestamps by incrementing if same as last
+    let timestamp = Date.now();
+    if (timestamp <= this.lastTimestamp) {
+      timestamp = this.lastTimestamp + 1;
+    }
+    this.lastTimestamp = timestamp;
+
+    // Generate a unique random component to prevent collisions
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+
+    return `${this.didPrefix}${type}:${this.workerIndex}:${timestamp}:${this._getUniqueCount()}:${random}`;
   }
 
   /**
@@ -62,6 +108,7 @@ class DIDState {
    */
   _generatePublicKey() {
     // Generate a random 32-byte hex string for the public key
+    // Starts with '0x' for compatibility with Ethereum
     return '0x' + Array.from({ length: 64 }, () =>
       Math.floor(Math.random() * 16).toString(16)).join('');
   }
@@ -73,8 +120,25 @@ class DIDState {
    * @private
    */
   _generateServiceEndpoint(did) {
+    // Replace any potentially problematic characters in DID for URL use
+    const safeDid = did.replace(/:/g, '_');
+
     // Create a mock service endpoint
-    return `https://example.org/${did.replace(/:/g, '_')}/service`;
+    return `https://example.org/service/${safeDid}`;
+  }
+
+  /**
+   * Find a DID by its identifier
+   * @param {string} did - The DID to find
+   * @returns {Object|null} - The DID object or null if not found
+   */
+  findDID(did) {
+    // Check all collections
+    for (const collection of [this.issuers, this.holders, this.verifiers]) {
+      const found = collection.find(entry => entry.did === did);
+      if (found) return found;
+    }
+    return null;
   }
 
   /**
@@ -91,10 +155,13 @@ class DIDState {
       did,
       publicKey,
       serviceEndpoint,
-      active: true
+      active: true,
+      created: Date.now()
     });
 
     this.issuerCount++;
+
+    console.log(`Worker ${this.workerIndex}: Created issuer DID: ${did}`);
 
     return {
       did,
@@ -118,10 +185,13 @@ class DIDState {
       did,
       publicKey,
       serviceEndpoint,
-      active: true
+      active: true,
+      created: Date.now()
     });
 
     this.holderCount++;
+
+    console.log(`Worker ${this.workerIndex}: Created holder DID: ${did}`);
 
     return {
       did,
@@ -145,10 +215,13 @@ class DIDState {
       did,
       publicKey,
       serviceEndpoint,
-      active: true
+      active: true,
+      created: Date.now()
     });
 
     this.verifierCount++;
+
+    console.log(`Worker ${this.workerIndex}: Created verifier DID: ${did}`);
 
     return {
       did,
@@ -177,6 +250,9 @@ class DIDState {
     // Update the DID in our state
     allDIDs[randomIndex].publicKey = newPublicKey;
     allDIDs[randomIndex].serviceEndpoint = newServiceEndpoint;
+    allDIDs[randomIndex].updated = Date.now();
+
+    console.log(`Worker ${this.workerIndex}: Updating DID: ${did}`);
 
     return {
       did,
@@ -203,6 +279,9 @@ class DIDState {
 
     // Mark as inactive in our state
     allDIDs[randomIndex].active = false;
+    allDIDs[randomIndex].deactivated = Date.now();
+
+    console.log(`Worker ${this.workerIndex}: Deactivating DID: ${did}`);
 
     return {
       did
@@ -221,8 +300,74 @@ class DIDState {
     }
 
     const randomIndex = Math.floor(Math.random() * allDIDs.length);
+    const did = allDIDs[randomIndex].did;
+
+    console.log(`Worker ${this.workerIndex}: Resolving DID: ${did}`);
+
     return {
-      did: allDIDs[randomIndex].did
+      did
+    };
+  }
+
+  /**
+   * Get a random active DID of a specific role
+   * @param {string} role - The role type ('issuer', 'holder', 'verifier')
+   * @returns {object|null} - A random DID object or null if none available
+   */
+  getRandomActiveDID(role) {
+    let collection;
+
+    // Select the appropriate collection based on role
+    switch (role.toLowerCase()) {
+      case 'issuer':
+        collection = this.issuers;
+        break;
+      case 'holder':
+        collection = this.holders;
+        break;
+      case 'verifier':
+        collection = this.verifiers;
+        break;
+      default:
+        console.warn(`Worker ${this.workerIndex}: Invalid role "${role}" for getRandomActiveDID`);
+        return null;
+    }
+
+    // Filter for active DIDs
+    const activeDIDs = collection.filter(did => did.active);
+
+    if (activeDIDs.length === 0) {
+      return null;
+    }
+
+    // Select a random active DID
+    const randomIndex = Math.floor(Math.random() * activeDIDs.length);
+    return activeDIDs[randomIndex];
+  }
+
+  /**
+   * Get statistics about the current state
+   * @returns {object} - Statistics about DIDs and status
+   */
+  getStats() {
+    return {
+      issuers: {
+        total: this.issuers.length,
+        active: this.issuers.filter(i => i.active).length,
+        inactive: this.issuers.filter(i => !i.active).length
+      },
+      holders: {
+        total: this.holders.length,
+        active: this.holders.filter(h => h.active).length,
+        inactive: this.holders.filter(h => !h.active).length
+      },
+      verifiers: {
+        total: this.verifiers.length,
+        active: this.verifiers.filter(v => v.active).length,
+        inactive: this.verifiers.filter(v => !v.active).length
+      },
+      credentials: this.credentials.length,
+      total: this.issuers.length + this.holders.length + this.verifiers.length
     };
   }
 }
