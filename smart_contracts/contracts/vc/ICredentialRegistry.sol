@@ -5,7 +5,7 @@ import { CredentialRecord, CredentialMetadata, CredentialStatus } from "./Creden
 
 /**
  * @title ICredentialRegistry
- * @dev Interface for W3C Verifiable Credentials Registry following VC Data Model v1.1
+ * @dev Interface for W3C Verifiable Credentials Registry following VC Data Model v2.0
  * 
  * This interface defines the core functionality for managing Verifiable Credentials
  * on-chain while maintaining compliance with W3C standards and optimizing for
@@ -94,7 +94,7 @@ interface ICredentialRegistry {
      * - Caller must have TRUSTEE, ENDORSER, or STEWARD role
      * - Issuer must be registered and active
      * - Credential must not already exist
-     * - Credential must follow W3C VC Data Model v1.1 format
+     * - Credential must follow W3C VC Data Model v2.0 format
      * - Issuance date must not be in the future
      * - Expiration date must be after issuance date (if set)
      * 
@@ -147,7 +147,7 @@ interface ICredentialRegistry {
     ) external;
 
     /**
-    * @notice Updates the status of a Verifiable Credential following W3C VC Data Model v1.1
+    * @notice Updates the status of a Verifiable Credential following W3C VC Data Model v2.0
     * @dev Implements comprehensive status transitions with proper validation and authorization
     * @dev This function follows the trust triangle approach requiring proper authorization
     * 
@@ -240,59 +240,4 @@ interface ICredentialRegistry {
     //         CredentialStatus status,
     //         string memory reason
     //     );
-
-    // // ========================================================================
-    // // CREDENTIAL LIFECYCLE MANAGEMENT
-    // // ========================================================================
-
-    // /**
-    //  * @dev Revokes a Verifiable Credential
-    //  * 
-    //  * Once revoked, a credential can never be reactivated.
-    //  * 
-    //  * Requirements:
-    //  * - Caller must be the issuer or have TRUSTEE role
-    //  * - Credential must exist and not already be revoked
-    //  * 
-    //  * @param credentialHash keccak256 hash of the credential to revoke
-    //  * @param reason Reason for revocation
-    //  * 
-    //  * Emits: CredentialRevoked event
-    //  */
-    // function revokeCredential(
-    //     bytes32 credentialHash,
-    //     string calldata reason
-    // ) external;
-
-    // /**
-    //  * @dev Suspends a Verifiable Credential temporarily
-    //  * 
-    //  * Suspended credentials can be reactivated later.
-    //  * 
-    //  * Requirements:
-    //  * - Caller must be the issuer or have TRUSTEE/ENDORSER role
-    //  * - Credential must exist and be currently active
-    //  * 
-    //  * @param credentialHash keccak256 hash of the credential to suspend
-    //  * @param reason Reason for suspension
-    //  * 
-    //  * Emits: CredentialSuspended event
-    //  */
-    // function suspendCredential(
-    //     bytes32 credentialHash,
-    //     string calldata reason
-    // ) external;
-
-    // /**
-    //  * @dev Reactivates a suspended Verifiable Credential
-    //  * 
-    //  * Requirements:
-    //  * - Caller must be the issuer or have TRUSTEE/ENDORSER role
-    //  * - Credential must exist and be currently suspended
-    //  * 
-    //  * @param credentialHash keccak256 hash of the credential to reactivate
-    //  * 
-    //  * Emits: CredentialReactivated event
-    //  */
-    // function reactivateCredential(bytes32 credentialHash) external;
 }

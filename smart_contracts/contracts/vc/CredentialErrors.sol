@@ -80,46 +80,6 @@ error IdentityHasBeenDeactivated(address identity, string reason);
  */
 error InvalidIdentity(address identity, string reason);
 
-/**
- * @notice Error thrown when an issuer is not found or not registered
- * @param identity The address of the DID that is not found
- */
-error IssuerNotFound(address identity);
-
-/**
- * @notice Error thrown when an issuer is not authorized to perform an action
- * @param identity The address of the DID that is not authorized
- * @param reason The reason for the authorization failure
- */
-error IssuerNotAuthorized(address identity, string reason);
-
-/**
- * @notice Error thrown when an issuer's registration has been deactivated
- * @param identity The address of the DID that has been deactivated
- * @param reason The reason for the deactivated issuer
- */
-error IssuerHasBeenDeactivated(address identity, string reason);
-
-/**
- * @notice Error thrown when a holder is not found or not registered
- * @param identity The address of the DID that is not found
- */
-error HolderNotFound(address identity);
-
-/**
- * @notice Error thrown when a holder is not authorized to perform an action
- * @param identity The address of the DID that is not authorized
- * @param reason The reason for the authorization failure
- */
-error HolderNotAuthorized(address identity, string reason);
-
-/**
- * @notice Error thrown when attempting to issue a credential to an invalid holder
- * @param identity The address of Holder DID that is invalid 
- * @param reason The reason for invalid credential holder
- */
-error InvalidCredentialHolder(address identity, string reason);
-
 // ============================================================================
 // W3C VC DATA MODEL VALIDATION ERRORS
 // ============================================================================
@@ -139,26 +99,6 @@ error InvalidIssuanceDate(bytes32 credentialHash, uint64 issuanceDate, uint64 cu
  * @param expirationDate The invalid expiration date
  */
 error InvalidExpirationDate(bytes32 credentialHash, uint64 issuanceDate, uint64 expirationDate);
-
-// ============================================================================
-// CRYPTOGRAPHIC AND SECURITY ERRORS
-// ============================================================================
-
-/**
- * @notice Error thrown when signature verification fails
- * @param credentialHash The keccak256 hash of the credential
- * @param signer The address that attempted to sign
- * @param verificationMethod The verification method that was used
- */
-error SignatureVerificationFailed(bytes32 credentialHash, address signer, string verificationMethod);
-
-/**
- * @notice Error thrown when nonce is invalid or already used
- * @param account The account associated with the invalid nonce
- * @param providedNonce The invalid nonce that was provided
- * @param expectedNonce The expected nonce value
- */
-error InvalidNonce(address account, uint256 providedNonce, uint256 expectedNonce);
 
 // ============================================================================
 // ACCESS CONTROL AND PERMISSION ERRORS

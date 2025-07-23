@@ -13,7 +13,6 @@ import {
     CredentialAlreadyExists,
     CredentialNotFound,
     CredentialIsRevoked,
-    CredentialIsSuspended,
     InvalidStatusTransition,
     IdentityNotFound,
     IdentityHasBeenDeactivated,
@@ -120,9 +119,6 @@ contract CredentialRegistry is ICredentialRegistry {
         );
         // Verify signature
         address actor = ecrecover(hash, sigV, sigR, sigS);
-        // if (actor == address(0)) {
-        //     revert Unauthorized(actor);
-        // }
 
         // Call internal function to issue credential
         _issueCredential(identity, actor, credentialId, credentialCid);
@@ -175,9 +171,6 @@ contract CredentialRegistry is ICredentialRegistry {
         _onlyAuthorizedRole
         _uniqueCredentialId(credentialId)
     {
-        // bytes32 issuerHash  = _didHash(actor);
-        // bytes32 holderHash  = _didHash(identity);
-
         // Validate both actor (issuer) and identity (holder)
         _validateExternalRequirements(actor);
         _validateExternalRequirements(identity);
@@ -195,17 +188,8 @@ contract CredentialRegistry is ICredentialRegistry {
 
         CredentialMetadata storage metadata = _credentials[credentialId].metadata;
         metadata.issuanceDate               = uint40(block.timestamp);
-        metadata.expirationDate             = 0;                         // Default to no expiration
-        metadata.status                     = CredentialStatus.ACTIVE;   // Default status
-
-        // _credentials[credentialId] = CredentialRecord({
-        //     issuer: actor,
-        //     metadata: CredentialMetadata({
-        //         issuanceDate: uint40(block.timestamp),
-        //         expirationDate: 0,
-        //         status: CredentialStatus.ACTIVE
-        //     })
-        // });
+        metadata.expirationDate             = 0; // Default to no expiration
+        metadata.status                     = CredentialStatus.ACTIVE; // Default status
         
         // Emit event for credential issuance
         emit CredentialIssued(
@@ -355,10 +339,6 @@ contract CredentialRegistry is ICredentialRegistry {
             emit CredentialReactivated(credentialId, timestamp);
         }
     }
-
-    // function _didHash(address identity) internal pure returns (bytes32) {
-    //     return keccak256(abi.encodePacked("did:ethr:", identity));
-    // }
 
     /**
     * @dev Converts CredentialStatus enum to human-readable string
