@@ -204,6 +204,11 @@ contract DidRegistry is IDidRegistry {
     }
 
     /// @inheritdoc IDidRegistry
+    function didExists(address identity) external view override returns (bool exists) {
+        return _dids[identity].metadata.created != 0;
+    }
+
+    /// @inheritdoc IDidRegistry
     function validateDocumentHash(address identity, bytes32 hash) external view override _didExist(identity) returns (bool valid) {
         return _dids[identity].docHash == hash;
     }

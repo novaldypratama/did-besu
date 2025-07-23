@@ -124,6 +124,13 @@ interface IDidRegistry {
     );
 
     /**
+     * @dev Checks if a DID exists
+     * @param identity Address to check
+     * @return exists True if the DID exists
+     */
+    function didExists(address identity) external view returns (bool exists);
+
+    /**
      * @dev Validates if provided hash matches the stored document hash
      * @param identity Address of the DID
      * @param hash Hash to validate against the stored document hash
