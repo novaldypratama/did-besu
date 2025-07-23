@@ -3,12 +3,12 @@
 # Common SSI benchmark arguments
 ssiArgs: &ssi-args
   didPrefix: "did:besu:"
-  issuerCount: 5
-  holderCount: 10
+  issuerCount: 2
+  holderCount: 2
   verifierCount: 2
   gasLimit: 6000000
   web3signerUrl: "http://127.0.0.1:18545"
-  besuEndpoint: "http://172.16.239.15:8545"
+  besuEndpoint: "ws://172.16.239.15:8546"
   chainId: 1337
   contractAddresses:
     DIDRegistry: "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256"

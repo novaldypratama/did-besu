@@ -1,7 +1,7 @@
 ---
 caliper:
-  benchconfig: benchmarks/config.yaml
-  networkconfig: networks/ethereum/besu-network.json
+  benchconfig: benchmarks/simple-test/config.yaml
+  networkconfig: networks/ethereum/simple/besu-network.json
   workspace: ./
   report:
     path: report.html
@@ -20,18 +20,18 @@ caliper:
         enabled: true
         level: debug
         filename: caliper.log
-  prometheus:
-    url: http://localhost:9090 # Connect to Prometheus for additional metrics
-    metrics:
-      include:
-        [
-          "besu_blockchain_difficulty_total",
-          "besu_blockchain_height",
-          "process_cpu_seconds_total",
-          "process_resident_memory_bytes",
-          "txpool_pending",
-          "txpool_queued",
-        ]
+  # prometheus:
+  #   url: http://localhost:9090 # Connect to Prometheus for additional metrics
+  #   metrics:
+  #     include:
+  #       [
+  #         "besu_blockchain_difficulty_total",
+  #         "besu_blockchain_height",
+  #         "process_cpu_seconds_total",
+  #         "process_resident_memory_bytes",
+  #         "txpool_pending",
+  #         "txpool_queued",
+  #       ]
 
 besu:
   transactionSettings:

@@ -7,8 +7,8 @@
     "contractDeployerAddresses": "0x06d06c366B213f716b51BCA6Dc1874aFc05467d0",
     "contractDeployerAddressPrivateKeys": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed",
     "gas": {
-      "limit": 20000000,
-      "price": 0
+      "limit": 5000000,
+      "price": 50
     },
     "fromAddress": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
     "fromAddressPrivateKey": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed",
