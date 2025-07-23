@@ -1,136 +1,141 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.20;
 
-import { ControlledUpgradeable } from "../upgrade/ControlledUpgradeable.sol";
+import { Unauthorized, InvalidRole, RoleNotFound } from "./AuthErrors.sol";
+import { IRoleControl } from "./IRoleControl.sol";
 
-import { Unauthorized } from "./AuthErrors.sol";
-import { RoleControlInterface } from "./RoleControlInterface.sol";
-
-contract RoleControl is RoleControlInterface, ControlledUpgradeable {
+/**
+ * @title RoleControl
+ * @dev Implementation of the SSI Trust Triangle role system.
+ * Manages roles for Issuers, Holders, and Trustees in a W3C-compliant SSI ecosystem.
+ */
+contract RoleControl is IRoleControl {
     /**
-     * @dev Type describing single initial assignment.
-     */
-    struct InitialAssignments {
-        ROLES role;
-        address account;
-    }
-
-    /**
-     * @dev Mapping holding the list of accounts with roles assigned to them.
-     * Accounts which does not have any role assigned are not present in the list.
+     * @dev Mapping of accounts to their assigned roles
      */
     mapping(address account => ROLES role) private _roles;
 
     /**
-     * @dev Mapping holding relationship between existing roles and roles who can manage (assign/revoke) them.
+     * @dev Mapping of roles to their manager roles
      */
     mapping(ROLES role => ROLES ownerRole) private _roleOwners;
 
     /**
-     * @dev Count of accounts with each roles.
+     * @dev Count of accounts with each role
      */
     mapping(ROLES role => uint32 count) private _roleCounts;
 
     /**
-     * @dev Modifier that checks that an the sender account has a specific role to perform an action.
+     * @dev Modifier that checks if the sender has permission to manage a role
      */
-    modifier _onlyRoleOwner(ROLES role) {
+    modifier onlyRoleOwner(ROLES role) {
         ROLES ownerRole = _roleOwners[role];
         if (!hasRole(ownerRole, msg.sender)) revert Unauthorized(msg.sender);
         _;
     }
 
-    function initialize(address upgradeControlAddress) public reinitializer(1) {
-        _initialTrustee();
-        _initRoles();
-        _initializeUpgradeControl(upgradeControlAddress);
+    /**
+     * @dev Constructor that sets up the initial role hierarchy and assigns
+     * the deployer as a TRUSTEE.
+     */
+    constructor() {
+        // Set up role management hierarchy
+        _roleOwners[ROLES.TRUSTEE] = ROLES.TRUSTEE;
+        _roleOwners[ROLES.ISSUER] = ROLES.TRUSTEE;
+        _roleOwners[ROLES.HOLDER] = ROLES.TRUSTEE;
+
+        // Assign deployer as TRUSTEE
+        _roles[msg.sender] = ROLES.TRUSTEE;
+        _roleCounts[ROLES.TRUSTEE]++;
+
+        emit RoleAssigned(ROLES.TRUSTEE, msg.sender, msg.sender);
     }
 
-    /// @inheritdoc RoleControlInterface
-    function assignRole(ROLES role, address account) public virtual _onlyRoleOwner(role) returns (ROLES assignedRole) {
-        if (!hasRole(role, account)) {
-            _roles[account] = role;
-            _roleCounts[role]++;
+    /// @inheritdoc IRoleControl
+    function assignRole(ROLES role, address account)
+        public
+        virtual
+        onlyRoleOwner(role)
+        returns (ROLES)
+    {
+        // Validate role is within enum range
+        if (uint8(role) == 0 || uint8(role) > 3) revert InvalidRole(uint8(role));
 
-            emit RoleAssigned(role, account, msg.sender);
+        // Check if account already has this role
+        if (_roles[account] == role) return role;
+
+        // If account has a different role, revoke it first
+        if (_roles[account] != ROLES.EMPTY) {
+            ROLES oldRole = _roles[account];
+            _roleCounts[oldRole]--;
         }
+
+        // Assign new role
+        _roles[account] = role;
+        _roleCounts[role]++;
+
+        emit RoleAssigned(role, account, msg.sender);
         return role;
     }
 
-    /// @inheritdoc RoleControlInterface
-    function revokeRole(ROLES role, address account) public virtual _onlyRoleOwner(role) returns (bool) {
-        if (hasRole(role, account)) {
+    /// @inheritdoc IRoleControl
+    function revokeRole(ROLES role, address account)
+        public
+        virtual
+        onlyRoleOwner(role)
+        returns (bool)
+    {
+        if (_roles[account] == role) {
             delete _roles[account];
             _roleCounts[role]--;
 
             emit RoleRevoked(role, account, msg.sender);
-
             return true;
         }
         return false;
     }
 
-    /// @inheritdoc RoleControlInterface
+    /// @inheritdoc IRoleControl
     function hasRole(ROLES role, address account) public view virtual returns (bool) {
         return _roles[account] == role;
     }
 
-    /**
-     * @notice Function to check if an account has requested role assigned.
-     * @param account The address of the account whose role is being queried.
-     * @return role The role assigned to the specified account.
-     */
-    function getRole(address account) public view virtual returns (ROLES role) {
+    /// @inheritdoc IRoleControl
+    function getRole(address account) public view virtual returns (ROLES) {
         return _roles[account];
     }
 
-    /// @inheritdoc RoleControlInterface
+    /// @inheritdoc IRoleControl
     function getRoleCount(ROLES role) public view virtual returns (uint32) {
         return _roleCounts[role];
     }
 
-    /// @inheritdoc RoleControlInterface
+    /// @inheritdoc IRoleControl
     function isTrustee(address identity) public view virtual {
         if (_roles[identity] != ROLES.TRUSTEE) revert Unauthorized(identity);
     }
 
-    /// @inheritdoc RoleControlInterface
-    function isEndorser(address identity) public view virtual {
-        if (_roles[identity] != ROLES.ENDORSER) revert Unauthorized(identity);
+    /// @inheritdoc IRoleControl
+    function isIssuer(address identity) public view virtual {
+        if (_roles[identity] != ROLES.ISSUER) revert Unauthorized(identity);
     }
 
-    /// @inheritdoc RoleControlInterface
-    function isSteward(address identity) public view virtual {
-        if (_roles[identity] != ROLES.STEWARD) revert Unauthorized(identity);
+    /// @inheritdoc IRoleControl
+    function isHolder(address identity) public view virtual {
+        if (_roles[identity] != ROLES.HOLDER) revert Unauthorized(identity);
     }
 
-    /// @inheritdoc RoleControlInterface
-    function isTrusteeOrEndorser(address identity) public view virtual {
+    /// @inheritdoc IRoleControl
+    function isTrusteeOrIssuer(address identity) public view virtual {
         ROLES role = _roles[identity];
-        if (role != ROLES.ENDORSER && role != ROLES.TRUSTEE) revert Unauthorized(identity);
+        if (role != ROLES.TRUSTEE && role != ROLES.ISSUER) {
+            revert Unauthorized(identity);
+        }
     }
 
-    /// @inheritdoc RoleControlInterface
-    function isTrusteeOrEndorserOrSteward(address identity) public view virtual {
+    /// @inheritdoc IRoleControl
+    function isTrusteeOrIssuerOrHolder(address identity) public view virtual {
         ROLES role = _roles[identity];
-        if (role != ROLES.ENDORSER && role != ROLES.TRUSTEE && role != ROLES.STEWARD) revert Unauthorized(identity);
-    }
-
-    /**
-     * @dev Function to set initial owners for roles.
-     */
-    function _initRoles() private {
-        _roleOwners[ROLES.TRUSTEE] = ROLES.TRUSTEE;
-        _roleOwners[ROLES.ENDORSER] = ROLES.TRUSTEE;
-        _roleOwners[ROLES.STEWARD] = ROLES.TRUSTEE;
-        return;
-    }
-
-    /**
-     * @dev Function to set the party deploying the contract as a trustee.
-     */
-    function _initialTrustee() private {
-        assignRole(ROLES.TRUSTEE, msg.sender);
-        return;
+        if (role != ROLES.ISSUER && role != ROLES.TRUSTEE && role != ROLES.HOLDER) revert Unauthorized(identity);
     }
 }
