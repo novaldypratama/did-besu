@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.20;
 
-import { DidRecord, DidStatus } from "./DidTypeNew.sol";
+import { DidRecord, DidStatus } from "./DidType.sol";
 
 /**
  * @title IDidRegistry
- * @dev Interface for DID document management following W3C DID Core specification
+ * @dev Interface for DID document management following W3C DID Core v1.0 specification
  */
 interface IDidRegistry {
     /**
@@ -111,20 +111,6 @@ interface IDidRegistry {
     function resolveDid(address identity) external view returns (DidRecord memory didRecord);
 
     /**
-     * @dev Checks if a DID exists
-     * @param identity Address to check
-     * @return exists True if the DID exists
-     */
-    // function didExists(address identity) external view returns (bool exists);
-
-    /**
-     * @dev Checks if a DID is active
-     * @param identity Address of the DID to check
-     * @return isActive True if the DID is active
-     */
-    // function didActive(address identity) external view returns (bool isActive);
-
-    /**
     * @dev Validates a DID in a single call, returning all validation data at once
     * @param identity The address to validate
     * @return exists Whether the DID exists
@@ -136,13 +122,6 @@ interface IDidRegistry {
         bool active,
         address owner
     );
-
-    // /**
-    //  * @dev Gets the current status of a DID
-    //  * @param identity Address of the DID
-    //  * @return status Current status of the DID
-    //  */
-    // function getDidStatus(address identity) external view returns (DidStatus status);
 
     /**
      * @dev Validates if provided hash matches the stored document hash

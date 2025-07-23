@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import { IRoleControl } from "../auth/IRoleControl.sol";
 import { Unauthorized } from "../auth/AuthErrors.sol";
 import { DidAlreadyExist, DidHasBeenDeactivated, DidNotFound, NotIdentityOwner, InvalidDidDocument } from "./DidErrors.sol";
-import { DidRecord, DidMetadata, DidStatus } from "./DidTypeNew.sol";
+import { DidRecord, DidMetadata, DidStatus } from "./DidType.sol";
 import { IDidRegistry } from "./IDidRegistry.sol";
 
 /**
@@ -174,22 +174,6 @@ contract DidRegistry is IDidRegistry {
         return _dids[identity];
     }
 
-    // /// @inheritdoc IDidRegistry
-    // function didExists(address identity) external view override returns (bool exists) {
-    //     return _dids[identity].metadata.created != 0;
-    // }
-
-    // /// @inheritdoc IDidRegistry
-    // function didActive(address identity) external view override _didIsActive(identity) returns (bool isActive) {
-    //     return _dids[identity].metadata.status == DidStatus.ACTIVE;
-    // }
-
-    // /// @inheritdoc IDidRegistry
-    // function getDidStatus(address identity) public view override returns (DidStatus status) {
-    //     if (!didExists(identity)) return DidStatus.NONE;
-    //     return _dids[identity].metadata.status;
-    // }
-
     /// @inheritdoc IDidRegistry
     function validateDid(address identity) external view returns (
         bool exists,
@@ -286,6 +270,7 @@ contract DidRegistry is IDidRegistry {
         // Update state variables
         _dids[identity].docHash = docHash;
 
+        // Update metadata fields - packing optimization occurs here
         DidMetadata storage metadata = _dids[identity].metadata;
         metadata.updated = uint64(block.timestamp);
         metadata.versionId = uint32(block.number);
@@ -309,7 +294,7 @@ contract DidRegistry is IDidRegistry {
         _identityOwner(identity, actor)
         _senderIsIdentityOwnerOrTrustee(identity)
     {
-        // Update state variables
+        // Update state variables - packing optimization occurs here
         DidMetadata storage metadata = _dids[identity].metadata;
         metadata.status = DidStatus.DEACTIVATED;
         metadata.updated = uint64(block.timestamp);

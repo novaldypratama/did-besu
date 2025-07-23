@@ -34,14 +34,6 @@ error DidAlreadyExist(address identity);
  */
 error DidHasBeenDeactivated(address identity, string operationName);
 
-/**
- * @dev Error that occurs when attempting to update a DID before minimum update period
- * @param identity The address of the DID
- * @param currentTime Current block timestamp
- * @param earliestUpdateTime The earliest time an update is allowed
- */
-error DidUpdateTooSoon(address identity, uint256 currentTime, uint256 earliestUpdateTime);
-
 //--------------------------------------------------------------------------
 // DID FORMAT ERRORS
 //--------------------------------------------------------------------------
