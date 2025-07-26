@@ -17,7 +17,7 @@ test:
       rateControl:
         type: fixed-rate
         opts:
-          tps: 10
+          tps: 20
       workload:
         module: benchmarks/simple-test/open.js
         arguments: *simple-args
@@ -28,7 +28,7 @@ test:
       rateControl:
         type: fixed-rate
         opts:
-          tps: 10
+          tps: 20
       workload:
         module: benchmarks/simple-test/query.js
         arguments: *simple-args
@@ -39,7 +39,7 @@ test:
       rateControl:
         type: fixed-rate
         opts:
-          tps: 10
+          tps: 20
       workload:
         module: benchmarks/simple-test/transfer.js
         arguments: *simple-args
