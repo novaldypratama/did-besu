@@ -1,0 +1,1230 @@
+{
+  "caliper": {
+    "blockchain": "ethereum"
+  },
+  "ethereum": {
+    "url": "ws://172.16.239.15:8546",
+    "contractDeployerAddresses": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
+    "contractDeployerAddressPrivateKeys": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
+    "fromAddress": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
+    "fromAddressPrivateKey": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
+    "transactionConfirmationBlocks": 2,
+    "accounts": [
+      {
+        "address": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
+        "privateKey": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63"
+      },
+      {
+        "address": "0x627306090abaB3A6e1400e9345bC60c78a8BEf57",
+        "privateKey": "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"
+      },
+      {
+        "address": "0xf17f52151EbEF6C7334FAD080c5704D77216b732",
+        "privateKey": "0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f"
+      },
+      {
+        "address": "0xc9c913c8c3c1cd416d80a0abf475db2062f161f6",
+        "privateKey": "0x60bbe10a196a4e71451c0f6e9ec9beab454c2a5ac0542aa5b8b733ff5719fec3"
+      },
+      {
+        "address": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
+        "privateKey": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed"
+      },
+      {
+        "address": "0x2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c",
+        "privateKey": "0x270bbbfd7748547ec9bc983e16864d37a303720ae76044114dc00cb42ee0c446"
+      },
+      {
+        "address": "0x8dd478dee59d3b7c16a2e34cb5d321ed23d2677d",
+        "privateKey": "0x8a5fb061550c3db1a78665259a44222d33e14246c914c1b70bdf43ce05d2b119"
+      },
+      {
+        "address": "0x9b790656b9ec0db1936ed84b3bea605873558198",
+        "privateKey": "0x797bbe0373132e8c5483515b68ecbb6d3581b56f0205b653ad2b30a559e83891"
+      },
+      {
+        "address": "0xe43f47c497e0eFC3fe96a85B2041aFF2F0d317A5",
+        "privateKey": "0x69df614162f5c1ed4f00a924ece67035a86a2011a2f72a381273599e8c49a1c0"
+      }
+    ],
+    "contracts": {
+      "RoleControl": {
+        "constructorArgs": [],
+        "deploy": false,
+        "estimateGas": true,
+        "gas": {
+          "limit": 1800000,
+          "price": 10000000000
+        },
+        "address": "0x42699A7612A82f1d9C36148af9C77354759b210b",
+        "functions": {
+          "assignRole": 200000,
+          "revokeRole": 100000,
+          "getRole": 80000,
+          "hasRole": 80000,
+          "getRoleCount": 80000
+        },
+        "abi": [
+          {
+            "inputs": [],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "uint8",
+                "name": "role",
+                "type": "uint8"
+              }
+            ],
+            "name": "InvalidRole",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              }
+            ],
+            "name": "Unauthorized",
+            "type": "error"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "enum IRoleControl.ROLES",
+                "name": "role",
+                "type": "uint8"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              }
+            ],
+            "name": "RoleAssigned",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": false,
+                "internalType": "enum IRoleControl.ROLES",
+                "name": "role",
+                "type": "uint8"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              }
+            ],
+            "name": "RoleRevoked",
+            "type": "event"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "enum IRoleControl.ROLES",
+                "name": "role",
+                "type": "uint8"
+              },
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              }
+            ],
+            "name": "assignRole",
+            "outputs": [
+              {
+                "internalType": "enum IRoleControl.ROLES",
+                "name": "",
+                "type": "uint8"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              }
+            ],
+            "name": "getRole",
+            "outputs": [
+              {
+                "internalType": "enum IRoleControl.ROLES",
+                "name": "",
+                "type": "uint8"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "enum IRoleControl.ROLES",
+                "name": "role",
+                "type": "uint8"
+              }
+            ],
+            "name": "getRoleCount",
+            "outputs": [
+              {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "enum IRoleControl.ROLES",
+                "name": "role",
+                "type": "uint8"
+              },
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              }
+            ],
+            "name": "hasRole",
+            "outputs": [
+              {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "isHolder",
+            "outputs": [],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "isIssuer",
+            "outputs": [],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "isTrustee",
+            "outputs": [],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "isTrusteeOrIssuer",
+            "outputs": [],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "isTrusteeOrIssuerOrHolder",
+            "outputs": [],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "enum IRoleControl.ROLES",
+                "name": "role",
+                "type": "uint8"
+              },
+              {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+              }
+            ],
+            "name": "revokeRole",
+            "outputs": [
+              {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          }
+        ]
+      },
+      "DidRegistry": {
+        "constructorArgs": [
+          "0x42699A7612A82f1d9C36148af9C77354759b210b"
+        ],
+        "deploy": false,
+        "estimateGas": true,
+        "gas": {
+          "limit": 3000000,
+          "price": 10000000000
+        },
+        "address": "0xa50a51c09a5c451C52BB714527E1974b686D8e77",
+        "functions": {
+          "createDid": 200000,
+          "updateDid": 100000,
+          "deactivateDid": 80000,
+          "resolveDid": 80000,
+          "validateDid": 80000
+        },
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "roleControlContractAddress",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "DidAlreadyExist",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "operationName",
+                "type": "string"
+              }
+            ],
+            "name": "DidHasBeenDeactivated",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "DidNotFound",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "InvalidDidDocument",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "actor",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "NotIdentityOwner",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+              }
+            ],
+            "name": "Unauthorized",
+            "type": "error"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "docHash",
+                "type": "bytes32"
+              },
+              {
+                "indexed": false,
+                "internalType": "string",
+                "name": "docCid",
+                "type": "string"
+              }
+            ],
+            "name": "DIDCreated",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "DIDDeactivated",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "docHash",
+                "type": "bytes32"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "versionId",
+                "type": "uint32"
+              },
+              {
+                "indexed": false,
+                "internalType": "string",
+                "name": "docCid",
+                "type": "string"
+              }
+            ],
+            "name": "DIDUpdated",
+            "type": "event"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "docHash",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "docCid",
+                "type": "string"
+              }
+            ],
+            "name": "createDid",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "uint8",
+                "name": "sigV",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "sigR",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "sigS",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "docHash",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "docCid",
+                "type": "string"
+              }
+            ],
+            "name": "createDidSigned",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "deactivateDid",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "uint8",
+                "name": "sigV",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "sigR",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "sigS",
+                "type": "bytes32"
+              }
+            ],
+            "name": "deactivateDidSigned",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "didExists",
+            "outputs": [
+              {
+                "internalType": "bool",
+                "name": "exists",
+                "type": "bool"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "resolveDid",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "bytes32",
+                    "name": "docHash",
+                    "type": "bytes32"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "created",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "uint64",
+                        "name": "updated",
+                        "type": "uint64"
+                      },
+                      {
+                        "internalType": "uint32",
+                        "name": "versionId",
+                        "type": "uint32"
+                      },
+                      {
+                        "internalType": "enum DidStatus",
+                        "name": "status",
+                        "type": "uint8"
+                      }
+                    ],
+                    "internalType": "struct DidMetadata",
+                    "name": "metadata",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct DidRecord",
+                "name": "didRecord",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "docHash",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "docCid",
+                "type": "string"
+              }
+            ],
+            "name": "updateDid",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "uint8",
+                "name": "sigV",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "sigR",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "sigS",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "docHash",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "docCid",
+                "type": "string"
+              }
+            ],
+            "name": "updateDidSigned",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "validateDid",
+            "outputs": [
+              {
+                "internalType": "bool",
+                "name": "exists",
+                "type": "bool"
+              },
+              {
+                "internalType": "bool",
+                "name": "active",
+                "type": "bool"
+              },
+              {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "hash",
+                "type": "bytes32"
+              }
+            ],
+            "name": "validateDocumentHash",
+            "outputs": [
+              {
+                "internalType": "bool",
+                "name": "valid",
+                "type": "bool"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          }
+        ]
+      },
+      "CredentialRegistry": {
+        "constructorArgs": [
+          "0x42699A7612A82f1d9C36148af9C77354759b210b",
+          "0xa50a51c09a5c451C52BB714527E1974b686D8e77"
+        ],
+        "deploy": false,
+        "estimateGas": true,
+        "gas": {
+          "limit": 3000000,
+          "price": 10000000000
+        },
+        "address": "0x9a3DBCa554e9f6b9257aAa24010DA8377C57c17e",
+        "functions": {
+          "issueCredential": 250000,
+          "updateCredentialStatus": 150000,
+          "resolveCredential": 80000
+        },
+        "abi": [
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "roleControlAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "didRegistryAddress",
+                "type": "address"
+              }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "credentialHash",
+                "type": "bytes32"
+              }
+            ],
+            "name": "CredentialAlreadyExists",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "credentialHash",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint64",
+                "name": "revokedAt",
+                "type": "uint64"
+              },
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "CredentialIsRevoked",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "credentialHash",
+                "type": "bytes32"
+              }
+            ],
+            "name": "CredentialNotFound",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "issuer",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "holder",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "IdenticalCallerAddress",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "IdentityHasBeenDeactivated",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "IdentityNotFound",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "InvalidIdentity",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "credentialHash",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint8",
+                "name": "currentStatus",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint8",
+                "name": "attemptedStatus",
+                "type": "uint8"
+              },
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "InvalidStatusTransition",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "expectedIssuer",
+                "type": "address"
+              }
+            ],
+            "name": "NotCredentialIssuer",
+            "type": "error"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "credentialId",
+                "type": "bytes32"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "actor",
+                "type": "address"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "indexed": false,
+                "internalType": "string",
+                "name": "credentialCid",
+                "type": "string"
+              }
+            ],
+            "name": "CredentialIssued",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "credentialHash",
+                "type": "bytes32"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "reactivatedAt",
+                "type": "uint64"
+              }
+            ],
+            "name": "CredentialReactivated",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "credentialHash",
+                "type": "bytes32"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "revokedAt",
+                "type": "uint64"
+              }
+            ],
+            "name": "CredentialRevoked",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "credentialId",
+                "type": "bytes32"
+              },
+              {
+                "indexed": false,
+                "internalType": "enum CredentialStatus",
+                "name": "previousStatus",
+                "type": "uint8"
+              },
+              {
+                "indexed": false,
+                "internalType": "enum CredentialStatus",
+                "name": "newStatus",
+                "type": "uint8"
+              },
+              {
+                "indexed": true,
+                "internalType": "address",
+                "name": "updatedBy",
+                "type": "address"
+              }
+            ],
+            "name": "CredentialStatusUpdated",
+            "type": "event"
+          },
+          {
+            "anonymous": false,
+            "inputs": [
+              {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "credentialHash",
+                "type": "bytes32"
+              },
+              {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "suspendedAt",
+                "type": "uint64"
+              }
+            ],
+            "name": "CredentialSuspended",
+            "type": "event"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "credentialId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "credentialCid",
+                "type": "string"
+              }
+            ],
+            "name": "issueCredential",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "uint8",
+                "name": "sigV",
+                "type": "uint8"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "sigR",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "sigS",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "bytes32",
+                "name": "credentialId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "string",
+                "name": "credentialCid",
+                "type": "string"
+              }
+            ],
+            "name": "issueCredentialSigned",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "credentialId",
+                "type": "bytes32"
+              }
+            ],
+            "name": "resolveCredential",
+            "outputs": [
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "issuer",
+                    "type": "address"
+                  },
+                  {
+                    "components": [
+                      {
+                        "internalType": "uint40",
+                        "name": "issuanceDate",
+                        "type": "uint40"
+                      },
+                      {
+                        "internalType": "uint32",
+                        "name": "expirationDate",
+                        "type": "uint32"
+                      },
+                      {
+                        "internalType": "enum CredentialStatus",
+                        "name": "status",
+                        "type": "uint8"
+                      }
+                    ],
+                    "internalType": "struct CredentialMetadata",
+                    "name": "metadata",
+                    "type": "tuple"
+                  }
+                ],
+                "internalType": "struct CredentialRecord",
+                "name": "credentialRecord",
+                "type": "tuple"
+              }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "credentialId",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "enum CredentialStatus",
+                "name": "previousStatus",
+                "type": "uint8"
+              },
+              {
+                "internalType": "enum CredentialStatus",
+                "name": "newStatus",
+                "type": "uint8"
+              }
+            ],
+            "name": "updateCredentialStatus",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+          }
+        ]
+      }
+    }
+  }
+}

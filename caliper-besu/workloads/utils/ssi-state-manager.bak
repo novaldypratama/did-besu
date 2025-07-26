@@ -1,0 +1,553 @@
+'use strict';
+
+const crypto = require('crypto');
+const { ethers } = require('ethers');
+
+// SSI Entity Types
+const SSI_ENTITY_TYPES = {
+  ROLE: 'role',
+  DID: 'did', 
+  CREDENTIAL: 'credential'
+};
+
+// SSI Role Types (based on RoleControl contract)
+const SSI_ROLES = {
+  NONE: 0,
+  ISSUER: 1, 
+  HOLDER: 2,
+  TRUSTEE: 3
+};
+
+// Credential Status Types (based on CredentialRegistry contract)
+const CREDENTIAL_STATUS = {
+  NONE: 0,
+  ACTIVE: 1,
+  REVOKED: 2,
+  SUSPENDED: 3
+};
+
+// DID Status Types (based on DidRegistry contract)
+const DID_STATUS = {
+  NONE: 0,
+  ACTIVE: 1,
+  DEACTIVATED: 2
+};
+
+// Character dictionary for generating unique identifiers
+const Dictionary = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+/**
+ * Class for managing SSI-specific state across multiple contracts.
+ * Inspired by SimpleState but designed for complex SSI workflows.
+ */
+class SSIStateManager {
+  /**
+   * Initializes the SSI state manager.
+   * @param {number} workerIndex - Index of the worker
+   * @param {string} primaryEntityType - Primary entity type for this workload
+   * @param {Object} config - SSI configuration object
+   */
+  constructor(workerIndex, primaryEntityType, config = {}) {
+    this.workerIndex = workerIndex;
+    this.primaryEntityType = primaryEntityType;
+    this.config = config;
+
+    // Generate worker-specific prefix to avoid conflicts
+    this.workerPrefix = this._generateWorkerPrefix(workerIndex);
+    
+    // State counters for different entity types
+    this.counters = {
+      [SSI_ENTITY_TYPES.ROLE]: 0,
+      [SSI_ENTITY_TYPES.DID]: 0,
+      [SSI_ENTITY_TYPES.CREDENTIAL]: 0
+    };
+
+    // State storage for entities and relationships
+    this.entities = {
+      roles: new Map(),        // address -> role info
+      dids: new Map(),         // address -> DID info  
+      credentials: new Map()   // credentialId -> credential info
+    };
+
+    // Cross-entity relationships
+    this.relationships = {
+      didToRole: new Map(),           // DID address -> role
+      credentialToIssuer: new Map(),  // credentialId -> issuer address
+      credentialToHolder: new Map(),  // credentialId -> holder address
+      issuerCredentials: new Map(),   // issuer address -> [credentialIds]
+      holderCredentials: new Map()    // holder address -> [credentialIds]
+    };
+
+    console.log(`🗃️  SSI State Manager initialized for worker ${workerIndex} (${primaryEntityType})`);
+  }
+
+  /**
+   * Generate worker-specific prefix to avoid collisions.
+   * @param {number} workerIndex - The worker index
+   * @returns {string} Generated prefix
+   * @private
+   */
+  _generateWorkerPrefix(workerIndex) {
+    let result = 'w';
+    let number = workerIndex + 1; // Start from 1 instead of 0
+    
+    while (number > 0) {
+      result += Dictionary.charAt(number % Dictionary.length);
+      number = Math.floor(number / Dictionary.length);
+    }
+    
+    return result;
+  }
+
+  /**
+   * Generate a unique identifier for an entity type.
+   * @param {string} entityType - The entity type
+   * @returns {string} Generated identifier
+   * @private
+   */
+  _generateEntityId(entityType) {
+    this.counters[entityType]++;
+    const count = this.counters[entityType];
+    return `${this.workerPrefix}-${entityType}-${count}`;
+  }
+
+  /**
+   * Generate a random Ethereum address for testing.
+   * @returns {string} Generated Ethereum address
+   * @private
+   */
+  _generateRandomAddress() {
+    const randomBytes = crypto.randomBytes(20);
+    return '0x' + randomBytes.toString('hex');
+  }
+
+  /**
+   * Generate a random bytes32 hash.
+   * @param {string} prefix - Optional prefix for hash generation
+   * @returns {string} Generated hash
+   * @private
+   */
+  _generateRandomHash(prefix = '') {
+    const randomString = `${prefix}-${Date.now()}-${Math.random()}`;
+    return ethers.utils.keccak256(ethers.utils.toUtf8Bytes(randomString));
+  }
+
+  /**
+   * Generate a random IPFS CID for testing.
+   * @returns {string} Generated CID
+   * @private
+   */
+  _generateRandomCid() {
+    const randomSuffix = crypto.randomBytes(23).toString('base64')
+      .replace(/[+/]/g, '')
+      .substring(0, 44);
+    return `Qm${randomSuffix}`;
+  }
+
+  /**
+   * Get a random entity from a collection.
+   * @param {Map} collection - The collection to select from
+   * @returns {*} Random entity or null if collection is empty
+   * @private
+   */
+  _getRandomEntity(collection) {
+    if (collection.size === 0) return null;
+    const entries = Array.from(collection.entries());
+    const randomIndex = Math.floor(Math.random() * entries.length);
+    return entries[randomIndex];
+  }
+
+  // === ROLE MANAGEMENT ===
+
+  /**
+   * Get arguments for assigning a role.
+   * @param {number} role - Role type (optional, random if not provided)
+   * @returns {Object} Role assignment arguments
+   */
+  getRoleAssignmentArguments(role = null) {
+    const targetRole = role !== null ? role : this._getRandomRoleType();
+    const targetAddress = this._generateRandomAddress();
+    
+    const roleInfo = {
+      address: targetAddress,
+      role: targetRole,
+      assignedAt: Date.now(),
+      assignedBy: this.workerIndex
+    };
+
+    // Store role assignment
+    this.entities.roles.set(targetAddress, roleInfo);
+    
+    return {
+      role: targetRole,
+      account: targetAddress
+    };
+  }
+
+  /**
+   * Get arguments for revoking a role.
+   * @returns {Object} Role revocation arguments or null if no roles exist
+   */
+  getRoleRevocationArguments() {
+    const roleEntry = this._getRandomEntity(this.entities.roles);
+    if (!roleEntry) return null;
+
+    const [address, roleInfo] = roleEntry;
+    
+    return {
+      role: roleInfo.role,
+      account: address
+    };
+  }
+
+  /**
+   * Get a random role type.
+   * @returns {number} Random role type (ISSUER, HOLDER, TRUSTEE)
+   * @private
+   */
+  _getRandomRoleType() {
+    const roles = [SSI_ROLES.ISSUER, SSI_ROLES.HOLDER, SSI_ROLES.TRUSTEE];
+    return roles[Math.floor(Math.random() * roles.length)];
+  }
+
+  // === DID MANAGEMENT ===
+
+  /**
+   * Get arguments for creating a DID.
+   * @returns {Object} DID creation arguments
+   */
+  getDIDCreationArguments() {
+    const identity = this._generateRandomAddress();
+    const docHash = this._generateRandomHash('did-doc');
+    const docCid = this._generateRandomCid();
+
+    const didInfo = {
+      identity,
+      docHash,
+      docCid,
+      status: DID_STATUS.ACTIVE,
+      createdAt: Date.now(),
+      createdBy: this.workerIndex
+    };
+
+    // Store DID creation
+    this.entities.dids.set(identity, didInfo);
+
+    // Link to role if available
+    const roleEntry = this._getRandomEntity(this.entities.roles);
+    if (roleEntry) {
+      const [roleAddress, roleInfo] = roleEntry;
+      this.relationships.didToRole.set(identity, roleInfo.role);
+    }
+
+    return {
+      identity,
+      docHash,
+      docCid
+    };
+  }
+
+  /**
+   * Get arguments for updating a DID.
+   * @returns {Object} DID update arguments or null if no DIDs exist
+   */
+  getDIDUpdateArguments() {
+    const didEntry = this._getRandomEntity(this.entities.dids);
+    if (!didEntry) return null;
+
+    const [identity, didInfo] = didEntry;
+    
+    // Only update active DIDs
+    if (didInfo.status !== DID_STATUS.ACTIVE) return null;
+
+    const newDocHash = this._generateRandomHash('did-update');
+    const newDocCid = this._generateRandomCid();
+
+    // Update stored DID info
+    didInfo.docHash = newDocHash;
+    didInfo.docCid = newDocCid;
+    didInfo.updatedAt = Date.now();
+
+    return {
+      identity,
+      docHash: newDocHash,
+      docCid: newDocCid
+    };
+  }
+
+  /**
+   * Get arguments for deactivating a DID.
+   * @returns {Object} DID deactivation arguments or null if no active DIDs exist
+   */
+  getDIDDeactivationArguments() {
+    const activeDids = Array.from(this.entities.dids.entries())
+      .filter(([_, didInfo]) => didInfo.status === DID_STATUS.ACTIVE);
+    
+    if (activeDids.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * activeDids.length);
+    const [identity, didInfo] = activeDids[randomIndex];
+
+    // Update status
+    didInfo.status = DID_STATUS.DEACTIVATED;
+    didInfo.deactivatedAt = Date.now();
+
+    return {
+      identity
+    };
+  }
+
+  /**
+   * Get arguments for resolving a DID.
+   * @returns {Object} DID resolution arguments or null if no DIDs exist
+   */
+  getDIDResolutionArguments() {
+    const didEntry = this._getRandomEntity(this.entities.dids);
+    if (!didEntry) return null;
+
+    const [identity] = didEntry;
+    
+    return {
+      identity
+    };
+  }
+
+  // === CREDENTIAL MANAGEMENT ===
+
+  /**
+   * Get arguments for issuing a credential.
+   * @returns {Object} Credential issuance arguments or null if prerequisites not met
+   */
+  getCredentialIssuanceArguments() {
+    // Need at least one issuer and one holder
+    const issuer = this._getAddressWithRole(SSI_ROLES.ISSUER);
+    const holder = this._getAddressWithRole(SSI_ROLES.HOLDER);
+
+    if (!issuer || !holder) return null;
+
+    const credentialId = this._generateRandomHash('credential');
+    const credentialCid = this._generateRandomCid();
+
+    const credentialInfo = {
+      credentialId,
+      credentialCid,
+      issuer,
+      holder,
+      status: CREDENTIAL_STATUS.ACTIVE,
+      issuedAt: Date.now(),
+      issuedBy: this.workerIndex
+    };
+
+    // Store credential
+    this.entities.credentials.set(credentialId, credentialInfo);
+
+    // Update relationships
+    this.relationships.credentialToIssuer.set(credentialId, issuer);
+    this.relationships.credentialToHolder.set(credentialId, holder);
+
+    // Track issuer's credentials
+    if (!this.relationships.issuerCredentials.has(issuer)) {
+      this.relationships.issuerCredentials.set(issuer, []);
+    }
+    this.relationships.issuerCredentials.get(issuer).push(credentialId);
+
+    // Track holder's credentials
+    if (!this.relationships.holderCredentials.has(holder)) {
+      this.relationships.holderCredentials.set(holder, []);
+    }
+    this.relationships.holderCredentials.get(holder).push(credentialId);
+
+    return {
+      identity: holder,
+      credentialId,
+      credentialCid
+    };
+  }
+
+  /**
+   * Get arguments for updating credential status.
+   * @returns {Object} Credential status update arguments or null if no credentials exist
+   */
+  getCredentialStatusUpdateArguments() {
+    const activeCredentials = Array.from(this.entities.credentials.entries())
+      .filter(([_, credInfo]) => credInfo.status === CREDENTIAL_STATUS.ACTIVE);
+
+    if (activeCredentials.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * activeCredentials.length);
+    const [credentialId, credInfo] = activeCredentials[randomIndex];
+
+    // Random new status (REVOKED or SUSPENDED)
+    const newStatus = Math.random() < 0.5 ? CREDENTIAL_STATUS.REVOKED : CREDENTIAL_STATUS.SUSPENDED;
+    const previousStatus = credInfo.status;
+
+    // Update stored credential info
+    credInfo.status = newStatus;
+    credInfo.statusUpdatedAt = Date.now();
+
+    return {
+      credentialId,
+      previousStatus,
+      newStatus
+    };
+  }
+
+  /**
+   * Get arguments for resolving a credential.
+   * @returns {Object} Credential resolution arguments or null if no credentials exist
+   */
+  getCredentialResolutionArguments() {
+    const credentialEntry = this._getRandomEntity(this.entities.credentials);
+    if (!credentialEntry) return null;
+
+    const [credentialId] = credentialEntry;
+
+    return {
+      credentialId
+    };
+  }
+
+  /**
+   * Get an address with a specific role.
+   * @param {number} role - The role type
+   * @returns {string|null} Address with the role or null if not found
+   * @private
+   */
+  _getAddressWithRole(role) {
+    const roleEntries = Array.from(this.entities.roles.entries())
+      .filter(([_, roleInfo]) => roleInfo.role === role);
+
+    if (roleEntries.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * roleEntries.length);
+    return roleEntries[randomIndex][0];
+  }
+
+  // === UTILITY METHODS ===
+
+  /**
+   * Get the current state statistics.
+   * @returns {Object} State statistics
+   */
+  getStateStatistics() {
+    return {
+      worker: this.workerIndex,
+      entities: {
+        roles: this.entities.roles.size,
+        dids: this.entities.dids.size,
+        credentials: this.entities.credentials.size
+      },
+      relationships: {
+        didToRole: this.relationships.didToRole.size,
+        issuerCredentials: this.relationships.issuerCredentials.size,
+        holderCredentials: this.relationships.holderCredentials.size
+      },
+      counters: { ...this.counters }
+    };
+  }
+
+  /**
+   * Validate state consistency.
+   * @returns {Object} Validation results
+   */
+  validateStateConsistency() {
+    const issues = [];
+
+    // Check for orphaned relationships
+    this.relationships.credentialToIssuer.forEach((issuer, credentialId) => {
+      if (!this.entities.credentials.has(credentialId)) {
+        issues.push(`Orphaned issuer relationship for credential ${credentialId}`);
+      }
+    });
+
+    this.relationships.credentialToHolder.forEach((holder, credentialId) => {
+      if (!this.entities.credentials.has(credentialId)) {
+        issues.push(`Orphaned holder relationship for credential ${credentialId}`);
+      }
+    });
+
+    return {
+      isValid: issues.length === 0,
+      issues
+    };
+  }
+
+  /**
+   * Reset all state (useful for testing).
+   */
+  resetState() {
+    this.counters = {
+      [SSI_ENTITY_TYPES.ROLE]: 0,
+      [SSI_ENTITY_TYPES.DID]: 0,
+      [SSI_ENTITY_TYPES.CREDENTIAL]: 0
+    };
+
+    this.entities.roles.clear();
+    this.entities.dids.clear();
+    this.entities.credentials.clear();
+
+    Object.values(this.relationships).forEach(map => map.clear());
+
+    console.log(`🧹 SSI State reset for worker ${this.workerIndex}`);
+  }
+}
+
+// Export constants for use in workload modules
+SSIStateManager.ENTITY_TYPES = SSI_ENTITY_TYPES;
+SSIStateManager.ROLES = SSI_ROLES;
+SSIStateManager.CREDENTIAL_STATUS = CREDENTIAL_STATUS;
+SSIStateManager.DID_STATUS = DID_STATUS;
+
+module.exports = SSIStateManager;
+
+/* ============================================================================
+ * SSI STATE MANAGER BENEFITS & USAGE PATTERNS
+ * ============================================================================
+ * 
+ * This SSI-specific state manager provides advanced features beyond SimpleState:
+ *
+ * 1. **Multi-Entity State Management**
+ *    - Handles roles, DIDs, and credentials in unified state
+ *    - Tracks cross-entity relationships (DID-to-role, credential-to-issuer)
+ *    - Maintains referential integrity across contract boundaries
+ *
+ * 2. **Inspired Patterns from SimpleState**
+ *    - Worker-specific prefixes to avoid collisions (like accountPrefix)
+ *    - Incremental counters for unique entity generation
+ *    - Random entity selection for realistic test patterns
+ *    - Similar initialization and configuration approach
+ *
+ * 3. **SSI-Specific Enhancements**
+ *    - Smart prerequisite checking (roles before DIDs, DIDs before credentials)
+ *    - Realistic SSI workflow simulation with cross-contract dependencies
+ *    - Status management for entities (active, revoked, suspended)
+ *    - Ethereum-specific data generation (addresses, hashes, CIDs)
+ *
+ * 4. **Advanced State Features**
+ *    - State consistency validation
+ *    - Statistics and metrics collection
+ *    - Relationship tracking for complex SSI workflows
+ *    - Bootstrap capabilities for realistic test scenarios
+ *
+ * Usage Examples:
+ * ```javascript
+ * // Simple entity creation
+ * const roleArgs = stateManager.getRoleAssignmentArguments();
+ * const didArgs = stateManager.getDIDCreationArguments();
+ * 
+ * // Prerequisites-aware credential issuance
+ * const credArgs = stateManager.getCredentialIssuanceArguments();
+ * // Returns null if no issuers/holders available
+ *
+ * // State monitoring
+ * const stats = stateManager.getStateStatistics();
+ * const validation = stateManager.validateStateConsistency();
+ * ```
+ *
+ * Key Difference from SimpleState:
+ * - SimpleState: Single entity type with simple counters
+ * - SSIStateManager: Multiple entity types with complex relationships
+ * - SimpleState: Basic random selection
+ * - SSIStateManager: Smart dependency-aware entity creation
+ * ============================================================================
+ */

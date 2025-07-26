@@ -1,0 +1,179 @@
+# SSI/DID Management System Optimized Benchmark Configuration for Caliper
+
+# Common SSI benchmark arguments with optimized gas settings
+ssiArgs: &ssi-args
+  # didPrefix: "did:besu:"
+  # issuerCount: 4
+  # holderCount: 8
+  # verifierCount: 2
+  gasLimit: 12000000
+  web3signerUrl: "http://127.0.0.1:18545"
+  besuEndpoint: "ws://172.16.239.15:8546"
+  chainId: 1337
+  blockTime: 3 # 3-second block time
+
+  # CRITICAL: Contract addresses must match deployed contracts
+  contractAddresses:
+    RoleControl: "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256"
+    DidRegistry: "0xA5134e42CF382152894d040a0e89F2E4231062d8"
+    CredentialRegistry: "0x65952c0Daf5936175851904A9889bd31E49EbFFc"
+
+  # Enhanced gas configuration with safety margins
+  gasConfig:
+    # Role Control operations
+    RoleControl:
+      assignRole: 200000    # Increased for authorization checks
+      revokeRole: 100000
+      getRole: 80000        # Read operations need more gas for complex contracts
+      hasRole: 80000
+      getRoleCount: 80000
+    
+    # DID Registry operations  
+    DidRegistry:
+      createDid: 200000     # Increased for cross-contract validation
+      updateDid: 100000
+      deactivateDid: 80000
+      resolveDid: 80000
+      validateDid: 80000
+    
+    # Credential Registry operations
+    CredentialRegistry:
+      issueCredential: 250000   # Highest gas for complex credential logic
+      updateCredentialStatus: 150000
+      resolveCredential: 80000
+  # Dynamic gas pricing strategy
+  # gasPricing:
+  #   basePrice: "1000000000"      # 1 gwei base
+  #   maxPrice: "10000000000"      # 10 gwei emergency max
+  #   priorityFee: "2000000000"    # 2 gwei priority
+  #   escalationFactor: 1.25       # 25% increase on retry
+  # performanceTargets:
+  #   maxBlockUtilization: 0.85    # 85% max block usage
+  #   targetTPS: 15                # Target transactions per second
+  #   maxTPS: 25                   # Peak capacity
+  #   minSuccessRate: 0.95         # 95% success rate minimum
+  #   maxLatency: 12000            # 12 seconds max latency
+
+# Test configuration with graduated load testing
+test:
+  name: SSI/DID Management System Performance Benchmark on Optimized Besu
+  description: >
+    Comprehensive benchmark of SSI operations on Besu CLIQUE PoA network.
+    Tests various DID and Verifiable Credential operations with optimized gas configuration.
+    Block time: 3 seconds, Gas limit: 12M, Target utilization: 80%
+  workers:
+    number: 1
+  rounds:
+    # Phase 1: Role Management (Low Load)
+    - label: RoleAssignment_LowLoad
+      description: Assign roles to entities in the network (baseline test)
+      txNumber: 20
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 3 # Conservative start
+      workload:
+        module: workloads/auth/simplifiedAssignRole.js
+        arguments:
+          <<: *ssi-args
+          operationType: "assignRole"
+
+    # Phase 2: DID Creation (Medium Load)
+    - label: DIDCreation_MediumLoad
+      description: Create DID documents for issuers and holders
+      txNumber: 40
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 6 # ~50% block utilization
+      workload:
+        module: workloads/did/simplifiedCreateDid.js
+        arguments:
+          <<: *ssi-args
+          operationType: "createDid"
+
+    # # Phase 3: Credential Issuance (High Load)
+    # - label: CredentialIssuance_HighLoad
+    #   description: Issue verifiable credentials at high throughput
+    #   txNumber: 60
+    #   rateControl:
+    #     type: fixed-rate
+    #     opts:
+    #       tps: 8  # ~65% block utilization
+    #   workload:
+    #     module: workload/vc/issueCredential.js
+    #     arguments:
+    #       <<: *ssi-args
+    #       operationType: "issueCredential"
+
+    # # Phase 4: Mixed Operations (Peak Load)
+    # - label: MixedOperations_PeakLoad
+    #   description: Mixed SSI operations at peak capacity
+    #   txNumber: 100
+    #   rateControl:
+    #     type: fixed-rate
+    #     opts:
+    #       tps: 10  # ~80% block utilization target
+    #   workload:
+    #     module: workload/mixedSSIOperations.js
+    #     arguments:
+    #       <<: *ssi-args
+    #       operationType: "mixed"
+    #       operations:
+    #         - name: "createDid"
+    #           weight: 30
+    #           gasLimit: 145000
+    #         - name: "issueCredential"
+    #           weight: 40
+    #           gasLimit: 135000
+    #         - name: "updateCredentialStatus"
+    #           weight: 20
+    #           gasLimit: 65000
+    #         - name: "resolveCredential"
+    #           weight: 10
+    #           gasLimit: 100000
+
+    # # Phase 5: Stress Test (Maximum Load)
+    # - label: StressTest_MaxLoad
+    #   description: Maximum sustainable load test
+    #   txNumber: 200
+    #   rateControl:
+    #     type: fixed-rate
+    #     opts:
+    #       tps: 15  # Testing maximum capacity
+    #   workload:
+    #     module: workload/stressTest.js
+    #     arguments:
+    #       <<: *ssi-args
+    #       operationType: "stress"
+    #       maxRetries: 3
+    #       retryDelay: 5000
+
+    # # Phase 6: Long Duration Test
+    # - label: Endurance_Test
+    #   description: Long-duration stability test
+    #   duration: 300  # 5 minutes
+    #   rateControl:
+    #     type: fixed-rate
+    #     opts:
+    #       tps: 8  # Sustainable load
+    #   workload:
+    #     module: workload/enduranceTest.js
+    #     arguments:
+    #       <<: *ssi-args
+    #       operationType: "endurance"
+
+# Monitor configuration for performance tracking
+monitors:
+  - none  # Disable built-in monitors, use custom monitoring
+
+# Resource monitoring configuration
+observer:
+  type: local
+  interval: 5  # 5-second intervals to match block time
+
+# # Custom performance thresholds
+# performance:
+#   success_rate: 0.99      # 99% success rate minimum
+#   max_latency: 10000      # 10 second max latency
+#   avg_latency: 3000       # 3 second average latency target
