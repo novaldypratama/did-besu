@@ -58,7 +58,7 @@ class ExecutionRevertDebugger {
     
     // Exact same parameters that failed in Caliper
     const failedRole = 3; // TRUSTEE
-    const failedAccount = "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73";
+    const failedAccount = "0x06d06c366b213f716b51bca6dc1874afc05467d0";
     const deployerAccount = this.networkConfig.ethereum.contractDeployerAddresses || 
                            this.networkConfig.ethereum.fromAddress;
 

@@ -305,7 +305,7 @@ class DeploymentDiagnostics {
     try {
       // Get gas configuration from Caliper config
       const gasConfig = this.ethereumConfig.contracts?.RoleControl?.gas;
-      const gasLimit = gasConfig?.assignRole || 120000; // Default from config
+      const gasLimit = gasConfig?.limit || 120000; // Default from config
 
       // Try to estimate gas for role assignment
       const gasEstimate = await this.roleControlContract.methods

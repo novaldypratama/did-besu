@@ -1,6 +1,7 @@
 'use strict';
 
 const { WorkloadModuleBase } = require('@hyperledger/caliper-core');
+const { ethers } = require('ethers');  // Add ethers.js for direct WebSocket support
 
 // SSI Contract names - must match network configuration
 const SSI_CONTRACTS = {
@@ -43,8 +44,8 @@ const SSI_ROLES = {
 };
 
 /**
- * Simplified SSI Operation Base with Caliper Ethereum Integration
- * Leverages @hyperledger/caliper-ethereum for optimal Besu transaction handling
+ * Simplified SSI Operation Base
+ * Handles SSI operations using Caliper's standard Ethereum adapter
  */
 class SimplifiedSSIOperationBase extends WorkloadModuleBase {
   /**
@@ -100,7 +101,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
    * @protected
    */
   initializeSSIConfiguration() {
-    // Extract required configuration (simplified for Caliper Ethereum)
+    // Extract required configuration
     const requiredSettings = ['gasLimit', 'chainId'];
     
     requiredSettings.forEach(setting => {
@@ -109,22 +110,46 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       }
     });
     
-    // Store SSI configuration optimized for Caliper Ethereum
+    // Get Besu endpoint (support both WebSocket and HTTP)
+    let besuEndpoint = this.roundArguments.besuEndpoint;
+    
+    // If no explicit WebSocket endpoint is provided, try to derive one
+    if (!besuEndpoint) {
+      // Try to extract from Caliper network config
+      try {
+        if (this.sutAdapter.ethereumConfig?.url) {
+          besuEndpoint = this.sutAdapter.ethereumConfig.url;
+        }
+      } catch (error) {
+        console.warn(`⚠️ Could not determine Besu endpoint from config: ${error.message}`);
+        // Default to localhost if no endpoint found
+        besuEndpoint = 'ws://localhost:8546';
+      }
+    }
+    
+    // Prefer WebSocket connection if available
+    if (!besuEndpoint.startsWith('ws://') && !besuEndpoint.startsWith('wss://')) {
+      // Try to derive WebSocket endpoint from HTTP
+      const wsEndpoint = besuEndpoint.replace(/^http/, 'ws').replace(/8545$/, '8546');
+      console.log(`⚠️ Converting HTTP endpoint to WebSocket: ${besuEndpoint} → ${wsEndpoint}`);
+      besuEndpoint = wsEndpoint;
+    }
+    
+    // Store SSI configuration
     this.ssiConfig = {
       gasLimit: this.roundArguments.gasLimit || 12000000,
       chainId: this.roundArguments.chainId || 1337,
-      besuEndpoint: this.roundArguments.besuEndpoint,
+      besuEndpoint: besuEndpoint,
       contractAddresses: this.roundArguments.contractAddresses || {},
-      gasConfig: this.roundArguments.gasConfig || {},
-      // Additional Caliper Ethereum specific configurations
-      gasPrice: this.roundArguments.gasPrice || 50000000000
+      gasConfig: this.roundArguments.gasConfig || {}
     };
 
     console.log(`⚙️ SSI Configuration loaded for worker ${this.workerIndex}`);
+    console.log(`📡 Using Besu endpoint: ${this.ssiConfig.besuEndpoint}`);
   }
 
   /**
-   * Setup account management with Caliper Ethereum integration
+   * Setup account management using Caliper's standard adapter
    * @protected
    */
   async setupAccountManagement() {
@@ -153,7 +178,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
     }
 
     // Initialize nonce tracker for this account
-    this.nonceTracker[this.fromAddress] = 0;
+    this.nonceTracker[this.fromAddress] = 3;
   }
 
   /**
@@ -199,7 +224,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
     const requiredSSIContracts = Object.values(SSI_CONTRACTS);
     
     for (const contractName of requiredSSIContracts) {
-      const contract = this.sutAdapter.ethereumConfig.contracts[contractName];
+      const contract = this.sutAdapter.ethereumConfig?.contracts[contractName];
       
       if (!contract) {
         throw new Error(`${contractName} contract not found in sutAdapter`);
@@ -215,7 +240,6 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
   /**
    * Create a Caliper-compatible request for SSI operations
-   * Leverages @hyperledger/caliper-ethereum for proper transaction handling
    * @param {string} contractName - Contract name matching network config
    * @param {string} operation - Contract function to call
    * @param {Object} args - Function arguments
@@ -226,28 +250,33 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
   createSSIRequest(contractName, operation, args, options = {}) {
     const isReadOnly = READ_ONLY_OPERATIONS.has(operation);
 
-    // Create basic request optimized for Caliper Ethereum
-    const request = {
-      contract: contractName,
-      verb: operation,
-      args: Object.values(args),
-      readOnly: isReadOnly,
-      fromAddress: this.fromAddress,
-      ...options
-    };
-
-    // Add transaction-specific fields for write operations
-    if (!isReadOnly) {
-      // Use Caliper Ethereum's gas configuration
-      request.gas = {
-        price: this.ssiConfig.gasPrice,
-        limit: this.getGasLimitFromConfig(contractName, operation)
+    // For read-only operations, use standard Caliper approach
+    if (isReadOnly) {
+      // Create basic request for read-only operations
+      const request = {
+        contract: contractName,
+        verb: operation,
+        args: Object.values(args),
+        readOnly: true,
+        fromAddress: this.fromAddress,
+        fromAddressPrivateKey: this.fromAddressPrivateKey,
+        ...options
       };
       
-      // Let Caliper Ethereum handle transaction signing and nonce management
+      return request;
     }
-
-    return request;
+    
+    // For write operations, prepare for WebSocket-based execution
+    // This is for use with executeSSIOperationWithWebSocket
+    return {
+      contractName,
+      operation,
+      args,
+      isReadOnly: false,
+      fromAddress: this.fromAddress,
+      gasLimit: this.getGasLimitFromConfig(contractName, operation),
+      ...options
+    };
   }
 
   /**
@@ -263,21 +292,18 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       return this.ssiConfig.gasConfig[contractName][operation];
     }
 
-    // Try to get from network contract configuration
+    // Fallback to network config
     try {
-      const contractConfig = this.sutAdapter.ethereumConfig.contracts[contractName];
-      if (contractConfig?.gas?.limit) {
-        return contractConfig.gas.limit;
-      }
-      
-      if (contractConfig?.functions?.[operation]?.gas) {
-        return contractConfig.functions[operation].gas;
+      const networkGas = this.sutAdapter.ethereumConfig.contracts[contractName].gas;
+      const functionGas = this.sutAdapter.ethereumConfig.contracts[contractName].functions;
+      if (networkGas && functionGas[operation]) {
+        return functionGas[operation];
       }
     } catch (error) {
       // Continue to fallback values
     }
 
-    // Fallback to reasonable defaults optimized for SSI operations
+    // Fallback to reasonable defaults
     const defaultGasLimits = {
       'assignRole': 200000,
       'revokeRole': 100000,
@@ -285,17 +311,17 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       'updateDid': 100000,
       'issueCredential': 250000,
       'updateCredentialStatus': 150000,
-      // Read operations (should not be used as they're read-only)
+      // Read operations
       'getRole': 80000,
       'resolveDid': 80000,
       'resolveCredential': 80000
     };
 
-    return defaultGasLimits[operation] || 250000;
+    return defaultGasLimits[operation] || 200000;
   }
 
   /**
-   * Execute an SSI operation using Caliper Ethereum connector
+   * Execute an SSI operation using appropriate connection method
    * @param {string} contractName - Contract name
    * @param {string} operation - Operation name
    * @param {Object} args - Operation arguments
@@ -304,84 +330,161 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
    * @protected
    */
   async executeSSIOperation(contractName, operation, args, options = {}) {
+    const isReadOnly = READ_ONLY_OPERATIONS.has(operation);
+    
+    // Use WebSocket for write operations, standard Caliper for read-only
+    if (isReadOnly) {
+      return this.executeSSIOperationWithCaliper(contractName, operation, args, options);
+    } else {
+      return this.executeSSIOperationWithWebSocket(contractName, operation, args, options);
+    }
+  }
+
+  /**
+   * Execute an SSI operation using Caliper's standard pattern (for read-only operations)
+   * @param {string} contractName - Contract name
+   * @param {string} operation - Operation name
+   * @param {Object} args - Operation arguments
+   * @param {Object} options - Additional options
+   * @returns {Promise} Operation result
+   * @protected
+   */
+  async executeSSIOperationWithCaliper(contractName, operation, args, options = {}) {
     const startTime = Date.now();
-    let result;
 
     try {
-      // Create optimized request for Caliper Ethereum
+      // Create request using standard Caliper connector
       const request = this.createSSIRequest(contractName, operation, args, options);
       
-      // Use sutAdapter.sendRequests for optimal Besu interaction
-      result = await this.sutAdapter.sendRequests(request);
+      // Use sutAdapter.sendRequests to execute the operation
+      const result = await this.sutAdapter.sendRequests(request);
       
       const executionTime = Date.now() - startTime;
-      console.log(`✅ ${contractName}.${operation} completed in ${executionTime}ms`);
+      console.log(`✅ ${contractName}.${operation} completed in ${executionTime}ms (Caliper)`);
       
       return result;
     } catch (error) {
       const executionTime = Date.now() - startTime;
-      console.error(`❌ ${contractName}.${operation} failed after ${executionTime}ms: ${error.message}`);
-      
-      // Add transaction details to error for better debugging
-      if (error.originalError) {
-        console.error(`Original error: ${error.originalError.message || JSON.stringify(error.originalError)}`);
+      console.error(`❌ ${contractName}.${operation} failed after ${executionTime}ms (Caliper): ${error.message}`);
+      throw error;
+    }
+  }
+  
+  /**
+   * Execute an SSI operation using direct WebSocket connection (for write operations)
+   * @param {string} contractName - Contract name
+   * @param {string} operation - Operation name
+   * @param {Object} args - Operation arguments
+   * @param {Object} options - Additional options
+   * @returns {Promise} Operation result
+   * @protected
+   */
+  async executeSSIOperationWithWebSocket(contractName, operation, args, options = {}) {
+    const startTime = Date.now();
+
+    try {
+      // Lazy-initialize the WebSocket provider if needed
+      if (!this.provider) {
+        this.provider = new ethers.WebSocketProvider(this.ssiConfig.besuEndpoint);
+        console.log(`🔌 WebSocket provider connected to ${this.ssiConfig.besuEndpoint}`);
       }
       
-      throw error;
-    }
-  }
-
-  /**
-   * Execute batch SSI operations for improved performance
-   * @param {Array} operations - Array of operation objects
-   * @returns {Promise<Array>} Array of operation results
-   * @protected
-   */
-  async executeBatchSSIOperations(operations) {
-    const startTime = Date.now();
-    
-    try {
-      // Convert operations to Caliper requests
-      const requests = operations.map(op => 
-        this.createSSIRequest(op.contractName, op.operation, op.args, op.options)
+      // Lazy-initialize wallets
+      if (!this.wallets) {
+        this.wallets = {};
+      }
+      
+      // Get or create wallet for this client
+      if (!this.wallets[this.fromAddress]) {
+        // Get private key from Caliper's wallet
+        const privateKey = this.sutAdapter.ethereumConfig?.fromAddressPrivateKey ||
+                           this.sutAdapter.ethereumConfig?.wallet?.get(this.fromAddress);
+        if (!privateKey) {
+          throw new Error(`No private key found for ${this.fromAddress}`);
+        }
+        
+        this.wallets[this.fromAddress] = new ethers.Wallet(privateKey, this.provider);
+        console.log(`🔑 Created wallet for ${this.fromAddress.substring(0, 10)}...`);
+      }
+      
+      // Get contract ABI from network config
+      const contractABI = this.sutAdapter.ethereumConfig?.contracts?.[contractName].abi;
+      if (!contractABI) {
+        throw new Error(`ABI not found for contract ${contractName}`);
+      }
+      
+      // Get contract address from configuration
+      const contractAddress = this.ssiConfig.contractAddresses[contractName] || 
+                             this.sutAdapter.ethereumConfig?.contracts?.[contractName]?.address;
+      
+      if (!contractAddress) {
+        throw new Error(`Address not found for contract ${contractName}`);
+      }
+      
+      // Create contract instance
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        this.wallets[this.fromAddress]
       );
       
-      // Use sutAdapter batch processing
-      const results = await this.sutAdapter.sendRequests(requests);
+      // Prepare transaction parameters
+      const gasLimit = options.gasLimit || this.getGasLimitFromConfig(contractName, operation);
+      
+      // Create transaction options
+      const txOptions = {
+        gasLimit: ethers.getBigInt(gasLimit),
+      };
+      
+      // Add gas price if configured
+      if (this.ssiConfig.gasConfig?.price) {
+        txOptions.gasPrice = ethers.getBigInt(this.ssiConfig.gasConfig.price);
+      }
+      
+      // Execute transaction
+      console.log(`📤 Sending ${contractName}.${operation} via WebSocket`);
+      
+      // Convert args to array if needed
+      const argsArray = Array.isArray(args) ? args : Object.values(args);
+      
+      // Execute the transaction
+      const tx = await contract[operation](...argsArray, txOptions);
+      
+      // Wait for transaction to be mined
+      console.log(`⏳ Waiting for transaction ${tx.hash} to be mined...`);
+      const receipt = await tx.wait();
       
       const executionTime = Date.now() - startTime;
-      console.log(`✅ Batch of ${operations.length} operations completed in ${executionTime}ms`);
+      console.log(`✅ ${contractName}.${operation} completed in ${executionTime}ms (WebSocket), hash: ${receipt.hash}`);
       
-      return results;
+      return receipt;
     } catch (error) {
       const executionTime = Date.now() - startTime;
-      console.error(`❌ Batch operations failed after ${executionTime}ms: ${error.message}`);
+      console.error(`❌ ${contractName}.${operation} failed after ${executionTime}ms (WebSocket): ${error.message}`);
       throw error;
     }
   }
-
   /**
-   * Get current nonce for the from address
-   * Uses Caliper Ethereum's nonce management
-   * @returns {Promise<number>} Current nonce
-   * @protected
+   * Clean up resources when the workload module is done
    */
-  async getCurrentNonce() {
-    try {
-      // Let Caliper Ethereum handle nonce management
-      return await this.sutAdapter.getNonce(this.fromAddress);
-    } catch (error) {
-      // Fallback to local tracking
-      return this.nonceTracker[this.fromAddress] || 0;
+  async cleanupWorkloadModule() {
+    // Close any open WebSocket connections
+    if (this.provider) {
+      try {
+        await this.provider.destroy();
+        console.log('🔌 WebSocket provider disconnected');
+      } catch (error) {
+        console.warn(`⚠️ Error disconnecting WebSocket provider: ${error.message}`);
+      }
     }
-  }
-
-  /**
-   * Increment nonce tracker (for fallback scenarios)
-   * @protected
-   */
-  incrementNonce() {
-    this.nonceTracker[this.fromAddress] = (this.nonceTracker[this.fromAddress] || 0) + 1;
+    
+    // Cleanup wallets
+    if (this.wallets) {
+      this.wallets = {};
+    }
+    
+    // Call parent cleanup
+    await super.cleanupWorkloadModule();
   }
 }
 

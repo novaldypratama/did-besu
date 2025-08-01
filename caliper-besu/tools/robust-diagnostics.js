@@ -305,7 +305,7 @@ class RobustDeploymentDiagnostics {
     try {
       // Get gas configuration
       const gasConfig = this.ethereumConfig.contracts?.RoleControl?.gas;
-      const gasLimit = gasConfig?.assignRole || 120000;
+      const gasLimit = gasConfig?.limit || 120000;
 
       const gasEstimate = await this.roleControlContract.methods
         .assignRole(1, testTarget)

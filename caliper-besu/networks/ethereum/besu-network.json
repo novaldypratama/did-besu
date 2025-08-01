@@ -4,15 +4,15 @@
   },
   "ethereum": {
     "url": "ws://172.16.239.15:8546",
-    "contractDeployerAddresses": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
-    "contractDeployerAddressPrivateKeys": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
-    "fromAddress": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
-    "fromAddressPrivateKey": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
+    "contractDeployerAddresses": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
+    "contractDeployerAddressPrivateKeys": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed",
+    "fromAddress": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
+    "fromAddressPrivateKey": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed",
     "transactionConfirmationBlocks": 2,
     "accounts": [
       {
-        "address": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
-        "privateKey": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63"
+        "address": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
+        "privateKey": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed"
       },
       {
         "address": "0x627306090abaB3A6e1400e9345bC60c78a8BEf57",
@@ -27,8 +27,8 @@
         "privateKey": "0x60bbe10a196a4e71451c0f6e9ec9beab454c2a5ac0542aa5b8b733ff5719fec3"
       },
       {
-        "address": "0x06d06c366b213f716b51bca6dc1874afc05467d0",
-        "privateKey": "0xb37a2494f2330ee4fdf516b38bad42b8e27e35e810abf1baf1fb51ad880872ed"
+        "address": "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
+        "privateKey": "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63"
       },
       {
         "address": "0x2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c",
@@ -56,7 +56,7 @@
           "limit": 1800000,
           "price": 10000000000
         },
-        "address": "0x42699A7612A82f1d9C36148af9C77354759b210b",
+        "address": "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256",
         "functions": {
           "assignRole": 200000,
           "revokeRole": 100000,
@@ -321,7 +321,7 @@
       },
       "DidRegistry": {
         "constructorArgs": [
-          "0x42699A7612A82f1d9C36148af9C77354759b210b"
+          "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256"
         ],
         "deploy": false,
         "estimateGas": true,
@@ -329,7 +329,7 @@
           "limit": 3000000,
           "price": 10000000000
         },
-        "address": "0xa50a51c09a5c451C52BB714527E1974b686D8e77",
+        "address": "0xA5134e42CF382152894d040a0e89F2E4231062d8",
         "functions": {
           "createDid": 200000,
           "updateDid": 100000,
@@ -791,8 +791,8 @@
       },
       "CredentialRegistry": {
         "constructorArgs": [
-          "0x42699A7612A82f1d9C36148af9C77354759b210b",
-          "0xa50a51c09a5c451C52BB714527E1974b686D8e77"
+          "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256",
+          "0xA5134e42CF382152894d040a0e89F2E4231062d8"
         ],
         "deploy": false,
         "estimateGas": true,
@@ -800,7 +800,7 @@
           "limit": 3000000,
           "price": 10000000000
         },
-        "address": "0x9a3DBCa554e9f6b9257aAa24010DA8377C57c17e",
+        "address": "0x65952c0Daf5936175851904A9889bd31E49EbFFc",
         "functions": {
           "issueCredential": 250000,
           "updateCredentialStatus": 150000,

@@ -5,7 +5,7 @@ const SimplifiedSSIStateManager = require('../utils/simplified-ssi-state');
 
 /**
  * Simplified Role Assignment Workload for Caliper Benchmarking
- * Integrates with Web3Signer for Besu security architecture
+ * Leverages @hyperledger/caliper-ethereum for optimal Besu transaction handling
  */
 class SimplifiedAssignRole extends SimplifiedSSIOperationBase {
   /**
@@ -44,8 +44,7 @@ class SimplifiedAssignRole extends SimplifiedSSIOperationBase {
         account: roleArgs.account
       });
       
-      // Execute role assignment operation
-      // This will use Web3Signer to sign the transaction via the callback
+      // Use optimized Caliper Ethereum connector for transaction submission
       const result = await this.executeSSIOperation(
         SimplifiedSSIOperationBase.CONTRACTS.ROLE_CONTROL,
         SimplifiedSSIOperationBase.OPERATIONS.ASSIGN_ROLE,
