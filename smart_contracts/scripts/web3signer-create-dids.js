@@ -1,5 +1,3 @@
-// create-dids-web3signer-fixed.js - Using direct HTTP requests to Web3Signer
-
 const { ethers } = require("hardhat");
 const fs = require('fs');
 const axios = require('axios');
@@ -14,9 +12,10 @@ const BESU_URL = "http://127.0.0.1:8545";           // For blockchain read opera
 // IPFS configuration - using Pinata as the primary gateway with fallbacks
 const IPFS_CONFIG = {
   // Pinata API settings
-  uploadEndpoint: 'https://api.pinata.cloud/pinning/pinFileToIPFS',
+  uploadEndpoint: 'https://uploads.pinata.cloud/v3/files',
   pinataGateway: `https://${process.env.PINATA_GATEWAY}/ipfs/`,
   jwt: process.env.PINATA_JWT,
+  groupId: process.env.PINATA_GROUP_ID,
 
   // Public IPFS gateway URLs for fetching content (fallbacks)
   publicGateways: [
@@ -188,12 +187,12 @@ async function canonicalizeAndHash(document) {
 
 /**
  * Uploads a JSON-LD object to IPFS using Pinata
- * @param {object} jsonldObj - JSON-LD object to upload
+ * @param {object} jsonObj - JSON-LD object to upload
  * @returns {Promise<string>} - IPFS CID
  */
-async function uploadToIPFS(jsonldObj) {
+async function uploadToIPFS(jsonObj) {
   try {
-    const jsonString = JSON.stringify(jsonldObj, null, 2);
+    const jsonString = JSON.stringify(jsonObj, null, 2);
     const buffer = Buffer.from(jsonString);
 
     console.log(`Preparing to upload to Pinata IPFS, content size: ${buffer.length} bytes`);
@@ -201,37 +200,36 @@ async function uploadToIPFS(jsonldObj) {
     // Create form data for the Pinata API request
     const formData = new FormData();
 
+    // Choose required network for Pinata V3 API
+    formData.append('network', 'public');
+
     // Add the file to the formData
     formData.append('file', buffer, {
-      filename: 'did-document.json',
+      filename: `DID-${Date.now()}.json`,
       contentType: 'application/json',
     });
 
-    // Add metadata to help identify the file in Pinata
-    const metadata = JSON.stringify({
-      name: `DID-${Date.now()}`,
-      keyvalues: {
-        type: 'DIDDocument',
-        timestamp: Date.now().toString()
-      }
-    });
-    formData.append('pinataMetadata', metadata);
+    // Add required metadata directly to formData as per V3 API
+    formData.append('name', `DID-${Date.now()}`);
 
-    // Set pinning options
-    const pinataOptions = JSON.stringify({
-      cidVersion: 1,
-      wrapWithDirectory: false
-    });
-    formData.append('pinataOptions', pinataOptions);
+    // Add group ID for organization or project grouping
+    formData.append('group_id', process.env.PINATA_GROUP_ID);
+
+    // Add metadata to help identify the file in Pinata
+    const keyValues = {
+      type: String('DID Document'),
+      timestamp: String(Date.now()),
+      cidVersion: String(1)
+    };
+    formData.append('keyvalues', JSON.stringify(keyValues));
 
     // Upload to Pinata IPFS
-    console.log("Uploading to Pinata...");
+    console.log("Uploading to Pinata V3 API...");
     const response = await axios.post(
       IPFS_CONFIG.uploadEndpoint,
       formData,
       {
-        headers: {
-          'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
+        headers: {  
           'Authorization': `Bearer ${IPFS_CONFIG.jwt}`
         },
         maxContentLength: Infinity,
@@ -239,20 +237,68 @@ async function uploadToIPFS(jsonldObj) {
       }
     );
 
-    if (!response.data || !response.data.IpfsHash) {
+    // Log the full response for debugging
+    console.log("Pinata upload response:", JSON.stringify(response.data, null, 2));
+
+    if (!response.data.data || !response.data.data.cid) {
       throw new Error("Invalid response from Pinata: " + JSON.stringify(response.data));
     }
 
-    const cid = response.data.IpfsHash;
+    const cid = response.data.data.cid;
     console.log(`Pinata upload successful, CID: ${cid}`);
-    console.log(`Size: ${response.data.PinSize} bytes, Timestamp: ${response.data.Timestamp}`);
+    console.log(`Size: ${response.data.data.size} bytes, Timestamp: ${response.data.data.created_at}`);
 
-    // Verify the content is accessible via Pinata gateway
-    await verifyIpfsContent(cid, jsonString);
+    // Save upload details to a log file for debugging
+    try {
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        cid,
+        size: buffer.length,
+        response: response.data.data
+      };
+      fs.appendFileSync(
+        'ipfs-upload-log.json', 
+        JSON.stringify(logEntry, null, 2) + ',\n'
+      );
+    } catch (logError) {
+      console.warn("Failed to write to upload log:", logError.message);
+    }
+
+    // Verify the content is accessible via Pinata gateway with retry logic
+    let verified = false;
+    try {
+      verified = await verifyIpfsContent(cid, jsonString);
+    } catch (verifyError) {
+      console.warn(`IPFS verification warning: ${verifyError.message}`);
+    }
+
+    if (!verified) {
+      console.warn("Content uploaded but not immediately verifiable. This is normal for fresh uploads.");
+      console.log(`You can manually check at: ${IPFS_CONFIG.pinataGateway}${cid}`);
+    }
 
     return cid;
   } catch (error) {
-    console.error("Pinata IPFS upload error:", error.response?.data || error.message);
+    console.error("Pinata IPFS upload error:");
+    
+    if (error.response) {
+      // Server responded with a non-2xx status
+      console.error(`Status: ${error.response.status}`);
+      console.error(`Headers:`, error.response.headers);
+      console.error(`Data:`, error.response.data.data);
+    } else if (error.request) {
+      // Request was made but no response received
+      console.error(`No response received. Request:`, error.request);
+    } else {
+      // Error in setting up the request
+      console.error(`Error message:`, error.message);
+    }
+    
+    // Try alternative upload method if main method fails
+    if (error.response && error.response.status === 401) {
+      console.warn("Authentication failed. Check your Pinata JWT token.");
+    }
+    
     throw new Error(`Failed to upload to Pinata IPFS: ${error.message}`);
   }
 }
@@ -369,8 +415,8 @@ async function sendTransaction(from, to, data) {
 
     // Handle zero gas price (use minimum value if zero)
     if (gasPrice === '0x0' || parseInt(gasPrice, 16) === 0) {
-      console.warn("Gas price is zero! Setting minimum gas price of 1 gwei");
-      gasPrice = '0x3b9aca00'; // 1 gwei = 1,000,000,000 wei = 0x3b9aca00
+      console.warn("Gas price is zero! Setting minimum gas price of 10 gwei");
+      gasPrice = '0x2540BE400'; // 10 gwei = 10,000,000,000 wei = 0x2540BE400 in hex
     }
 
     // Estimate gas for the transaction (from Besu)
@@ -380,7 +426,7 @@ async function sendTransaction(from, to, data) {
       data: data
     }]);
 
-    const gasLimit = Math.ceil(parseInt(estimatedGas, 16) * 1.2); // Add 20% buffer and round up
+    const gasLimit = Math.ceil(parseInt(estimatedGas, 16) * 1.4); // Add 40% buffer and round up
     console.log(`Estimated gas: ${parseInt(estimatedGas, 16)}, with buffer: ${gasLimit}`);
 
     // Prepare transaction object

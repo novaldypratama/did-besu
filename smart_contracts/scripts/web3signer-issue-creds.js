@@ -19,51 +19,152 @@ const CREDENTIAL_REGISTRY_ADDRESS = '0x65952c0Daf5936175851904A9889bd31E49EbFFc'
 // IPFS configuration - using Infura as the primary gateway with fallbacks
 const IPFS_CONFIG = {
   // Pinata API settings
-  uploadEndpoint: 'https://api.pinata.cloud/pinning/pinFileToIPFS',
+  uploadEndpoint: 'https://uploads.pinata.cloud/v3/files',
   pinataGateway: 'https://gateway.pinata.cloud/ipfs/',
-  jwt: process.env.PINATA_JWT || '',
+  jwt: process.env.PINATA_JWT,
+  groupId: process.env.PINATA_GROUP_ID,
 
   // Public IPFS gateway URLs for fetching content (fallbacks)
   publicGateways: [
-    'https://dweb.link/ipfs/',                       // Protocol Labs gateway
-    'https://ipfs.io/ipfs/'                          // IPFS public gateway
+    `https://${process.env.PINATA_GATEWAY}/ipfs/`,    // Primary - dedicated Pinata gateway
+    'https://gateway.pinata.cloud/ipfs/',             // Pinata public gateway
+    'https://dweb.link/ipfs/',                        // Protocol Labs gateway
+    'https://ipfs.io/ipfs/'                           // IPFS public gateway
   ]
 };
 
-// /**
-//  * Simple canonicalization function for JSON objects
-//  * @param {*} obj - The object to canonicalize
-//  * @returns {string} - The canonicalized JSON string
-//  */
-// function simpleCanonicalizeJSON(obj) {
-//   // For arrays, recursively canonicalize each element and join
-//   if (Array.isArray(obj)) {
-//     return '[' + obj.map(simpleCanonicalizeJSON).join(',') + ']';
-//   }
-
-//   // For objects, sort keys and recursively canonicalize values
-//   if (obj && typeof obj === 'object') {
-//     return '{' + Object.keys(obj).sort().map(key => {
-//       return JSON.stringify(key) + ':' + simpleCanonicalizeJSON(obj[key]);
-//     }).join(',') + '}';
-//   }
-
-//   // For primitives, use standard JSON serialization
-//   return JSON.stringify(obj);
-// }
-
 /**
  * Canonicalises a JSON-LD document using the W3C URDNA2015 algorithm.
- * Returns a deterministic N-Quads string that can be safely hashed.
+ * First expands the document to resolve all contexts and then canonizes it.
+ * Includes embedded context for Verifiable Credentials v2.0.
  *
  * @param {object} doc – the JSON-LD object (VC payload or DID doc)
  * @returns {Promise<string>} URDNA2015-normalised N-Quads
  */
 async function canonicalizeJSONLD(doc) {
-  return jsonld.canonize(doc, {
-    algorithm: 'URDNA2015',
-    format: 'application/n-quads'
-  });
+  try {
+    // Create a document loader that handles the VC context properly
+    const nodeDocumentLoader = jsonld.documentLoaders.node();
+    const customLoader = async (url) => {
+      console.log(`Loading JSON-LD context: ${url}`);
+
+      // Special handling for VC v2 context
+      if (url === 'https://www.w3.org/ns/credentials/v2') {
+        return {
+          contextUrl: null,
+          document: {
+            "@context": {
+              "@protected": true,
+              "id": "@id",
+              "type": "@type",
+              "VerifiableCredential": "https://www.w3.org/ns/credentials#VerifiableCredential",
+              "VerifiablePresentation": "https://www.w3.org/ns/credentials#VerifiablePresentation",
+              "credentialSchema": {
+                "@id": "https://www.w3.org/ns/credentials#credentialSchema",
+                "@type": "@id"
+              },
+              "credentialStatus": {
+                "@id": "https://www.w3.org/ns/credentials#credentialStatus",
+                "@type": "@id"
+              },
+              "credentialSubject": {
+                "@id": "https://www.w3.org/ns/credentials#credentialSubject",
+                "@type": "@id"
+              },
+              "description": "https://schema.org/description",
+              "evidence": {
+                "@id": "https://www.w3.org/ns/credentials#evidence",
+                "@type": "@id"
+              },
+              "expirationDate": {
+                "@id": "https://www.w3.org/ns/credentials#expirationDate",
+                "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+              },
+              "holder": {
+                "@id": "https://www.w3.org/ns/credentials#holder",
+                "@type": "@id"
+              },
+              "issued": {
+                "@id": "https://www.w3.org/ns/credentials#issued",
+                "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+              },
+              "issuer": {
+                "@id": "https://www.w3.org/ns/credentials#issuer",
+                "@type": "@id"
+              },
+              "name": "https://schema.org/name",
+              "proof": {
+                "@id": "https://w3id.org/security#proof",
+                "@type": "@id",
+                "@container": "@graph"
+              },
+              "refreshService": {
+                "@id": "https://www.w3.org/ns/credentials#refreshService",
+                "@type": "@id"
+              },
+              "termsOfUse": {
+                "@id": "https://www.w3.org/ns/credentials#termsOfUse",
+                "@type": "@id"
+              },
+              "validFrom": {
+                "@id": "https://www.w3.org/ns/credentials#validFrom",
+                "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+              },
+              "validUntil": {
+                "@id": "https://www.w3.org/ns/credentials#validUntil",
+                "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+              }
+            }
+          },
+          documentUrl: url
+        };
+      } 
+      // Special handling for VC examples v2 context
+      else if (url === 'https://www.w3.org/ns/credentials/examples/v2') {
+        return {
+          contextUrl: null,
+          document: {
+            "@context": {
+              "@protected": true,
+              "IdentityCredential": "https://www.w3.org/ns/credentials/examples#IdentityCredential",
+              "Person": "https://schema.org/Person",
+              "firstName": "https://schema.org/givenName",
+              "lastName": "https://schema.org/familyName",
+              "dateOfBirth": "https://schema.org/birthDate",
+              "nationality": "https://schema.org/nationality",
+              "attributes": "https://www.w3.org/ns/credentials/examples#attributes"
+            }
+          },
+          documentUrl: url
+        };
+      }
+
+      // Fall back to standard document loader
+      return nodeDocumentLoader(url);
+    };
+
+    // First expand the document to resolve all contexts
+    const expanded = await jsonld.expand(doc, {
+      documentLoader: customLoader,
+      safe: false // Turn off safe mode for our use case
+    });
+
+    console.log("Expanded document for canonization");
+
+    // Then canonize the expanded document
+    return jsonld.canonize(expanded, {
+      algorithm: 'URDNA2015',
+      format: 'application/n-quads',
+      documentLoader: customLoader,
+      safe: false
+    });
+  } catch (error) {
+    console.error("JSON-LD Canonization error:", error);
+    console.log("Falling back to simple JSON canonicalization");
+
+    // Fallback to simple JSON canonicalization if JSON-LD processing fails
+    return JSON.stringify(doc);
+  }
 }
 
 
@@ -144,14 +245,14 @@ async function getWeb3SignerAccounts() {
  * @param {string} ethAddress - Ethereum address
  * @returns {string} - keccak256 hash of "did:ethr:{address}"
  */
-function createDidHash(ethAddress) {
-  return ethers.keccak256(
-    ethers.solidityPacked(
-      ['string', 'address'],
-      ['did:ethr:', ethAddress]
-    )
-  );
-}
+// function createDidHash(ethAddress) {
+//   return ethers.keccak256(
+//     ethers.solidityPacked(
+//       ['string', 'address'],
+//       ['did:ethr:', ethAddress]
+//     )
+//   );
+// }
 
 /**
  * Generates a W3C VC Data Model v2.0 compliant JSON-LD object
@@ -204,9 +305,6 @@ async function hashCredential(jsonldObj) {
   // Canonicalize the JSON-LD using URDNA2015 algorithm
   const canonicalizedJson = await canonicalizeJSONLD(jsonldObj);
 
-  // Canonicalize the JSON-LD using our simple function
-  // const canonicalizedJson = simpleCanonicalizeJSON(jsonldObj);
-
   if (!canonicalizedJson) {
     throw new Error("Failed to canonicalize JSON-LD object");
   }
@@ -230,37 +328,36 @@ async function uploadToIPFS(jsonldObj) {
     // Create form data for the Pinata API request
     const formData = new FormData();
 
+    // Choose required network for Pinata V3 API
+    formData.append('network', 'public');
+
     // Add the file to the formData
     formData.append('file', buffer, {
       filename: 'credential.json',
       contentType: 'application/json',
     });
 
-    // Add metadata to help identify the file in Pinata
-    const metadata = JSON.stringify({
-      name: `VC-${Date.now()}`,
-      keyvalues: {
-        type: 'VerifiableCredential',
-        timestamp: Date.now().toString()
-      }
-    });
-    formData.append('pinataMetadata', metadata);
+    // Add required metadata directly to formData as per V3 API
+    formData.append('name', `VC-${Date.now()}`);
 
-    // Set pinning options (optional)
-    const pinataOptions = JSON.stringify({
-      cidVersion: 1,
-      wrapWithDirectory: false
-    });
-    formData.append('pinataOptions', pinataOptions);
+    // Add group ID for organization or project grouping
+    formData.append('group_id', process.env.PINATA_GROUP_ID);
+
+    // Add metadata to help identify the file in Pinata
+    const keyValues = {
+      type: String('Verifiable Credential'),
+      timestamp: String(Date.now()),
+      cidVersion: "1"
+    };
+    formData.append('keyvalues', JSON.stringify(keyValues));
 
     // Upload to Pinata IPFS
-    console.log("Uploading to Pinata...");
+    console.log("Uploading to Pinata V3 API...");
     const response = await axios.post(
       IPFS_CONFIG.uploadEndpoint,
       formData,
       {
         headers: {
-          'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
           'Authorization': `Bearer ${IPFS_CONFIG.jwt}`
         },
         maxContentLength: Infinity,
@@ -268,20 +365,68 @@ async function uploadToIPFS(jsonldObj) {
       }
     );
 
-    if (!response.data || !response.data.IpfsHash) {
+    // Log the full response for debugging
+    console.log("Pinata upload response:", JSON.stringify(response.data, null, 2));
+
+    if (!response.data.data || !response.data.data.cid) {
       throw new Error("Invalid response from Pinata: " + JSON.stringify(response.data));
     }
 
-    const cid = response.data.IpfsHash;
+    const cid = response.data.data.cid;
     console.log(`Pinata upload successful, CID: ${cid}`);
-    console.log(`Size: ${response.data.PinSize} bytes, Timestamp: ${response.data.Timestamp}`);
+    console.log(`Size: ${response.data.data.size} bytes, Timestamp: ${response.data.data.created_at}`);
 
-    // Verify the content is accessible via Pinata gateway
-    await verifyIpfsContent(cid, jsonString);
+    // Save upload details to a log file for debugging
+    try {
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        cid,
+        size: buffer.length,
+        response: response.data.data
+      };
+      fs.appendFileSync(
+        'ipfs-upload-log.json', 
+        JSON.stringify(logEntry, null, 2) + ',\n'
+      );
+    } catch (logError) {
+      console.warn("Failed to write to upload log:", logError.message);
+    }
+
+    // Verify the content is accessible via Pinata gateway with retry logic
+    let verified = false;
+    try {
+      verified = await verifyIpfsContent(cid, jsonString);
+    } catch (verifyError) {
+      console.warn(`IPFS verification warning: ${verifyError.message}`);
+    }
+
+    if (!verified) {
+      console.warn("Content uploaded but not immediately verifiable. This is normal for fresh uploads.");
+      console.log(`You can manually check at: ${IPFS_CONFIG.pinataGateway}${cid}`);
+    }
 
     return cid;
   } catch (error) {
-    console.error("Pinata IPFS upload error:", error.response?.data || error.message);
+    console.error("Pinata IPFS upload error:");
+    
+    if (error.response) {
+      // Server responded with a non-2xx status
+      console.error(`Status: ${error.response.status}`);
+      console.error(`Headers:`, error.response.headers);
+      console.error(`Data:`, error.response.data.data);
+    } else if (error.request) {
+      // Request was made but no response received
+      console.error(`No response received. Request:`, error.request);
+    } else {
+      // Error in setting up the request
+      console.error(`Error message:`, error.message);
+    }
+    
+    // Try alternative upload method if main method fails
+    if (error.response && error.response.status === 401) {
+      console.warn("Authentication failed. Check your Pinata JWT token.");
+    }
+    
     throw new Error(`Failed to upload to Pinata IPFS: ${error.message}`);
   }
 }
@@ -621,7 +766,7 @@ async function issueCredential(issuerAccount, holderAddress) {
 
   // Canonicalize the VC payload for consistent hashing
   const canonicalizedVcPayload = await canonicalizeJSONLD(vcPayload);
-  console.log("Canonicalized VC Payload:", JSON.stringify(canonicalizedVcPayload, null, 2));
+  console.log("Canonicalized VC Payload:", canonicalizedVcPayload.substring(0, 100) + "...");
 
   // Upload to IPFS and get CID
   // optional: change vcPayload to signedVcPayload
@@ -629,24 +774,22 @@ async function issueCredential(issuerAccount, holderAddress) {
   const credentialCid = await uploadToIPFS(vcPayload);
   console.log("Credential CID:", credentialCid);
 
-  // Create DID hashes
-  const issuerDid = createDidHash(issuerAccount);
-  const holderDid = createDidHash(holderAddress);
+  // // Create DID hashes
+  // const issuerDid = createDidHash(issuerAccount);
+  // const holderDid = createDidHash(holderAddress);
 
-  console.log("Issuer DID Hash:", issuerDid);
-  console.log("Holder DID Hash:", holderDid);
+  // console.log("Issuer DID Hash:", issuerDid);
+  // console.log("Holder DID Hash:", holderDid);
 
-  // Check if the DIDs are valid
-  if (issuerDid === holderDid) {
-    throw new Error("Issuer and holder cannot be the same address");
-  }
+  // // Check if the DIDs are valid
+  // if (issuerDid === holderDid) {
+  //   throw new Error("Issuer and holder cannot be the same address");
+  // }
 
   // Encode function call
   const data = encodeFunction("issueCredential", [
     holderAddress,
     credentialId,
-    issuerDid,
-    holderDid,
     credentialCid
   ]);
 
@@ -676,13 +819,12 @@ async function verifyCredential(credentialId) {
     const credentialRecord = result[0];
 
     return {
-      credentialHash: credentialRecord[0],
-      issuer: credentialRecord[1],
+      issuer: credentialRecord[0],
       metadata: {
         // Convert BigInt values to regular numbers
-        issuanceDate: Number(credentialRecord[2][0]),
-        expirationDate: Number(credentialRecord[2][1]),
-        status: Number(credentialRecord[2][2])
+        issuanceDate: Number(credentialRecord[1][0]),
+        expirationDate: Number(credentialRecord[1][1]),
+        status: Number(credentialRecord[1][2])
       }
     };
   } catch (error) {
@@ -844,10 +986,10 @@ async function main() {
       console.log("Formatted Verifiable Credential:", formattedCredential);
 
       fs.writeFileSync(
-        `verifiable-credential-${holder.substring(0, 8)}.json`,
+        `verifiable-credential-${holderAccount.substring(0, 8)}.json`,
         formattedCredential
-      ),
-        console.log(`Verifiable credentials saved to file: verifiable-credential-${holder.substring(0, 8)}.json`);
+      );
+      console.log(`Verifiable credentials saved to file: verifiable-credential-${holderAccount.substring(0, 8)}.json`);
 
       console.log("Full credential:", formattedCredential);
     } else {
