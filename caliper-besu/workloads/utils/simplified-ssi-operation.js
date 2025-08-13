@@ -72,10 +72,10 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Initialize state manager if needed (must be implemented by subclass)
     this.ssiState = this.createSSIState();
-    
+
     // Store reference as stateManager for consistency across methods
     this.stateManager = this.ssiState;
-    
+
     // Add transaction delay configuration if not already present
     if (!this.ssiConfig.transactionDelayMs) {
       this.ssiConfig.transactionDelayMs = this.roundArguments.transactionDelayMs || 250;
@@ -234,6 +234,11 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
    */
   createSSIRequest(contractName, operation, args, options = {}) {
     const isReadOnly = READ_ONLY_OPERATIONS.has(operation);
+    // const limit = this.getGasLimitFromConfig(contractName, operation);
+
+    // if (typeof limit !== 'number' || !Number.isFinite(limit) || limit <= 100000) {
+    //   throw new Error(`Invalid gas limit resolved for ${contractName}.${operation}: ${limit}`);   
+    // }
 
     // Create basic request optimized for Caliper Ethereum
     const request = {
@@ -248,9 +253,13 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
     if (!isReadOnly) {
       // Use Caliper Ethereum's gas configuration
       request.gas = {
-        price: this.ssiConfig.gasPrice,
-        limit: this.getGasLimitFromConfig(contractName, operation)
+        limit: this.getGasLimitFromConfig(contractName, operation),
+        price: this.ssiConfig.gasPrice
       };
+
+      // // Caliper Ethereum expects flat fields: gas (limit) and gasPrice
+      // request.gas = limit;
+      // request.gasPrice = this.ssiConfig.gasPrice;
 
       // Let Caliper Ethereum handle transaction signing and nonce management
     }
@@ -291,7 +300,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       'revokeRole': 100000,
       'createDid': 600000,
       'updateDid': 100000,
-      'issueCredential': 350000,
+      'issueCredential': 500000,
       'updateCredentialStatus': 150000,
       // Read operations (should not be used as they're read-only)
       'getRole': 80000,
@@ -314,7 +323,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
   async executeSSIOperation(contractName, operation, args, options = {}) {
     const startTime = Date.now();
     let result;
-    
+
     // Handle case where options is actually a caller address string
     if (typeof options === 'string' && options.startsWith('0x')) {
       options = { fromAddress: options };
@@ -324,12 +333,14 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       // Create optimized request for Caliper Ethereum
       const request = this.createSSIRequest(contractName, operation, args, options);
 
+      console.log('Caliper request gas:', request.gas);
+
       // Use sutAdapter.sendRequests for optimal Besu interaction
       result = await this.sutAdapter.sendRequests(request);
 
       const executionTime = Date.now() - startTime;
       console.log(`✅ ${contractName}.${operation} completed in ${executionTime}ms`);
-      
+
       // Add a delay after successful transaction to prevent network congestion
       // Only add delay for write operations to avoid slowing down reads
       if (!READ_ONLY_OPERATIONS.has(operation) && this.stateManager) {

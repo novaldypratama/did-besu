@@ -784,17 +784,13 @@
           "0xA5134e42CF382152894d040a0e89F2E4231062d8"
         ],
         "deploy": false,
-        "estimateGas": true,
+        "estimateGas": false,
         "gas": {
-          "limit": 3000000,
-          "price": 1000000000
-        },
-        "address": "0x65952c0Daf5936175851904A9889bd31E49EbFFc",
-        "functions": {
-          "issueCredential": 350000,
+          "issueCredential": 500000,
           "updateCredentialStatus": 150000,
           "resolveCredential": 80000
         },
+        "address": "0x65952c0Daf5936175851904A9889bd31E49EbFFc",
         "abi": [
           {
             "inputs": [
@@ -842,49 +838,6 @@
               }
             ],
             "name": "CredentialNotFound",
-            "type": "error"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "identity",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "reason",
-                "type": "string"
-              }
-            ],
-            "name": "IdentityHasBeenDeactivated",
-            "type": "error"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "identity",
-                "type": "address"
-              }
-            ],
-            "name": "IdentityNotFound",
-            "type": "error"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "identity",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "reason",
-                "type": "string"
-              }
-            ],
-            "name": "InvalidIdentity",
             "type": "error"
           },
           {

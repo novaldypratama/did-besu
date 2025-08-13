@@ -40,7 +40,7 @@ ssiArgs: &ssi-args
 
     # Credential Registry operations
     CredentialRegistry:
-      issueCredential: 350000 # Highest gas for complex credential logic
+      issueCredential: 500000 # Highest gas for complex credential logic
       updateCredentialStatus: 150000
       resolveCredential: 80000
   # Dynamic gas pricing strategy
@@ -69,11 +69,11 @@ test:
     # Phase 1: Role Management (Low Load)
     - label: Role_Assignment
       description: Assign roles to entities in the network (baseline test)
-      txNumber: 10
+      txNumber: 100
       rateControl:
         type: fixed-rate
         opts:
-          tps: 2 # Conservative start (reduced from 20 to prevent overloading)
+          tps: 10 # Conservative start (reduced from 20 to prevent overloading)
       workload:
         module: workloads/auth/simplifiedAssignRole.js
         arguments:
@@ -83,11 +83,11 @@ test:
     # Phase 2: DID Creation (Medium Load)
     - label: DID_Creation
       description: Create DID documents for issuers and holders
-      txNumber: 10
+      txNumber: 100
       rateControl:
         type: fixed-rate
         opts:
-          tps: 2 # Reduced rate for complex DID operations
+          tps: 10 # Reduced rate for complex DID operations
       workload:
         module: workloads/did/simplifiedCreateDid.js
         arguments:
@@ -97,11 +97,11 @@ test:
     # Phase 3: Credential Issuance (High Load)
     - label: Credential_Issuance
       description: Issue verifiable credentials at high throughput
-      txNumber: 5
+      txNumber: 100
       rateControl:
         type: fixed-rate
         opts:
-          tps: 2  # ~65% block utilization
+          tps: 10  # ~65% block utilization
       workload:
         module: workloads/vc/simplifiedIssueCredential.js
         arguments:
