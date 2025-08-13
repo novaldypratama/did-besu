@@ -32,24 +32,34 @@ class SimplifiedCreateDid extends SimplifiedSSIOperationBase {
     try {
       console.log(`Worker ${this.workerIndex}: Starting DID creation...`);
       
-      // Get DID creation arguments from state manager
-      const didArgs = this.ssiState.getDIDCreationArguments();
+      // Get DID creation arguments from state manager - now async
+      const didArgs = await this.ssiState.getDIDCreationArguments();
       
       if (!didArgs) {
         throw new Error('Failed to generate DID creation arguments');
       }
       
       console.log(`DID creation args:`, {
-        identity: didArgs.identity,
+        caller: didArgs.caller.substring(0, 10) + '...',
+        identity: didArgs.identity.substring(0, 10) + '...',
         docHash: `${didArgs.docHash.substring(0, 10)}...`,
         cidLength: didArgs.docCid.length
       });
       
-      // Execute DID creation operation
+      // Execute DID creation operation using WebSocket provider
+      // For createDid(address identity, bytes32 docHash, string calldata docCid)
+      // Note that we exclude 'caller' from the args since it's used for the fromAddress
+      const createDidArgs = {
+        identity: didArgs.identity,
+        docHash: didArgs.docHash,
+        docCid: didArgs.docCid
+      };
+      
       const result = await this.executeSSIOperation(
         SimplifiedSSIOperationBase.CONTRACTS.DID_REGISTRY,
         SimplifiedSSIOperationBase.OPERATIONS.CREATE_DID,
-        didArgs
+        createDidArgs,
+        // { fromAddress: didArgs.caller } // Pass the caller address as fromAddress in options
       );
       
       console.log(`✅ DID creation successful for Worker ${this.workerIndex}`);

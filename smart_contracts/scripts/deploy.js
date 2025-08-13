@@ -13,12 +13,17 @@ async function main() {
 
   // Define deployment parameters to optimize gas usage
   const deploymentOptions = {
-    gasLimit: 12000000,  // Explicit gas limit
-    gasPrice: ethers.parseUnits("10", "gwei")  // Higher gas price for faster mining
+    gasLimit: 5000000,  // Explicit gas limit
+    gasPrice: ethers.parseUnits("1", "gwei")  // Higher gas price for faster mining
   };
 
   // Set a reasonable timeout for deployments
   const DEPLOYMENT_TIMEOUT = 60000; // 60 seconds
+
+  // Gas tracking variables
+  let totalGasUsed = 0n;
+  let totalGasCost = 0n;
+  const gasReport = [];
 
   try {
     // 1. Deploy RoleControl contract first (no dependencies)
@@ -40,6 +45,25 @@ async function main() {
       const roleControlAddress = await roleControl.getAddress();
       console.log("✅ RoleControl deployed at:", roleControlAddress);
       console.log("   Deployer assigned TRUSTEE role by default");
+
+      // Calculate gas usage for RoleControl
+      const roleControlReceipt = await ethers.provider.getTransactionReceipt(roleControl.deploymentTransaction().hash);
+      const roleControlGasUsed = roleControlReceipt.gasUsed;
+      const roleControlGasCost = roleControlGasUsed * deploymentOptions.gasPrice;
+      
+      totalGasUsed += roleControlGasUsed;
+      totalGasCost += roleControlGasCost;
+      
+      gasReport.push({
+        contract: "RoleControl",
+        gasUsed: roleControlGasUsed.toString(),
+        gasPrice: ethers.formatUnits(deploymentOptions.gasPrice, "gwei") + " gwei",
+        gasCost: ethers.formatEther(roleControlGasCost) + " ETH",
+        address: roleControlAddress
+      });
+
+      console.log("   Gas used:", roleControlGasUsed.toLocaleString());
+      console.log("   Gas cost:", ethers.formatEther(roleControlGasCost), "ETH");
     } catch (error) {
       console.error("❌ RoleControl deployment failed:", error.message);
       process.exit(1);
@@ -69,6 +93,25 @@ async function main() {
 
       const didRegistryAddress = await didRegistry.getAddress();
       console.log("✅ DidRegistry deployed at:", didRegistryAddress);
+
+      // Calculate gas usage for DidRegistry
+      const didRegistryReceipt = await ethers.provider.getTransactionReceipt(didRegistry.deploymentTransaction().hash);
+      const didRegistryGasUsed = didRegistryReceipt.gasUsed;
+      const didRegistryGasCost = didRegistryGasUsed * deploymentOptions.gasPrice;
+      
+      totalGasUsed += didRegistryGasUsed;
+      totalGasCost += didRegistryGasCost;
+      
+      gasReport.push({
+        contract: "DidRegistry",
+        gasUsed: didRegistryGasUsed.toString(),
+        gasPrice: ethers.formatUnits(deploymentOptions.gasPrice, "gwei") + " gwei",
+        gasCost: ethers.formatEther(didRegistryGasCost) + " ETH",
+        address: didRegistryAddress
+      });
+
+      console.log("   Gas used:", didRegistryGasUsed.toLocaleString());
+      console.log("   Gas cost:", ethers.formatEther(didRegistryGasCost), "ETH");
     } catch (error) {
       console.error("❌ DidRegistry deployment failed:", error.message);
       process.exit(1);
@@ -100,6 +143,25 @@ async function main() {
 
       const credentialRegistryAddress = await credentialRegistry.getAddress();
       console.log("✅ CredentialRegistry deployed at:", credentialRegistryAddress);
+
+      // Calculate gas usage for CredentialRegistry
+      const credentialRegistryReceipt = await ethers.provider.getTransactionReceipt(credentialRegistry.deploymentTransaction().hash);
+      const credentialRegistryGasUsed = credentialRegistryReceipt.gasUsed;
+      const credentialRegistryGasCost = credentialRegistryGasUsed * deploymentOptions.gasPrice;
+      
+      totalGasUsed += credentialRegistryGasUsed;
+      totalGasCost += credentialRegistryGasCost;
+      
+      gasReport.push({
+        contract: "CredentialRegistry",
+        gasUsed: credentialRegistryGasUsed.toString(),
+        gasPrice: ethers.formatUnits(deploymentOptions.gasPrice, "gwei") + " gwei",
+        gasCost: ethers.formatEther(credentialRegistryGasCost) + " ETH",
+        address: credentialRegistryAddress
+      });
+
+      console.log("   Gas used:", credentialRegistryGasUsed.toLocaleString());
+      console.log("   Gas cost:", ethers.formatEther(credentialRegistryGasCost), "ETH");
     } catch (error) {
       console.error("❌ CredentialRegistry deployment failed:", error.message);
       process.exit(1);
@@ -112,12 +174,43 @@ async function main() {
     console.log("CredentialRegistry: ", await credentialRegistry.getAddress());
     console.log("-----------------------------");
 
+    // Log comprehensive gas usage report
+    console.log("\n----- GAS USAGE REPORT -----");
+    gasReport.forEach(report => {
+      console.log(`${report.contract}:`);
+      console.log(`  Address:    ${report.address}`);
+      console.log(`  Gas Used:   ${BigInt(report.gasUsed).toLocaleString()}`);
+      console.log(`  Gas Price:  ${report.gasPrice}`);
+      console.log(`  Gas Cost:   ${report.gasCost}`);
+      console.log("");
+    });
+    
+    console.log("TOTAL DEPLOYMENT COSTS:");
+    console.log(`  Total Gas Used:  ${totalGasUsed.toLocaleString()}`);
+    console.log(`  Total Gas Cost:  ${ethers.formatEther(totalGasCost)} ETH`);
+    console.log(`  Gas Price Used:  ${ethers.formatUnits(deploymentOptions.gasPrice, "gwei")} gwei`);
+    
+    // Calculate USD cost (example with ETH price - could be made dynamic)
+    const ethPriceUSD = 3500; // This could be fetched from an API
+    const totalCostUSD = parseFloat(ethers.formatEther(totalGasCost)) * ethPriceUSD;
+    console.log(`  Estimated Cost:  $${totalCostUSD.toFixed(4)} USD (at $${ethPriceUSD}/ETH)`);
+    console.log("-----------------------------");
+
     // Save deployment addresses to file for future reference
     const fs = require("fs");
     const deploymentInfo = {
-      roleControl: await roleControl.getAddress(),
-      didRegistry: await didRegistry.getAddress(),
-      credentialRegistry: await credentialRegistry.getAddress(),
+      contracts: {
+        roleControl: await roleControl.getAddress(),
+        didRegistry: await didRegistry.getAddress(),
+        credentialRegistry: await credentialRegistry.getAddress()
+      },
+      gasUsage: {
+        totalGasUsed: totalGasUsed.toString(),
+        totalGasCost: ethers.formatEther(totalGasCost),
+        gasPrice: ethers.formatUnits(deploymentOptions.gasPrice, "gwei"),
+        estimatedCostUSD: totalCostUSD.toFixed(4),
+        contractBreakdown: gasReport
+      },
       network: network.name,
       timestamp: new Date().toISOString()
     };

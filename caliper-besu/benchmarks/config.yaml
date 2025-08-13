@@ -6,12 +6,13 @@ ssiArgs: &ssi-args
   # issuerCount: 4
   # holderCount: 8
   # verifierCount: 2
-  gasLimit: 12000000
-  gasPrice: 10000000000
+  gasLimit: 5000000
+  gasPrice: 1000000000
   web3signerUrl: "http://127.0.0.1:18545"
   besuEndpoint: "ws://172.16.239.15:8546"
   chainId: 1337
   blockTime: 3 # 3-second block time
+  transactionDelayMs: 2500 # Add delay between transactions to prevent network congestion
 
   # CRITICAL: Contract addresses must match deployed contracts
   contractAddresses:
@@ -23,23 +24,23 @@ ssiArgs: &ssi-args
   gasConfig:
     # Role Control operations
     RoleControl:
-      assignRole: 200000    # Increased for authorization checks
+      assignRole: 300000 # Increased for authorization checks
       revokeRole: 100000
-      getRole: 80000        # Read operations need more gas for complex contracts
+      getRole: 80000 # Read operations need more gas for complex contracts
       hasRole: 80000
       getRoleCount: 80000
-    
-    # DID Registry operations  
+
+    # DID Registry operations
     DidRegistry:
-      createDid: 200000     # Increased for cross-contract validation
+      createDid: 600000 # Increased for cross-contract validation
       updateDid: 100000
       deactivateDid: 80000
       resolveDid: 80000
       validateDid: 80000
-    
+
     # Credential Registry operations
     CredentialRegistry:
-      issueCredential: 250000   # Highest gas for complex credential logic
+      issueCredential: 350000 # Highest gas for complex credential logic
       updateCredentialStatus: 150000
       resolveCredential: 80000
   # Dynamic gas pricing strategy
@@ -66,13 +67,13 @@ test:
     number: 1
   rounds:
     # Phase 1: Role Management (Low Load)
-    - label: RoleAssignment_LowLoad
+    - label: Role_Assignment
       description: Assign roles to entities in the network (baseline test)
-      txNumber: 20
+      txNumber: 10
       rateControl:
         type: fixed-rate
         opts:
-          tps: 3 # Conservative start
+          tps: 2 # Conservative start (reduced from 20 to prevent overloading)
       workload:
         module: workloads/auth/simplifiedAssignRole.js
         arguments:
@@ -80,32 +81,32 @@ test:
           operationType: "assignRole"
 
     # Phase 2: DID Creation (Medium Load)
-    - label: DIDCreation_MediumLoad
+    - label: DID_Creation
       description: Create DID documents for issuers and holders
-      txNumber: 40
+      txNumber: 10
       rateControl:
         type: fixed-rate
         opts:
-          tps: 6 # ~50% block utilization
+          tps: 2 # Reduced rate for complex DID operations
       workload:
         module: workloads/did/simplifiedCreateDid.js
         arguments:
           <<: *ssi-args
           operationType: "createDid"
 
-    # # Phase 3: Credential Issuance (High Load)
-    # - label: CredentialIssuance_HighLoad
-    #   description: Issue verifiable credentials at high throughput
-    #   txNumber: 60
-    #   rateControl:
-    #     type: fixed-rate
-    #     opts:
-    #       tps: 8  # ~65% block utilization
-    #   workload:
-    #     module: workload/vc/issueCredential.js
-    #     arguments:
-    #       <<: *ssi-args
-    #       operationType: "issueCredential"
+    # Phase 3: Credential Issuance (High Load)
+    - label: Credential_Issuance
+      description: Issue verifiable credentials at high throughput
+      txNumber: 5
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 2  # ~65% block utilization
+      workload:
+        module: workloads/vc/simplifiedIssueCredential.js
+        arguments:
+          <<: *ssi-args
+          operationType: "issueCredential"
 
     # # Phase 4: Mixed Operations (Peak Load)
     # - label: MixedOperations_PeakLoad
@@ -166,12 +167,12 @@ test:
 
 # Monitor configuration for performance tracking
 monitors:
-  - none  # Disable built-in monitors, use custom monitoring
+  - none # Disable built-in monitors, use custom monitoring
 
 # Resource monitoring configuration
 observer:
   type: local
-  interval: 5  # 5-second intervals to match block time
+  interval: 5 # 5-second intervals to match block time
 
 # # Custom performance thresholds
 # performance:

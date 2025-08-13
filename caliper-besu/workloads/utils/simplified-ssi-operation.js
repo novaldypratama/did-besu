@@ -15,12 +15,12 @@ const SSI_OPERATIONS = {
   ASSIGN_ROLE: 'assignRole',
   REVOKE_ROLE: 'revokeRole',
   GET_ROLE: 'getRole',
-  
+
   // DID operations  
   CREATE_DID: 'createDid',
   UPDATE_DID: 'updateDid',
   RESOLVE_DID: 'resolveDid',
-  
+
   // Credential operations
   ISSUE_CREDENTIAL: 'issueCredential',
   UPDATE_CREDENTIAL_STATUS: 'updateCredentialStatus',
@@ -52,7 +52,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
    */
   async initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext) {
     await super.initializeWorkloadModule(workerIndex, totalWorkers, roundIndex, roundArguments, sutAdapter, sutContext);
-    
+
     // Initialize basic configuration
     this.workerIndex = workerIndex;
     this.totalWorkers = totalWorkers;
@@ -63,7 +63,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Initialize SSI configuration
     this.initializeSSIConfiguration();
-    
+
     // Setup account management
     await this.setupAccountManagement();
 
@@ -72,6 +72,15 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Initialize state manager if needed (must be implemented by subclass)
     this.ssiState = this.createSSIState();
+    
+    // Store reference as stateManager for consistency across methods
+    this.stateManager = this.ssiState;
+    
+    // Add transaction delay configuration if not already present
+    if (!this.ssiConfig.transactionDelayMs) {
+      this.ssiConfig.transactionDelayMs = this.roundArguments.transactionDelayMs || 250;
+      console.log(`⏱️ Setting transaction delay to ${this.ssiConfig.transactionDelayMs}ms`);
+    }
 
     console.log(`🔗 Worker ${this.workerIndex} initialized with account: ${this.fromAddress}`);
   }
@@ -102,22 +111,22 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
   initializeSSIConfiguration() {
     // Extract required configuration (simplified for Caliper Ethereum)
     const requiredSettings = ['gasLimit', 'chainId'];
-    
+
     requiredSettings.forEach(setting => {
       if (!this.roundArguments.hasOwnProperty(setting)) {
         throw new Error(`SSI workload error: required setting "${setting}" is missing from benchmark configuration`);
       }
     });
-    
+
     // Store SSI configuration optimized for Caliper Ethereum
     this.ssiConfig = {
-      gasLimit: this.roundArguments.gasLimit || 12000000,
+      gasLimit: this.roundArguments.gasLimit || 8000000,
       chainId: this.roundArguments.chainId || 1337,
       besuEndpoint: this.roundArguments.besuEndpoint,
       contractAddresses: this.roundArguments.contractAddresses || {},
       gasConfig: this.roundArguments.gasConfig || {},
       // Additional Caliper Ethereum specific configurations
-      gasPrice: this.roundArguments.gasPrice || 50000000000
+      gasPrice: this.roundArguments.gasPrice || 2000000000
     };
 
     console.log(`⚙️ SSI Configuration loaded for worker ${this.workerIndex}`);
@@ -133,22 +142,22 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Try to use available accounts from network config or adapter
     const networkAccounts = this.getNetworkAccounts();
-    
+
     if (networkAccounts && networkAccounts.length > 0) {
       // Select account based on worker index
       const availableAccounts = networkAccounts.length;
       this.clientIdx = this.workerIndex % availableAccounts;
       this.fromAddress = networkAccounts[this.clientIdx].address;
-      
+
       console.log(`👤 Worker ${this.workerIndex} using network account ${this.clientIdx}: ${this.fromAddress}`);
     } else {
       // Fallback to connector's default account
       this.fromAddress = this.sutAdapter.defaultAccount || null;
-      
+
       if (!this.fromAddress) {
         throw new Error('No accounts available from network config or connector defaults');
       }
-      
+
       console.log(`👤 Worker ${this.workerIndex} using default account: ${this.fromAddress}`);
     }
 
@@ -167,15 +176,15 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       if (this.sutAdapter.context?.networkConfiguration?.ethereum?.accounts) {
         return this.sutAdapter.context.networkConfiguration.ethereum.accounts;
       }
-      
+
       if (this.sutAdapter.networkConfiguration?.ethereum?.accounts) {
         return this.sutAdapter.networkConfiguration.ethereum.accounts;
       }
-      
+
       if (this.sutAdapter.ethereumConfig?.accounts) {
         return this.sutAdapter.ethereumConfig.accounts;
       }
-      
+
       return null;
     } catch (error) {
       console.warn(`⚠️ Could not access network accounts: ${error.message}`);
@@ -197,18 +206,18 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Check for required SSI contracts
     const requiredSSIContracts = Object.values(SSI_CONTRACTS);
-    
+
     for (const contractName of requiredSSIContracts) {
       const contract = this.sutAdapter.ethereumConfig.contracts[contractName];
-      
+
       if (!contract) {
         throw new Error(`${contractName} contract not found in sutAdapter`);
       }
-      
+
       if (typeof contract !== 'object') {
         throw new Error(`${contractName} is not a valid contract object`);
       }
-      
+
       console.log(`✅ ${contractName} contract validated`);
     }
   }
@@ -232,7 +241,6 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       verb: operation,
       args: Object.values(args),
       readOnly: isReadOnly,
-      fromAddress: this.fromAddress,
       ...options
     };
 
@@ -243,7 +251,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
         price: this.ssiConfig.gasPrice,
         limit: this.getGasLimitFromConfig(contractName, operation)
       };
-      
+
       // Let Caliper Ethereum handle transaction signing and nonce management
     }
 
@@ -269,7 +277,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       if (contractConfig?.gas?.limit) {
         return contractConfig.gas.limit;
       }
-      
+
       if (contractConfig?.functions?.[operation]?.gas) {
         return contractConfig.functions[operation].gas;
       }
@@ -279,11 +287,11 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Fallback to reasonable defaults optimized for SSI operations
     const defaultGasLimits = {
-      'assignRole': 200000,
+      'assignRole': 300000,
       'revokeRole': 100000,
-      'createDid': 200000,
+      'createDid': 600000,
       'updateDid': 100000,
-      'issueCredential': 250000,
+      'issueCredential': 350000,
       'updateCredentialStatus': 150000,
       // Read operations (should not be used as they're read-only)
       'getRole': 80000,
@@ -291,7 +299,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       'resolveCredential': 80000
     };
 
-    return defaultGasLimits[operation] || 250000;
+    return defaultGasLimits[operation] || 200000;
   }
 
   /**
@@ -299,63 +307,45 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
    * @param {string} contractName - Contract name
    * @param {string} operation - Operation name
    * @param {Object} args - Operation arguments
-   * @param {Object} options - Additional options
+   * @param {Object|string} options - Additional options or caller address
    * @returns {Promise} Operation result
    * @protected
    */
   async executeSSIOperation(contractName, operation, args, options = {}) {
     const startTime = Date.now();
     let result;
+    
+    // Handle case where options is actually a caller address string
+    if (typeof options === 'string' && options.startsWith('0x')) {
+      options = { fromAddress: options };
+    }
 
     try {
       // Create optimized request for Caliper Ethereum
       const request = this.createSSIRequest(contractName, operation, args, options);
-      
+
       // Use sutAdapter.sendRequests for optimal Besu interaction
       result = await this.sutAdapter.sendRequests(request);
-      
+
       const executionTime = Date.now() - startTime;
       console.log(`✅ ${contractName}.${operation} completed in ${executionTime}ms`);
       
+      // Add a delay after successful transaction to prevent network congestion
+      // Only add delay for write operations to avoid slowing down reads
+      if (!READ_ONLY_OPERATIONS.has(operation) && this.stateManager) {
+        await this.stateManager.waitForTransactionDelay(this.ssiConfig.transactionDelayMs || 250);
+      }
+
       return result;
     } catch (error) {
       const executionTime = Date.now() - startTime;
       console.error(`❌ ${contractName}.${operation} failed after ${executionTime}ms: ${error.message}`);
-      
+
       // Add transaction details to error for better debugging
       if (error.originalError) {
         console.error(`Original error: ${error.originalError.message || JSON.stringify(error.originalError)}`);
       }
-      
-      throw error;
-    }
-  }
 
-  /**
-   * Execute batch SSI operations for improved performance
-   * @param {Array} operations - Array of operation objects
-   * @returns {Promise<Array>} Array of operation results
-   * @protected
-   */
-  async executeBatchSSIOperations(operations) {
-    const startTime = Date.now();
-    
-    try {
-      // Convert operations to Caliper requests
-      const requests = operations.map(op => 
-        this.createSSIRequest(op.contractName, op.operation, op.args, op.options)
-      );
-      
-      // Use sutAdapter batch processing
-      const results = await this.sutAdapter.sendRequests(requests);
-      
-      const executionTime = Date.now() - startTime;
-      console.log(`✅ Batch of ${operations.length} operations completed in ${executionTime}ms`);
-      
-      return results;
-    } catch (error) {
-      const executionTime = Date.now() - startTime;
-      console.error(`❌ Batch operations failed after ${executionTime}ms: ${error.message}`);
       throw error;
     }
   }
