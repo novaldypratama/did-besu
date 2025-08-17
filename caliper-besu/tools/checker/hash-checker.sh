@@ -10,7 +10,7 @@ set -euo pipefail
 RPC_URL="http://172.16.239.15:8545"
 CONTRACT_ADDRESS="0x65952c0Daf5936175851904A9889bd31E49EbFFc"
 # ARTIFACT_PATH="./benchmarks/contracts/CredentialRegistry.json"
-ARTIFACT_PATH="../smart_contracts/artifacts/contracts/vc/CredentialRegistry.sol/CredentialRegistry.json"
+ARTIFACT_PATH="../../../smart_contracts/artifacts/contracts/vc/CredentialRegistry.sol/CredentialRegistry.json"
 
 # Colors for output
 RED='\033[0;31m'
