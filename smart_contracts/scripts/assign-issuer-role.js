@@ -38,7 +38,7 @@ async function main() {
     // Set transaction options
     const txOptions = {
       gasLimit: 200000,
-      gasPrice: ethers.parseUnits("10", "gwei")
+      gasPrice: ethers.parseUnits("1", "gwei")
     };
 
     // Assign ISSUER role (role = 1 as per the enum ROLES in the contract)
