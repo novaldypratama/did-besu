@@ -50,11 +50,7 @@ contract DidRegistry is IDidRegistry {
      * @dev Ensures caller is either Trustee or Issuer
      */
     modifier _senderIsTrusteeOrIssuerOrHolder() {
-        try _roleControl.isTrusteeOrIssuerOrHolder(msg.sender) {
-            // Successfully validated as either Trustee or Issuer
-        } catch (bytes memory) {
-            revert Unauthorized(msg.sender);
-        }
+        _roleControl.isTrusteeOrIssuerOrHolder(msg.sender);
         _;
     }
 
@@ -229,8 +225,6 @@ contract DidRegistry is IDidRegistry {
         string calldata docCid
     )
         internal
-        _didNotExist(identity)
-        _identityOwner(identity, actor)
         _senderIsTrusteeOrIssuerOrHolder
     {
         // Validate inputs first
