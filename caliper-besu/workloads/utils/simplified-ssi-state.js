@@ -293,7 +293,6 @@ class SimplifiedSSIStateManager {
     
     // Add predefined accounts from the known network config accounts as fallback
     const predefinedAccounts = [
-      { address: DEPLOYER_ADDRESS, role: SSI_ROLES.TRUSTEE, name: 'Deployer (Trustee)' },
       { address: '0x627306090abaB3A6e1400e9345bC60c78a8BEf57', role: SSI_ROLES.HOLDER, name: 'Primary Holder' },
       { address: '0xf17f52151EbEF6C7334FAD080c5704D77216b732', role: SSI_ROLES.ISSUER, name: 'Secondary Issuer' },
       { address: '0xc9c913c8c3c1cd416d80a0abf475db2062f161f6', role: SSI_ROLES.HOLDER, name: 'Secondary Holder' },
@@ -478,96 +477,6 @@ class SimplifiedSSIStateManager {
   }
   
   /**
-   * Get accounts that already have DIDs registered for them
-   * This is useful for ensuring we reuse accounts that already have DIDs when possible
-   * @param {number} [role=null] - Optional role to filter by
-   * @returns {Array<string>} Array of account addresses with DIDs
-   * @private
-   */
-  _getAccountsWithDids(role = null) {
-    // UPDATED: For ISSUER role, allow ALL roles to act as issuers from Caliper pre-funded accounts
-    if (role === SSI_ROLES.ISSUER) {
-      console.log(`🔄 FLEXIBLE ISSUER MODE: All Caliper pre-funded accounts with DIDs can act as issuers`);
-      
-      // Get ALL Caliper pre-funded accounts that have DIDs (regardless of original role)
-      const caliperAccountsWithDids = Array.from(this.predefinedAccounts.entries())
-        .filter(([address, account]) => {
-          // Must be Caliper pre-funded account
-          const isValidSource = account.source === 'caliper-config' || 
-                                account.source === 'caliper-fallback';
-          if (!isValidSource) return false;
-          
-          // Must have a DID registered
-          if (!this._addressHasDid(address)) return false;
-          
-          return true;
-        })
-        .map(([address, _]) => address);
-      
-      console.log(`🎯 Found ${caliperAccountsWithDids.length} Caliper pre-funded accounts with DIDs (all can act as issuers)`);
-      caliperAccountsWithDids.forEach(address => {
-        const account = this.predefinedAccounts.get(address);
-        const roleName = Object.keys(SSI_ROLES).find(key => SSI_ROLES[key] === account.role) || 'UNKNOWN';
-        console.log(`  - ${account.name} (${address.substring(0, 10)}...) [${roleName} → Can Issue Credentials]`);
-      });
-      
-      return caliperAccountsWithDids;
-    }
-    
-    // For all other roles, use the original logic
-    // First, get all predefined accounts
-    const accounts = Array.from(this.predefinedAccounts.entries());
-
-    // Log diagnostic information about accounts in the Global Account Cache with DIDs
-    const cachedAccountsWithDids = Array.from(GLOBAL_ACCOUNT_CACHE.entries())
-      .filter(([_, accountData]) => accountData.hasDid)
-      .map(([address, accountData]) => {
-        return {
-          address: address.substring(0, 10) + '...',
-          role: accountData.role,
-          name: accountData.name
-        };
-      });
-    
-    if (cachedAccountsWithDids.length > 0) {
-      console.log(`🔍 Found ${cachedAccountsWithDids.length} accounts with DIDs in global cache:`);
-      cachedAccountsWithDids.forEach(account => {
-        console.log(`  - ${account.name} (${account.address}): Role ${account.role}`);
-      });
-    }
-
-    // Filter accounts that have DIDs registered
-    const accountsWithDids = accounts.filter(([address, _]) => this._addressHasDid(address))
-      .map(([address, _]) => address);
-    
-    // Log which accounts were found with DIDs
-    if (accountsWithDids.length > 0) {
-      console.log(`✅ Found ${accountsWithDids.length} accounts with DIDs in local tracking`);
-      accountsWithDids.forEach(address => {
-        const account = this.predefinedAccounts.get(address);
-        console.log(`  - ${account?.name || 'Unknown'} (${address.substring(0, 10)}...): Role ${account?.role || 'Unknown'}`);
-      });
-    }
-    
-    // If no role filter is specified, return all addresses
-    if (role === null) {
-      return accountsWithDids;
-    }
-    
-    // Filter accounts by role if specified
-    const roleFiltered = accountsWithDids.filter(address => {
-      const account = this.predefinedAccounts.get(address);
-      return account && account.role === role;
-    });
-    
-    if (role !== null) {
-      console.log(`🔍 Found ${roleFiltered.length} accounts with role ${role} that have DIDs`);
-    }
-    
-    return roleFiltered;
-  }
-  
-  /**
    * Get a predefined account with specific role
    * @param {number} role - Role type
    * @param {boolean} markAsUsed - Whether to mark the account as used (default: true)
@@ -661,6 +570,21 @@ class SimplifiedSSIStateManager {
       // Mark role assignment as complete
       this.markRoleAssignmentComplete(matchingAccountNeedingRole.address);
       
+      // CRITICAL: Update the global cache to reflect that this account no longer needs role assignment
+      // This ensures getDIDCreationArguments can properly identify it as ready for DID creation
+      const accountData = this.predefinedAccounts.get(matchingAccountNeedingRole.address);
+      if (accountData) {
+        accountData.needsRoleAssignment = false; // Mark role assignment as complete
+        this._updateGlobalAccountCache(matchingAccountNeedingRole.address, accountData);
+        console.log(`✅ Updated global cache - account ${matchingAccountNeedingRole.address.substring(0, 10)}... role assignment complete`);
+      }
+      
+      // Store in roles map to track that this account has been assigned a role
+      this.entities.roles.set(matchingAccountNeedingRole.address, {
+        role: targetRole,
+        assignedAt: Date.now()
+      });
+      
       return {
         role: targetRole,
         account: matchingAccountNeedingRole.address
@@ -673,10 +597,17 @@ class SimplifiedSSIStateManager {
     if (predefinedAccount) {
       console.log(`🎯 Using predefined account for role ${targetRole}: ${predefinedAccount.name}`);
       
-      // Store in roles map
+      // Store in roles map with timestamp
       this.entities.roles.set(predefinedAccount.address, {
-        role: targetRole
+        role: targetRole,
+        assignedAt: Date.now()
       });
+      
+      // Update global cache to ensure the account state is properly tracked
+      const accountData = this.predefinedAccounts.get(predefinedAccount.address);
+      if (accountData) {
+        this._updateGlobalAccountCache(predefinedAccount.address, accountData);
+      }
       
       return {
         role: targetRole,
@@ -687,26 +618,30 @@ class SimplifiedSSIStateManager {
     // Generate random address if no predefined account available
     const address = this._generateRandomAddress();
     
-    // Store in roles map
+    // Store in roles map with timestamp
     this.entities.roles.set(address, {
-      role: targetRole
+      role: targetRole,
+      assignedAt: Date.now()
     });
     
     // Add to predefined accounts map so it can be reused in later rounds
-    this.predefinedAccounts.set(address, {
+    const generatedAccount = {
       role: targetRole,
       name: `Generated ${Object.keys(SSI_ROLES).find(key => SSI_ROLES[key] === targetRole)} ${this.counters[SSI_ENTITY_TYPES.ROLE] + 1}`,
       used: markAsUsed,
-      source: 'generated'
-    });
+      source: 'generated',
+      needsRoleAssignment: true // Mark that this account needs on-chain role assignment
+    };
+    this.predefinedAccounts.set(address, generatedAccount);
     
     // Add to global cache for persistence between rounds
-    this._updateGlobalAccountCache(address, this.predefinedAccounts.get(address));
+    this._updateGlobalAccountCache(address, generatedAccount);
     
     // Increment counter
     this.counters[SSI_ENTITY_TYPES.ROLE]++;
     
     console.log(`🆕 Generated new address for role ${targetRole}: ${address.substring(0, 10)}... (added to predefined accounts)`);
+    console.log(`🎭 Account will need on-chain role assignment before DID creation`);
     
     return {
       role: targetRole,
@@ -724,20 +659,22 @@ class SimplifiedSSIStateManager {
     // Ensure accounts are loaded before proceeding
     await this.waitForAccountsLoaded();
     
-    // Check if DEPLOYER_ADDRESS already has a DID, if not, prioritize creating one for it
+    // PRIORITY 0: Always process DEPLOYER_ADDRESS first for DID creation (unless already processed)
+    // This ensures the deployer gets a DID registered on-chain before other operations
     if (!this._addressHasDid(DEPLOYER_ADDRESS)) {
-      console.log(`🛡️ DEPLOYER_ADDRESS ${DEPLOYER_ADDRESS.substring(0, 10)}... doesn't have a DID yet, prioritizing it`);
+      console.log(`🛡️ PRIORITY 0: Processing DEPLOYER_ADDRESS ${DEPLOYER_ADDRESS.substring(0, 10)}... for DID creation`);
       
       // Generate document hash and CID for DEPLOYER_ADDRESS
-      const docHash = this._generateRandomHash('did-doc-deployer');
-      const docCid = this._generateRandomCid();
+      const deployerDocHash = this._generateRandomHash('did-doc-deployer');
+      const deployerDocCid = this._generateRandomCid();
       
       // Store in DIDs map
       this.entities.dids.set(DEPLOYER_ADDRESS, {
-        docHash,
-        docCid,
+        docHash: deployerDocHash,
+        docCid: deployerDocCid,
         caller: DEPLOYER_ADDRESS, // Self-signed DID
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        purpose: 'initial-deployer-setup'
       });
       
       // Update global cache to mark DEPLOYER_ADDRESS as having a DID
@@ -749,15 +686,19 @@ class SimplifiedSSIStateManager {
       };
       this._updateGlobalAccountCache(DEPLOYER_ADDRESS, accountData, true);
       
-      console.log(`🔐 Registered DID for DEPLOYER_ADDRESS: ${DEPLOYER_ADDRESS.substring(0, 10)}...`);
+      console.log(`🔐 Processed DID creation for DEPLOYER_ADDRESS: ${DEPLOYER_ADDRESS.substring(0, 10)}... (will be registered on-chain)`);
       
       return {
         caller: DEPLOYER_ADDRESS,
         identity: DEPLOYER_ADDRESS,
-        docHash,
-        docCid
+        docHash: deployerDocHash,
+        docCid: deployerDocCid
       };
     }
+    
+    // DEPLOYER_ADDRESS already has a DID, now process other accounts from global cache
+    console.log(`✅ DEPLOYER_ADDRESS ${DEPLOYER_ADDRESS.substring(0, 10)}... already has DID, proceeding with other accounts from global cache`);
+    
     
     // For DID creation, we need:
     // 1. A caller/signer (actor) who has a TRUSTEE, ISSUER, or HOLDER role
@@ -783,50 +724,86 @@ class SimplifiedSSIStateManager {
     }
     
     // Now, get a separate identity address for which the DID will be created
-    // IMPORTANT: Identity must come ONLY from the Global Accounts Cache (no Caliper fallback addresses)
-    // Prefer cached accounts without DIDs, and exclude 'caliper-fallback' sources
-    const availableAddresses = Array.from(GLOBAL_ACCOUNT_CACHE.entries())
+    // PRIORITY 1: Accounts that have been assigned roles via getRoleAssignmentArguments but don't have DIDs yet
+    // These are the accounts we want to create DIDs for to complete the workflow
+    const accountsWithRolesNeedingDids = Array.from(GLOBAL_ACCOUNT_CACHE.entries())
       .filter(([address, data]) => {
         if (!data) return false;
-        // Exclude fallback Caliper accounts
-        if (data.source === 'caliper-fallback') return false;
-        // Identity for DID creation must NOT already have a DID
-        if (this._addressHasDid(address)) {
-          console.log(`🔍 Cached address ${address.substring(0, 10)}... already has a DID, excluding from selection`);
-          return false;
-        }
+        // Must be a generated account (from getRoleAssignmentArguments)
+        if (data.source !== 'generated') return false;
+        // Must have completed role assignment (no longer needs role assignment)
+        if (data.needsRoleAssignment) return false;
+        // Must NOT already have a DID (this is what we want to create)
+        if (this._addressHasDid(address)) return false;
+        // Must have a role assigned in entities.roles (indicating it went through role assignment)
+        if (!this.entities.roles.has(address)) return false;
         return true;
       })
       .map(([address, _]) => address);
     
+    console.log(`🎯 PRIORITY: Found ${accountsWithRolesNeedingDids.length} accounts with assigned roles that need DIDs`);
+    
+    // Debug: Log details about prioritized accounts
+    if (accountsWithRolesNeedingDids.length > 0) {
+      console.log(`📋 Accounts with assigned roles needing DIDs:`);
+      accountsWithRolesNeedingDids.forEach(addr => {
+        const data = GLOBAL_ACCOUNT_CACHE.get(addr);
+        const roleInEntities = this.entities.roles.get(addr);
+        const roleName = Object.keys(SSI_ROLES).find(key => SSI_ROLES[key] === data?.role) || 'UNKNOWN';
+        console.log(`  - ${data?.name || 'Unknown'} (${addr.substring(0, 10)}...) [${roleName}] - Role in entities: ${roleInEntities ? 'YES' : 'NO'}`);
+      });
+    }
+    
     let identity;
     
-    if (availableAddresses.length > 0) {
-      identity = availableAddresses[Math.floor(Math.random() * availableAddresses.length)];
-      console.log(`👤 Using existing account for DID identity: ${identity.substring(0, 10)}...`);
+    if (accountsWithRolesNeedingDids.length > 0) {
+      // Prioritize accounts that have been assigned roles but don't have DIDs yet
+      identity = accountsWithRolesNeedingDids[Math.floor(Math.random() * accountsWithRolesNeedingDids.length)];
+      const accountData = GLOBAL_ACCOUNT_CACHE.get(identity);
+      const roleName = Object.keys(SSI_ROLES).find(key => SSI_ROLES[key] === accountData.role) || 'UNKNOWN';
+      console.log(`🎯 PRIORITY: Using account with assigned ${roleName} role for DID creation: ${identity.substring(0, 10)}...`);
     } else {
-      // If no suitable cached accounts are available, generate a new address,
-      // register it in predefinedAccounts, and add it to the Global Accounts Cache before use
-      identity = this._generateRandomAddress();
-      const generatedAccount = {
-        role: SSI_ROLES.HOLDER, // Default role for DID identity addresses
-        name: `Generated DID Document ${this.counters[SSI_ENTITY_TYPES.DID] + 1}`,
-        used: false,
-        source: 'generated',
-        needsRoleAssignment: true // Mark that this account needs on-chain role assignment
-      };
-      this.predefinedAccounts.set(identity, generatedAccount);
-      // Ensure the identity exists in the Global Accounts Cache (requirement)
-      this._updateGlobalAccountCache(identity, generatedAccount);
+      // FALLBACK: Look for other available accounts (excluding fallback sources)
+      const availableAddresses = Array.from(GLOBAL_ACCOUNT_CACHE.entries())
+        .filter(([address, data]) => {
+          if (!data) return false;
+          // Exclude fallback Caliper accounts
+          if (data.source === 'caliper-fallback') return false;
+          // Identity for DID creation must NOT already have a DID
+          if (this._addressHasDid(address)) {
+            console.log(`🔍 Cached address ${address.substring(0, 10)}... already has a DID, excluding from selection`);
+            return false;
+          }
+          return true;
+        })
+        .map(([address, _]) => address);
       
-      // IMPORTANT: Register role assignment for this generated account in local tracking
-      // This ensures the account will have the proper role on-chain when needed
-      this.entities.roles.set(identity, {
-        role: SSI_ROLES.HOLDER
-      });
-      
-      console.log(`🆕 Using generated address for DID identity (from Global Cache): ${identity.substring(0, 10)}...`);
-      console.log(`🎭 Marked generated account for HOLDER role assignment: ${identity.substring(0, 10)}...`);
+      if (availableAddresses.length > 0) {
+        identity = availableAddresses[Math.floor(Math.random() * availableAddresses.length)];
+        console.log(`👤 FALLBACK: Using existing account for DID identity: ${identity.substring(0, 10)}...`);
+      } else {
+        // Last resort: generate a new address
+        identity = this._generateRandomAddress();
+        const generatedAccount = {
+          role: SSI_ROLES.HOLDER, // Default role for DID identity addresses
+          name: `Generated DID Document ${this.counters[SSI_ENTITY_TYPES.DID] + 1}`,
+          used: false,
+          source: 'generated',
+          needsRoleAssignment: true // Mark that this account needs on-chain role assignment
+        };
+        this.predefinedAccounts.set(identity, generatedAccount);
+        // Ensure the identity exists in the Global Accounts Cache (requirement)
+        this._updateGlobalAccountCache(identity, generatedAccount);
+        
+        // IMPORTANT: Register role assignment for this generated account in local tracking
+        // This ensures the account will have the proper role on-chain when needed
+        this.entities.roles.set(identity, {
+          role: SSI_ROLES.HOLDER
+        });
+        
+        console.log(`🆕 LAST RESORT: Generated new address for DID identity: ${identity.substring(0, 10)}...`);
+        console.log(`🎭 Marked generated account for HOLDER role assignment: ${identity.substring(0, 10)}...`);
+      }
     }
     
     // Generate document hash and CID
@@ -877,14 +854,13 @@ class SimplifiedSSIStateManager {
     // Ensure accounts are loaded before proceeding
     await this.waitForAccountsLoaded();
     
+    // Note: DEPLOYER_ADDRESS DID registration is now handled in getDIDCreationArguments method
+    // This ensures the deployer has a DID before credential issuance operations
+    
     // Initialize used identity tracking if not exists
     if (!this.usedHolders) {
       this.usedHolders = new Set();
     }
-    
-    // // Run diagnostics to help identify any issues with DIDs and account persistence
-    // // This is critical for debugging when credential issuance fails
-    // this.runDiagnostics();
     
     // For credential issuance, we only need a HOLDER (identity)
     // The issuer will be the caller/sender (msg.sender) in the contract
@@ -893,39 +869,86 @@ class SimplifiedSSIStateManager {
     console.log(`🔍 Looking for accounts with DIDs for credential issuance from global cache...`);
     console.log(`📊 Global cache has ${GLOBAL_ACCOUNT_CACHE.size} accounts available`);
     
-    // Holders must come ONLY from Global Accounts Cache (exclude caliper-fallback) and have DIDs
-    const holdersWithDids = Array.from(GLOBAL_ACCOUNT_CACHE.entries())
+    // PRIORITY 1: Accounts that went through the complete workflow (Role Assignment → DID Creation)
+    // These are accounts that were generated via getRoleAssignmentArguments and then got DIDs via getDIDCreationArguments
+    const workflowAccountsWithDids = Array.from(GLOBAL_ACCOUNT_CACHE.entries())
+      .filter(([address, data]) => {
+        if (!data) return false;
+        // Must be a generated account (from the workflow)
+        if (data.source !== 'generated') return false;
+        // Must have completed role assignment
+        if (data.needsRoleAssignment) return false;
+        // Must have a DID registered
+        if (!this._addressHasDid(address)) return false;
+        // Must have been tracked in entities.roles (went through role assignment)
+        if (!this.entities.roles.has(address)) return false;
+        // STRICT: ONLY HOLDER role accounts can be credential holders
+        return data.role === SSI_ROLES.HOLDER;
+      })
+      .map(([address, _]) => address);
+    
+    console.log(`🎯 PRIORITY: Found ${workflowAccountsWithDids.length} workflow HOLDER accounts with DIDs for credential holding`);
+    
+    // FALLBACK: All other accounts with DIDs that have HOLDER role (exclude caliper-fallback)
+    const otherHoldersWithDids = Array.from(GLOBAL_ACCOUNT_CACHE.entries())
       .filter(([address, data]) => {
         if (!data) return false;
         if (data.source === 'caliper-fallback') return false; // exclude fallback
         if (!this._addressHasDid(address)) return false; // must have DID
-        // Prefer entries that are holders, but allow any if role info missing
-        return true;
+        // Skip if already in priority list
+        if (workflowAccountsWithDids.includes(address)) return false;
+        // STRICT: ONLY HOLDER role accounts can be credential holders
+        return data.role === SSI_ROLES.HOLDER;
       })
       .map(([address, _]) => address);
     
-    console.log(`🔢 Found ${holdersWithDids.length} holders with DIDs`);
+    // Combine priority and fallback lists
+    const holdersWithDids = [...workflowAccountsWithDids, ...otherHoldersWithDids];
+    
+    console.log(`🔢 Found ${holdersWithDids.length} total HOLDER accounts with DIDs (${workflowAccountsWithDids.length} priority + ${otherHoldersWithDids.length} fallback)`);
+    
+    // Debug: Log details about available HOLDER accounts
+    if (workflowAccountsWithDids.length > 0) {
+      console.log(`📋 Priority workflow HOLDER accounts available for credential holding:`);
+      workflowAccountsWithDids.forEach(addr => {
+        const data = GLOBAL_ACCOUNT_CACHE.get(addr);
+        console.log(`  - ${data?.name || 'Unknown'} (${addr.substring(0, 10)}...) [HOLDER]`);
+      });
+    }
     
     // Find a valid identity (holder) that hasn't been used before
-    let availableHolders = holdersWithDids.filter(address => {
+    // PRIORITY: Try workflow accounts first
+    let availableHolders = workflowAccountsWithDids.filter(address => {
       // Ensure this holder exists in Global Cache (should by construction)
       if (!GLOBAL_ACCOUNT_CACHE.has(address)) return false;
-      // Double-check it's not fallback
-      const data = GLOBAL_ACCOUNT_CACHE.get(address);
-      if (data && data.source === 'caliper-fallback') return false;
       // Check if it's been used before
       if (this.usedHolders.has(address.toLowerCase())) return false;
       return true;
     });
     
-    // If no available holders, use any holder with DID
+    // FALLBACK: If no priority accounts available, try other accounts
+    if (availableHolders.length === 0) {
+      console.log(`⚠️ No unused priority workflow accounts found, trying other accounts with DIDs...`);
+      availableHolders = otherHoldersWithDids.filter(address => {
+        // Ensure this holder exists in Global Cache (should by construction)
+        if (!GLOBAL_ACCOUNT_CACHE.has(address)) return false;
+        // Double-check it's not fallback
+        const data = GLOBAL_ACCOUNT_CACHE.get(address);
+        if (data && data.source === 'caliper-fallback') return false;
+        // Check if it's been used before
+        if (this.usedHolders.has(address.toLowerCase())) return false;
+        return true;
+      });
+    }
+    
+    // LAST RESORT: If no available holders, use any holder with DID
     if (availableHolders.length === 0) {
       console.log(`⚠️ No unused holders found, using any holder with DID`);
       availableHolders = holdersWithDids;
     }
     
     if (availableHolders.length === 0) {
-      throw new Error('No accounts with DIDs available as credential holders');
+      throw new Error('No HOLDER accounts with DIDs available as credential holders. Only accounts with HOLDER role can receive credentials.');
     }
     
     // Select a holder
@@ -934,8 +957,20 @@ class SimplifiedSSIStateManager {
     // Mark as used
     this.usedHolders.add(identity.toLowerCase());
     
-    // Log the selection
-    console.log(`🧑 Using HOLDER with existing DID: ${identity.substring(0, 10)}...`);
+    // Log the selection with context about whether it's from the workflow
+    const isWorkflowAccount = workflowAccountsWithDids.includes(identity);
+    const accountData = GLOBAL_ACCOUNT_CACHE.get(identity);
+    
+    // Validate that selected account actually has HOLDER role (safety check)
+    if (accountData?.role !== SSI_ROLES.HOLDER) {
+      console.warn(`⚠️ WARNING: Selected account ${identity.substring(0, 10)}... does not have HOLDER role! Role: ${accountData?.role}`);
+    }
+    
+    if (isWorkflowAccount) {
+      console.log(`🎯 Using PRIORITY workflow HOLDER account: ${identity.substring(0, 10)}... - ${accountData?.name || 'Unknown'}`);
+    } else {
+      console.log(`🧑 Using FALLBACK HOLDER account: ${identity.substring(0, 10)}... - ${accountData?.name || 'Unknown'}`);
+    }
     
     // Perform validation to ensure identity has a DID
     // This is essential to prevent transaction failures
@@ -979,10 +1014,19 @@ class SimplifiedSSIStateManager {
     });
     
     // Log successful credential setup for better traceability
+    const deployerHasDid = this._addressHasDid(DEPLOYER_ADDRESS);
+    const isWorkflowHolderAccount = workflowAccountsWithDids.includes(identity);
+    
     console.log(`✅ Successfully prepared credential issuance: 
-    - Holder: ${identity.substring(0, 10)}... (Has DID: ${holderHasDid ? 'YES' : 'NO'})
+    - Deployer (Trustee): ${DEPLOYER_ADDRESS.substring(0, 10)}... (Has DID: ${deployerHasDid ? 'YES' : 'NO'})
+    - Holder: ${identity.substring(0, 10)}... (Has DID: ${holderHasDid ? 'YES' : 'NO'}) ${isWorkflowHolderAccount ? '[WORKFLOW ACCOUNT]' : '[FALLBACK ACCOUNT]'}
     - Credential ID: ${credentialId.substring(0, 10)}...
     - Credential CID: ${credentialCid}`);
+    
+    // Warn if deployer doesn't have DID (this could cause issuer transaction failures)
+    if (!deployerHasDid) {
+      console.warn(`⚠️ WARNING: DEPLOYER_ADDRESS doesn't have a DID - this may cause credential issuance to fail!`);
+    }
     
     // Increment counter
     this.counters[SSI_ENTITY_TYPES.CREDENTIAL]++;
@@ -1007,98 +1051,6 @@ class SimplifiedSSIStateManager {
         credentials: this.entities.credentials.size
       },
       counters: { ...this.counters }
-    };
-  }
-  
-  /**
-   * Runs diagnostic checks on account and DID state
-   * Call this before operations that need DIDs to verify the state
-   * @returns {Object} Diagnostic results
-   */
-  runDiagnostics() {
-    console.log(`📊 === RUNNING SSI STATE DIAGNOSTICS ===`);
-    
-    // Check predefined accounts
-    console.log(`📊 Predefined accounts: ${this.predefinedAccounts.size}`);
-    
-    // Check global cache
-    console.log(`📊 Global cache accounts: ${GLOBAL_ACCOUNT_CACHE.size}`);
-    
-    // Check accounts needing role assignment
-    const accountsNeedingRoles = this.getAccountsNeedingRoleAssignment();
-    if (accountsNeedingRoles.length > 0) {
-      console.log(`🎭 Accounts needing on-chain role assignment: ${accountsNeedingRoles.length}`);
-      accountsNeedingRoles.forEach(acc => {
-        const roleName = Object.keys(SSI_ROLES).find(key => SSI_ROLES[key] === acc.role) || 'UNKNOWN';
-        console.log(`  - ${acc.name} (${acc.address.substring(0, 10)}...) needs ${roleName} role`);
-      });
-    }
-    
-    // Count accounts by role
-    const roleCount = {
-      [SSI_ROLES.NONE]: 0,
-      [SSI_ROLES.ISSUER]: 0, 
-      [SSI_ROLES.HOLDER]: 0,
-      [SSI_ROLES.TRUSTEE]: 0
-    };
-    
-    // Count accounts with DIDs by role
-    const didsByRole = {
-      [SSI_ROLES.NONE]: 0,
-      [SSI_ROLES.ISSUER]: 0, 
-      [SSI_ROLES.HOLDER]: 0,
-      [SSI_ROLES.TRUSTEE]: 0
-    };
-    
-    // Check all predefined accounts
-    for (const [address, account] of this.predefinedAccounts.entries()) {
-      if (account.role !== undefined) {
-        roleCount[account.role]++;
-        
-        // Check if this account has a DID
-        if (this._addressHasDid(address)) {
-          didsByRole[account.role]++;
-        }
-      }
-    }
-    
-    // Log role distribution
-    console.log(`📊 Role distribution:`);
-    console.log(`  - TRUSTEE: ${roleCount[SSI_ROLES.TRUSTEE]} accounts (${didsByRole[SSI_ROLES.TRUSTEE]} with DIDs)`);
-    console.log(`  - ISSUER: ${roleCount[SSI_ROLES.ISSUER]} accounts (${didsByRole[SSI_ROLES.ISSUER]} with DIDs)`);
-    console.log(`  - HOLDER: ${roleCount[SSI_ROLES.HOLDER]} accounts (${didsByRole[SSI_ROLES.HOLDER]} with DIDs)`);
-    
-    // Check DIDs in local tracking
-    console.log(`📊 DIDs in local tracking: ${this.entities.dids.size}`);
-    
-    // Lookup a few specific addresses to verify DID status
-    // This helps troubleshoot issues with specific accounts
-    const addressesToCheck = [
-      DEPLOYER_ADDRESS,
-      '0x06d06c366b213f716b51bca6dc1874afc05467d0',
-      '0x2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c', // Specific issuer you mentioned
-      '0x8dd478dee59d3b7c16a2e34cb5d321ed23d2677d'  // Specific holder you mentioned
-    ];
-    
-    console.log(`📊 Checking specific addresses for DIDs:`);
-    for (const address of addressesToCheck) {
-      const hasDid = this._addressHasDid(address);
-      const accountData = this.predefinedAccounts.get(address);
-      const role = accountData?.role;
-      const roleName = Object.keys(SSI_ROLES).find(key => SSI_ROLES[key] === role) || 'UNKNOWN';
-      
-      console.log(`  - ${address.substring(0, 10)}... (${roleName}): ${hasDid ? '✅ Has DID' : '❌ No DID'}`);
-    }
-    
-    console.log(`📊 === END DIAGNOSTICS ===`);
-    
-    return {
-      accountCount: this.predefinedAccounts.size,
-      globalCacheSize: GLOBAL_ACCOUNT_CACHE.size,
-      roleCount,
-      didsByRole,
-      didCount: this.entities.dids.size,
-      accountsNeedingRoles: accountsNeedingRoles.length
     };
   }
   

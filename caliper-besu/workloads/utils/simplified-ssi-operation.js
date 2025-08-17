@@ -296,19 +296,19 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Fallback to reasonable defaults optimized for SSI operations
     const defaultGasLimits = {
-      'assignRole': 300000,
-      'revokeRole': 100000,
-      'createDid': 600000,
-      'updateDid': 100000,
-      'issueCredential': 500000,
-      'updateCredentialStatus': 150000,
+      'assignRole': 110000,
+      'revokeRole': 70000,
+      'createDid': 150000,
+      'updateDid': 80000,
+      'issueCredential': 150000,
+      'updateCredentialStatus': 100000,
       // Read operations (should not be used as they're read-only)
-      'getRole': 80000,
-      'resolveDid': 80000,
-      'resolveCredential': 80000
+      'getRole': 20000,
+      'resolveDid': 20000,
+      'resolveCredential': 20000
     };
 
-    return defaultGasLimits[operation] || 200000;
+    return defaultGasLimits[operation] || 250000;
   }
 
   /**
