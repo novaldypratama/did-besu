@@ -2,11 +2,7 @@
 
 # Common SSI benchmark arguments with optimized gas settings
 ssiArgs: &ssi-args
-  # didPrefix: "did:besu:"
-  # issuerCount: 4
-  # holderCount: 8
-  # verifierCount: 2
-  gasLimit: 5000000
+  gasLimit: 6500000
   gasPrice: 1000000000
   web3signerUrl: "http://127.0.0.1:18545"
   besuEndpoint: "ws://172.16.239.15:8546"
@@ -24,37 +20,25 @@ ssiArgs: &ssi-args
   gasConfig:
     # Role Control operations
     RoleControl:
-      assignRole: 300000 # Increased for authorization checks
-      revokeRole: 100000
-      getRole: 80000 # Read operations need more gas for complex contracts
-      hasRole: 80000
-      getRoleCount: 80000
+      assignRole: 110000 # Increased for authorization checks
+      revokeRole: 70000
+      getRole: 20000 # Read operations need more gas for complex contracts
+      hasRole: 20000
+      getRoleCount: 30000
 
     # DID Registry operations
     DidRegistry:
-      createDid: 600000 # Increased for cross-contract validation
-      updateDid: 100000
-      deactivateDid: 80000
-      resolveDid: 80000
-      validateDid: 80000
+      createDid: 150000 # Increased for cross-contract validation
+      updateDid: 80000
+      deactivateDid: 50000
+      resolveDid: 20000
+      validateDid: 20000
 
     # Credential Registry operations
     CredentialRegistry:
-      issueCredential: 500000 # Highest gas for complex credential logic
-      updateCredentialStatus: 150000
-      resolveCredential: 80000
-  # Dynamic gas pricing strategy
-  # gasPricing:
-  #   basePrice: "1000000000"      # 1 gwei base
-  #   maxPrice: "10000000000"      # 10 gwei emergency max
-  #   priorityFee: "2000000000"    # 2 gwei priority
-  #   escalationFactor: 1.25       # 25% increase on retry
-  # performanceTargets:
-  #   maxBlockUtilization: 0.85    # 85% max block usage
-  #   targetTPS: 15                # Target transactions per second
-  #   maxTPS: 25                   # Peak capacity
-  #   minSuccessRate: 0.95         # 95% success rate minimum
-  #   maxLatency: 12000            # 12 seconds max latency
+      issueCredential: 150000 # Highest gas for complex credential logic
+      updateCredentialStatus: 100000
+      resolveCredential: 20000
 
 # Test configuration with graduated load testing
 test:
@@ -67,9 +51,51 @@ test:
     number: 1
   rounds:
     # Phase 1: Role Management (Low Load)
-    - label: Role_Assignment
+    - label: Role_Assignment_Low
       description: Assign roles to entities in the network (baseline test)
-      txNumber: 100
+      txNumber: 25
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5 # Conservative start (reduced from 20 to prevent overloading)
+      workload:
+        module: workloads/auth/simplifiedAssignRole.js
+        arguments:
+          <<: *ssi-args
+          operationType: "assignRole"
+
+    # Phase 2: DID Creation (Low Load)
+    - label: DID_Creation_Low
+      description: Create DID documents for issuers and holders
+      txNumber: 24
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5 # Reduced rate for complex DID operations
+      workload:
+        module: workloads/did/simplifiedCreateDid.js
+        arguments:
+          <<: *ssi-args
+          operationType: "createDid"
+
+    # Phase 3: Credential Issuance (Low Load)
+    - label: Credential_Issuance_Low
+      description: Issue verifiable credentials at high throughput
+      txNumber: 24
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 5  # ~65% block utilization
+      workload:
+        module: workloads/vc/simplifiedIssueCredential.js
+        arguments:
+          <<: *ssi-args
+          operationType: "issueCredential"
+
+    # Phase 4: Role Management (Medium Load)
+    - label: Role_Assignment_Medium
+      description: Assign roles to entities in the network (baseline test)
+      txNumber: 50
       rateControl:
         type: fixed-rate
         opts:
@@ -80,10 +106,10 @@ test:
           <<: *ssi-args
           operationType: "assignRole"
 
-    # Phase 2: DID Creation (Medium Load)
-    - label: DID_Creation
+    # Phase 5: DID Creation (Medium Load)
+    - label: DID_Creation_Medium
       description: Create DID documents for issuers and holders
-      txNumber: 100
+      txNumber: 49
       rateControl:
         type: fixed-rate
         opts:
@@ -94,14 +120,56 @@ test:
           <<: *ssi-args
           operationType: "createDid"
 
-    # Phase 3: Credential Issuance (High Load)
-    - label: Credential_Issuance
+    # Phase 6: Credential Issuance (Medium Load)
+    - label: Credential_Issuance_Medium
       description: Issue verifiable credentials at high throughput
-      txNumber: 100
+      txNumber: 49
       rateControl:
         type: fixed-rate
         opts:
           tps: 10  # ~65% block utilization
+      workload:
+        module: workloads/vc/simplifiedIssueCredential.js
+        arguments:
+          <<: *ssi-args
+          operationType: "issueCredential"
+    
+    # Phase 7: Role Management (High Load)
+    - label: Role_Assignment_High
+      description: Assign roles to entities in the network (baseline test)
+      txNumber: 100
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 20 # Conservative start (reduced from 20 to prevent overloading)
+      workload:
+        module: workloads/auth/simplifiedAssignRole.js
+        arguments:
+          <<: *ssi-args
+          operationType: "assignRole"
+
+    # Phase 8: DID Creation (High Load)
+    - label: DID_Creation_High
+      description: Create DID documents for issuers and holders
+      txNumber: 99
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 20 # Reduced rate for complex DID operations
+      workload:
+        module: workloads/did/simplifiedCreateDid.js
+        arguments:
+          <<: *ssi-args
+          operationType: "createDid"
+
+    # Phase 9: Credential Issuance (High Load)
+    - label: Credential_Issuance_High
+      description: Issue verifiable credentials at high throughput
+      txNumber: 99
+      rateControl:
+        type: fixed-rate
+        opts:
+          tps: 20  # ~65% block utilization
       workload:
         module: workloads/vc/simplifiedIssueCredential.js
         arguments:
