@@ -13,7 +13,7 @@ async function main() {
 
   // Define deployment parameters to optimize gas usage
   const deploymentOptions = {
-    gasLimit: 5000000,  // Explicit gas limit
+    gasLimit: 6500000,  // Explicit gas limit
     gasPrice: ethers.parseUnits("1", "gwei")  // Higher gas price for faster mining
   };
 
