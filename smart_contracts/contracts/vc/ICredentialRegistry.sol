@@ -200,44 +200,4 @@ interface ICredentialRegistry {
     function resolveCredential(
         bytes32 credentialId
     ) external view returns (CredentialRecord memory credentialRecord);
-
-    // /**
-    //  * @dev Retrieves a Verifiable Credential by its hash
-    //  * 
-    //  * @param credentialHash keccak256 hash of the credential to retrieve
-    //  * @return credentialRecord Complete credential record with metadata
-    //  * 
-    //  * Reverts with:
-    //  * - CredentialNotFound if credential doesn't exist
-    //  */
-    // function getCredential(bytes32 credentialHash) 
-    //     external 
-    //     view 
-    //     returns (CredentialRecord memory credentialRecord);
-
-    // /**
-    //  * @dev Verifies if a Verifiable Credential is valid and active
-    //  * 
-    //  * Performs comprehensive validation including:
-    //  * - Credential existence
-    //  * - Expiration checking
-    //  * - Status validation (not revoked/suspended)
-    //  * - Issuer status validation
-    //  * 
-    //  * @param credentialHash keccak256 hash of the credential to verify
-    //  * @return isValid True if credential is valid and usable
-    //  * @return status Current status of the credential
-    //  * @return reason Human-readable reason if credential is invalid
-    //  * 
-    //  * Note: This function does not revert for invalid credentials,
-    //  * but returns the validation result and reason.
-    //  */
-    // function verifyCredential(bytes32 credentialHash)
-    //     external
-    //     view
-    //     returns (
-    //         bool isValid,
-    //         CredentialStatus status,
-    //         string memory reason
-    //     );
 }
