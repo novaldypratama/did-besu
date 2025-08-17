@@ -51,19 +51,15 @@
       "RoleControl": {
         "constructorArgs": [],
         "deploy": false,
-        "estimateGas": true,
+        "estimateGas": false,
         "gas": {
-          "limit": 1800000,
-          "price": 1000000000
+          "assignRole": 110000,
+          "revokeRole": 70000,
+          "getRole": 20000,
+          "hasRole": 20000,
+          "getRoleCount": 30000
         },
         "address": "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256",
-        "functions": {
-          "assignRole": 300000,
-          "revokeRole": 100000,
-          "getRole": 80000,
-          "hasRole": 80000,
-          "getRoleCount": 80000
-        },
         "abi": [
           {
             "inputs": [],
@@ -324,19 +320,15 @@
           "0x1F2077A4Caa6a373A6bf628e30826Fd957C1b256"
         ],
         "deploy": false,
-        "estimateGas": true,
+        "estimateGas": false,
         "gas": {
-          "limit": 3000000,
-          "price": 1000000000
+          "createDid": 150000,
+          "updateDid": 80000,
+          "deactivateDid": 50000,
+          "resolveDid": 20000,
+          "validateDid": 20000
         },
         "address": "0xA5134e42CF382152894d040a0e89F2E4231062d8",
-        "functions": {
-          "createDid": 600000,
-          "updateDid": 100000,
-          "deactivateDid": 80000,
-          "resolveDid": 80000,
-          "validateDid": 80000
-        },
         "abi": [
           {
             "inputs": [
@@ -786,9 +778,9 @@
         "deploy": false,
         "estimateGas": false,
         "gas": {
-          "issueCredential": 500000,
-          "updateCredentialStatus": 150000,
-          "resolveCredential": 80000
+          "issueCredential": 150000,
+          "updateCredentialStatus": 100000,
+          "resolveCredential": 20000
         },
         "address": "0x65952c0Daf5936175851904A9889bd31E49EbFFc",
         "abi": [
@@ -807,6 +799,17 @@
             ],
             "stateMutability": "nonpayable",
             "type": "constructor"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "bytes32",
+                "name": "credentialHash",
+                "type": "bytes32"
+              }
+            ],
+            "name": "CredentialAlreadyExists",
+            "type": "error"
           },
           {
             "inputs": [
@@ -838,6 +841,70 @@
               }
             ],
             "name": "CredentialNotFound",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "issuer",
+                "type": "address"
+              },
+              {
+                "internalType": "address",
+                "name": "holder",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "IdenticalCallerAddress",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "IdentityHasBeenDeactivated",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              }
+            ],
+            "name": "IdentityNotFound",
+            "type": "error"
+          },
+          {
+            "inputs": [
+              {
+                "internalType": "address",
+                "name": "identity",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+              }
+            ],
+            "name": "InvalidIdentity",
             "type": "error"
           },
           {
