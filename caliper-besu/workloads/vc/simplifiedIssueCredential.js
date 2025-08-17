@@ -44,14 +44,6 @@ class SimplifiedIssueCredential extends SimplifiedSSIOperationBase {
         cidLength: credentialArgs.credentialCid.length
       });
 
-      console.log('Transaction parameters:', {
-        identity_type: typeof credentialArgs.identity,
-        identity_value: credentialArgs.identity,
-        credentialId_type: typeof credentialArgs.credentialId,
-        credentialId_length: credentialArgs.credentialId.length,
-        credentialCid_type: typeof credentialArgs.credentialCid
-      });
-
       // Execute credential issuance operation using WebSocket provider
       // For issueCredential(address identity, bytes32 credentialId, string calldata credentialCid)
       // The issuer is now handled by msg.sender in the contract

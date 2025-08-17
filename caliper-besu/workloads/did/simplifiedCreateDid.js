@@ -59,7 +59,7 @@ class SimplifiedCreateDid extends SimplifiedSSIOperationBase {
         SimplifiedSSIOperationBase.CONTRACTS.DID_REGISTRY,
         SimplifiedSSIOperationBase.OPERATIONS.CREATE_DID,
         createDidArgs,
-        // { fromAddress: didArgs.caller } // Pass the caller address as fromAddress in options
+        // The caller address (fromAddress) is now handled by the contract via msg.sender
       );
       
       console.log(`✅ DID creation successful for Worker ${this.workerIndex}`);
