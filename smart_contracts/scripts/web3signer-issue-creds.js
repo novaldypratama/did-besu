@@ -22,7 +22,6 @@ const IPFS_CONFIG = {
   uploadEndpoint: 'https://uploads.pinata.cloud/v3/files',
   pinataGateway: 'https://gateway.pinata.cloud/ipfs/',
   jwt: process.env.PINATA_JWT,
-  groupId: process.env.PINATA_GROUP_ID,
 
   // Public IPFS gateway URLs for fetching content (fallbacks)
   publicGateways: [
@@ -341,7 +340,7 @@ async function uploadToIPFS(jsonldObj) {
     formData.append('name', `VC-${Date.now()}`);
 
     // Add group ID for organization or project grouping
-    formData.append('group_id', process.env.PINATA_GROUP_ID);
+    formData.append('group_id', 'ffde42c3-fde0-4b87-8d7a-47b48b3b180f');
 
     // Add metadata to help identify the file in Pinata
     const keyValues = {

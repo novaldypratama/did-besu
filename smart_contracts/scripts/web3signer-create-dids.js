@@ -205,7 +205,7 @@ async function uploadToIPFS(jsonObj) {
 
     // Add the file to the formData
     formData.append('file', buffer, {
-      filename: `DID-${Date.now()}.json`,
+      filename: `did-doc.json`,
       contentType: 'application/json',
     });
 
@@ -219,7 +219,7 @@ async function uploadToIPFS(jsonObj) {
     const keyValues = {
       type: String('DID Document'),
       timestamp: String(Date.now()),
-      cidVersion: String(1)
+      cidVersion: "1"
     };
     formData.append('keyvalues', JSON.stringify(keyValues));
 
@@ -229,7 +229,7 @@ async function uploadToIPFS(jsonObj) {
       IPFS_CONFIG.uploadEndpoint,
       formData,
       {
-        headers: {  
+        headers: {
           'Authorization': `Bearer ${IPFS_CONFIG.jwt}`
         },
         maxContentLength: Infinity,
@@ -257,7 +257,7 @@ async function uploadToIPFS(jsonObj) {
         response: response.data.data
       };
       fs.appendFileSync(
-        'ipfs-upload-log.json', 
+        'ipfs-upload-log.json',
         JSON.stringify(logEntry, null, 2) + ',\n'
       );
     } catch (logError) {
@@ -280,7 +280,7 @@ async function uploadToIPFS(jsonObj) {
     return cid;
   } catch (error) {
     console.error("Pinata IPFS upload error:");
-    
+
     if (error.response) {
       // Server responded with a non-2xx status
       console.error(`Status: ${error.response.status}`);
@@ -293,12 +293,12 @@ async function uploadToIPFS(jsonObj) {
       // Error in setting up the request
       console.error(`Error message:`, error.message);
     }
-    
+
     // Try alternative upload method if main method fails
     if (error.response && error.response.status === 401) {
       console.warn("Authentication failed. Check your Pinata JWT token.");
     }
-    
+
     throw new Error(`Failed to upload to Pinata IPFS: ${error.message}`);
   }
 }
@@ -415,8 +415,8 @@ async function sendTransaction(from, to, data) {
 
     // Handle zero gas price (use minimum value if zero)
     if (gasPrice === '0x0' || parseInt(gasPrice, 16) === 0) {
-      console.warn("Gas price is zero! Setting minimum gas price of 10 gwei");
-      gasPrice = '0x2540BE400'; // 10 gwei = 10,000,000,000 wei = 0x2540BE400 in hex
+      console.warn("Gas price is zero! Setting minimum gas price of 1 gwei");
+      gasPrice = '0x3B9ACA00'; // 1 gwei = 1,000,000,000 wei = 0x3B9ACA00 in hex
     }
 
     // Estimate gas for the transaction (from Besu)
