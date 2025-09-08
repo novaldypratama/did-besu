@@ -1,4 +1,26 @@
-x-besu-def: &besu-def
+x-besu-validator-def: 
+  &besu-validator-def
+  restart: "on-failure"
+  image: hyperledger/besu:${BESU_VERSION:-latest}
+  env_file:
+    - ./network/config/besu/.env
+  entrypoint:
+    - /bin/bash
+    - -c
+    - |
+
+      cp "/config/${BESU_CONS_ALGO:-QBFT}genesis.json" /config/genesis.json
+
+      /opt/besu/bin/besu \
+      --config-file=/config/config.toml \
+      --miner-enabled=true \
+      --p2p-host=$$(hostname -i) \
+      --miner-coinbase=$${BESU_MINER_COINBASE} \
+      --rpc-http-api=WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,${BESU_CONS_ALGO:-QBFT} \
+      --rpc-ws-api=WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,${BESU_CONS_ALGO:-QBFT} ;
+
+x-besu-rpc-def: 
+  &besu-rpc-def
   restart: "on-failure"
   image: hyperledger/besu:${BESU_VERSION:-latest}
   env_file:
@@ -13,8 +35,8 @@ x-besu-def: &besu-def
       /opt/besu/bin/besu \
       --config-file=/config/config.toml \
       --p2p-host=$$(hostname -i) \
-      --rpc-http-api=EEA,WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,PERM,${BESU_CONS_ALGO:-QBFT} \
-      --rpc-ws-api=EEA,WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,PERM,${BESU_CONS_ALGO:-QBFT} ;
+      --rpc-http-api=WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,${BESU_CONS_ALGO:-QBFT} \
+      --rpc-ws-api=WEB3,ETH,NET,TRACE,DEBUG,ADMIN,TXPOOL,${BESU_CONS_ALGO:-QBFT} ;
 
 # x-ethsignerProxy-def:
 #   &ethsignerProxy-def
@@ -36,29 +58,31 @@ x-besu-def: &besu-def
 #   ports:
 #     - 8545
 
-x-web3signerProxy-def: &web3signerProxy-def
-  image: consensys/web3signer:${WEB3SIGNER_VERSION:-latest}
-  command:
-    [
-      "--config-file=/opt/web3signer/config.yaml",
-      "eth1",
-      "--downstream-http-host=0.0.0.0",
-      "--downstream-http-port=8545",
-      "--downstream-http-proxy-host=rpcnode",
-      "--downstream-http-proxy-port=8545",
-      "--downstream-http-request-timeout=60000",
-    ]
-  ports:
-    - 8545
+# x-web3signerProxy-def: &web3signerProxy-def
+#   image: consensys/web3signer:${WEB3SIGNER_VERSION:-latest}
+#   command:
+#     [
+#       "--config-file=/opt/web3signer/config.yaml",
+#       "eth1",
+#       "--downstream-http-host=0.0.0.0",
+#       "--downstream-http-port=8545",
+#       "--downstream-http-proxy-host=rpcnode",
+#       "--downstream-http-proxy-port=8545",
+#       "--downstream-http-request-timeout=60000",
+#     ]
+#   ports:
+#     - 8545
 
 services:
   validator1:
-    <<: *besu-def
+    <<: *besu-validator-def
     ports:
       - 21001:8545/tcp
       - 30303
       - 9545
     environment:
+      - BESU_OPTS=-Xmx4g
+      - BESU_MINER_COINBASE=06d06c366b213f716b51bca6dc1874afc05467d0
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator1,service.version=${BESU_VERSION:-latest}
     labels:
       - "consensus=besu"
@@ -71,12 +95,14 @@ services:
         ipv4_address: 172.16.239.11
 
   validator2:
-    <<: *besu-def
+    <<: *besu-validator-def
     ports:
       - 21002:8545/tcp
       - 30303
       - 9545
     environment:
+      - BESU_OPTS=-Xmx4g
+      - BESU_MINER_COINBASE=2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator2,service.version=${BESU_VERSION:-latest}
     labels:
       - "consensus=besu"
@@ -91,12 +117,14 @@ services:
         ipv4_address: 172.16.239.12
 
   validator3:
-    <<: *besu-def
+    <<: *besu-validator-def
     ports:
       - 21003:8545/tcp
       - 30303
       - 9545
     environment:
+      - BESU_OPTS=-Xmx4g
+      - BESU_MINER_COINBASE=8dd478dee59d3b7c16a2e34cb5d321ed23d2677d
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator3,service.version=${BESU_VERSION:-latest}
     labels:
       - "consensus=besu"
@@ -111,12 +139,14 @@ services:
         ipv4_address: 172.16.239.13
 
   validator4:
-    <<: *besu-def
+    <<: *besu-validator-def
     ports:
       - 21004:8545/tcp
       - 30303
       - 9545
     environment:
+      - BESU_OPTS=-Xmx4g
+      - BESU_MINER_COINBASE=991e5c9c31ba0733eb8526b2033909dcc5cc1a5a
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator4,service.version=${BESU_VERSION:-latest}
     labels:
       - "consensus=besu"
@@ -150,9 +180,10 @@ services:
   #       ipv4_address: 172.16.239.16
 
   rpcnode:
-    <<: *besu-def
+    <<: *besu-rpc-def
     container_name: rpcnode
     environment:
+      - BESU_OPTS=-Xmx4g
       - OTEL_RESOURCE_ATTRIBUTES=service.name=rpcnode,service.version=${BESU_VERSION:-latest}
     volumes:
       - ./network/config/besu/:/config
@@ -167,20 +198,20 @@ services:
       quorum-dev-quickstart:
         ipv4_address: 172.16.239.15
 
-  web3signerProxy:
-    <<: *web3signerProxy-def
-    volumes:
-      - ./network/config/web3signer/config.yaml:/opt/web3signer/config.yaml
-      - ./network/config/web3signer/keys:/opt/web3signer/keys
-      - ./network/config/web3signer/data:/opt/web3signer/data
-    depends_on:
-      - validator1
-      - rpcnode
-    ports:
-      - 18545:8545/tcp
-    networks:
-      quorum-dev-quickstart:
-        ipv4_address: 172.16.239.40
+  # web3signerProxy:
+  #   <<: *web3signerProxy-def
+  #   volumes:
+  #     - ./network/config/web3signer/config.yaml:/opt/web3signer/config.yaml
+  #     - ./network/config/web3signer/keys:/opt/web3signer/keys
+  #     - ./network/config/web3signer/data:/opt/web3signer/data
+  #   depends_on:
+  #     - validator1
+  #     - rpcnode
+  #   ports:
+  #     - 18545:8545/tcp
+  #   networks:
+  #     quorum-dev-quickstart:
+  #       ipv4_address: 172.16.239.40
 
   # ethsignerProxy:
   #   <<: *ethsignerProxy-def
