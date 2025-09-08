@@ -7,7 +7,7 @@ module.exports = {
     localhost: {
       url: "http://127.0.0.1:8545",
       chainID: 1337,
-      gas: 6500000,
+      // gas: 6500000,
       gasPrice: 1000000000,
       // Replace 'YOUR_PRIVATE_KEY' with a valid private key string (without 0x) for local testing,
       // or use an environment variable, e.g. process.env.PRIVATE_KEY

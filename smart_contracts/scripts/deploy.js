@@ -1,5 +1,19 @@
 // deploy.js - Optimized deployment script for SSI/DID contracts
 
+// Helper function to estimate gas with headroom
+async function estimateWithHeadroom(contractFactory, constructorArgs = [], headroom = 1.3) {
+  try {
+    // Use the contract factory's estimateGas method which properly handles deployment
+    const deployTransaction = await contractFactory.getDeployTransaction(...constructorArgs);
+    const est = await contractFactory.runner.provider.estimateGas(deployTransaction);
+    return (est * BigInt(Math.ceil(headroom * 10))) / 10n; // ~×1.3
+  } catch (error) {
+    console.warn(`   Gas estimation failed, using fallback: ${error.message}`);
+    // Fallback to a reasonable default with headroom
+    return BigInt(6500000); // 6.5M gas as fallback
+  }
+}
+
 async function main() {
   console.log("Starting SSI/DID Trust Triangle deployment...");
 
@@ -11,9 +25,8 @@ async function main() {
   const balance = await ethers.provider.getBalance(deployer.address);
   console.log("Deployer balance:", ethers.formatEther(balance), "ETH");
 
-  // Define deployment parameters to optimize gas usage
-  const deploymentOptions = {
-    gasLimit: 6500000,  // Explicit gas limit
+  // Define base deployment parameters
+  const baseDeploymentOptions = {
     gasPrice: ethers.parseUnits("1", "gwei")  // Higher gas price for faster mining
   };
 
@@ -30,8 +43,18 @@ async function main() {
     console.log("\n1. Deploying RoleControl...");
     const RoleControl = await ethers.getContractFactory("RoleControl");
 
+    // Estimate gas for RoleControl deployment
+    console.log("   Estimating gas for deployment...");
+    const roleControlEstimatedGas = await estimateWithHeadroom(RoleControl, []);
+    
+    const roleControlDeploymentOptions = {
+      ...baseDeploymentOptions,
+      gasLimit: roleControlEstimatedGas
+    };
+    
+    console.log(`   Estimated gas: ${roleControlEstimatedGas.toLocaleString()} (with 30% headroom)`);
     console.log("   Sending deployment transaction...");
-    const roleControl = await RoleControl.deploy(deploymentOptions);
+    const roleControl = await RoleControl.deploy(roleControlDeploymentOptions);
 
     console.log("   Waiting for deployment confirmation...");
     try {
@@ -49,7 +72,7 @@ async function main() {
       // Calculate gas usage for RoleControl
       const roleControlReceipt = await ethers.provider.getTransactionReceipt(roleControl.deploymentTransaction().hash);
       const roleControlGasUsed = roleControlReceipt.gasUsed;
-      const roleControlGasCost = roleControlGasUsed * deploymentOptions.gasPrice;
+      const roleControlGasCost = roleControlGasUsed * baseDeploymentOptions.gasPrice;
       
       totalGasUsed += roleControlGasUsed;
       totalGasCost += roleControlGasCost;
@@ -57,7 +80,8 @@ async function main() {
       gasReport.push({
         contract: "RoleControl",
         gasUsed: roleControlGasUsed.toString(),
-        gasPrice: ethers.formatUnits(deploymentOptions.gasPrice, "gwei") + " gwei",
+        gasEstimated: roleControlEstimatedGas.toString(),
+        gasPrice: ethers.formatUnits(baseDeploymentOptions.gasPrice, "gwei") + " gwei",
         gasCost: ethers.formatEther(roleControlGasCost) + " ETH",
         address: roleControlAddress
       });
@@ -75,11 +99,22 @@ async function main() {
 
     const roleControlAddress = await roleControl.getAddress();
     console.log("   Using RoleControl at:", roleControlAddress);
+    
+    // Estimate gas for DidRegistry deployment
+    console.log("   Estimating gas for deployment...");
+    const didRegistryEstimatedGas = await estimateWithHeadroom(DidRegistry, [roleControlAddress]);
+    
+    const didRegistryDeploymentOptions = {
+      ...baseDeploymentOptions,
+      gasLimit: didRegistryEstimatedGas
+    };
+    
+    console.log(`   Estimated gas: ${didRegistryEstimatedGas.toLocaleString()} (with 30% headroom)`);
     console.log("   Sending deployment transaction...");
 
     const didRegistry = await DidRegistry.deploy(
       roleControlAddress,
-      deploymentOptions
+      didRegistryDeploymentOptions
     );
 
     console.log("   Waiting for deployment confirmation...");
@@ -97,7 +132,7 @@ async function main() {
       // Calculate gas usage for DidRegistry
       const didRegistryReceipt = await ethers.provider.getTransactionReceipt(didRegistry.deploymentTransaction().hash);
       const didRegistryGasUsed = didRegistryReceipt.gasUsed;
-      const didRegistryGasCost = didRegistryGasUsed * deploymentOptions.gasPrice;
+      const didRegistryGasCost = didRegistryGasUsed * baseDeploymentOptions.gasPrice;
       
       totalGasUsed += didRegistryGasUsed;
       totalGasCost += didRegistryGasCost;
@@ -105,7 +140,8 @@ async function main() {
       gasReport.push({
         contract: "DidRegistry",
         gasUsed: didRegistryGasUsed.toString(),
-        gasPrice: ethers.formatUnits(deploymentOptions.gasPrice, "gwei") + " gwei",
+        gasEstimated: didRegistryEstimatedGas.toString(),
+        gasPrice: ethers.formatUnits(baseDeploymentOptions.gasPrice, "gwei") + " gwei",
         gasCost: ethers.formatEther(didRegistryGasCost) + " ETH",
         address: didRegistryAddress
       });
@@ -124,12 +160,26 @@ async function main() {
     const didRegistryAddress = await didRegistry.getAddress();
     console.log("   Using RoleControl at:", roleControlAddress);
     console.log("   Using DidRegistry at:", didRegistryAddress);
+    
+    // Estimate gas for CredentialRegistry deployment
+    console.log("   Estimating gas for deployment...");
+    const credentialRegistryEstimatedGas = await estimateWithHeadroom(
+      CredentialRegistry, 
+      [roleControlAddress, didRegistryAddress]
+    );
+    
+    const credentialRegistryDeploymentOptions = {
+      ...baseDeploymentOptions,
+      gasLimit: credentialRegistryEstimatedGas
+    };
+    
+    console.log(`   Estimated gas: ${credentialRegistryEstimatedGas.toLocaleString()} (with 30% headroom)`);
     console.log("   Sending deployment transaction...");
 
     const credentialRegistry = await CredentialRegistry.deploy(
       roleControlAddress,
       didRegistryAddress,
-      deploymentOptions
+      credentialRegistryDeploymentOptions
     );
 
     console.log("   Waiting for deployment confirmation...");
@@ -147,7 +197,7 @@ async function main() {
       // Calculate gas usage for CredentialRegistry
       const credentialRegistryReceipt = await ethers.provider.getTransactionReceipt(credentialRegistry.deploymentTransaction().hash);
       const credentialRegistryGasUsed = credentialRegistryReceipt.gasUsed;
-      const credentialRegistryGasCost = credentialRegistryGasUsed * deploymentOptions.gasPrice;
+      const credentialRegistryGasCost = credentialRegistryGasUsed * baseDeploymentOptions.gasPrice;
       
       totalGasUsed += credentialRegistryGasUsed;
       totalGasCost += credentialRegistryGasCost;
@@ -155,7 +205,8 @@ async function main() {
       gasReport.push({
         contract: "CredentialRegistry",
         gasUsed: credentialRegistryGasUsed.toString(),
-        gasPrice: ethers.formatUnits(deploymentOptions.gasPrice, "gwei") + " gwei",
+        gasEstimated: credentialRegistryEstimatedGas.toString(),
+        gasPrice: ethers.formatUnits(baseDeploymentOptions.gasPrice, "gwei") + " gwei",
         gasCost: ethers.formatEther(credentialRegistryGasCost) + " ETH",
         address: credentialRegistryAddress
       });
@@ -177,18 +228,24 @@ async function main() {
     // Log comprehensive gas usage report
     console.log("\n----- GAS USAGE REPORT -----");
     gasReport.forEach(report => {
+      const gasUsed = BigInt(report.gasUsed);
+      const gasEstimated = BigInt(report.gasEstimated);
+      const efficiency = (Number(gasUsed * 100n) / Number(gasEstimated)).toFixed(2);
+      
       console.log(`${report.contract}:`);
-      console.log(`  Address:    ${report.address}`);
-      console.log(`  Gas Used:   ${BigInt(report.gasUsed).toLocaleString()}`);
-      console.log(`  Gas Price:  ${report.gasPrice}`);
-      console.log(`  Gas Cost:   ${report.gasCost}`);
+      console.log(`  Address:       ${report.address}`);
+      console.log(`  Gas Estimated: ${gasEstimated.toLocaleString()} (with 30% headroom)`);
+      console.log(`  Gas Used:      ${gasUsed.toLocaleString()}`);
+      console.log(`  Efficiency:    ${efficiency}% of estimated`);
+      console.log(`  Gas Price:     ${report.gasPrice}`);
+      console.log(`  Gas Cost:      ${report.gasCost}`);
       console.log("");
     });
     
     console.log("TOTAL DEPLOYMENT COSTS:");
     console.log(`  Total Gas Used:  ${totalGasUsed.toLocaleString()}`);
     console.log(`  Total Gas Cost:  ${ethers.formatEther(totalGasCost)} ETH`);
-    console.log(`  Gas Price Used:  ${ethers.formatUnits(deploymentOptions.gasPrice, "gwei")} gwei`);
+    console.log(`  Gas Price Used:  ${ethers.formatUnits(baseDeploymentOptions.gasPrice, "gwei")} gwei`);
     
     // Calculate USD cost (example with ETH price - could be made dynamic)
     const ethPriceUSD = 3500; // This could be fetched from an API
@@ -207,7 +264,7 @@ async function main() {
       gasUsage: {
         totalGasUsed: totalGasUsed.toString(),
         totalGasCost: ethers.formatEther(totalGasCost),
-        gasPrice: ethers.formatUnits(deploymentOptions.gasPrice, "gwei"),
+        gasPrice: ethers.formatUnits(baseDeploymentOptions.gasPrice, "gwei"),
         estimatedCostUSD: totalCostUSD.toFixed(4),
         contractBreakdown: gasReport
       },
