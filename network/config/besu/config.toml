@@ -4,8 +4,8 @@ node-private-key-file="/opt/besu/keys/nodekey"
 logging="INFO"
 data-path="/opt/besu/data"
 host-allowlist=["*"]
-min-gas-price=0
-revert-reason-enabled=true
+max-peers=5
+# revert-reason-enabled=true
 
 # rpc
 rpc-http-enabled=true
@@ -19,15 +19,15 @@ rpc-ws-host="0.0.0.0"
 rpc-ws-port=8546
 
 # graphql
-graphql-http-enabled=true
-graphql-http-host="0.0.0.0"
-graphql-http-port=8547
-graphql-http-cors-origins=["*"]
+# graphql-http-enabled=true
+# graphql-http-host="0.0.0.0"
+# graphql-http-port=8547
+# graphql-http-cors-origins=["*"]
 
 # metrics
-metrics-enabled=true
-metrics-host="0.0.0.0"
-metrics-port=9545
+# metrics-enabled=true
+# metrics-host="0.0.0.0"
+# metrics-port=9545
 
 # permissions
 #permissions-accounts-contract-enabled=true
@@ -37,10 +37,9 @@ metrics-port=9545
 #permissions-nodes-contract-version=2
 
 # bootnodes
-bootnodes=["enode://930b2554dffb0acab714000061f2c0dcc55ebdf9bf46d5550ed1ed37ccd2996399b19177bd39125ff574acc71230c53ad2d80ae0c9837fdc0b378d08ab24fbd4@172.16.239.11:30303"]
+# bootnodes=["enode://930b2554dffb0acab714000061f2c0dcc55ebdf9bf46d5550ed1ed37ccd2996399b19177bd39125ff574acc71230c53ad2d80ae0c9837fdc0b378d08ab24fbd4@172.16.239.11:30303"]
 
 # Discovery at boot is set to a list of static files, but will also discover new nodes should they be added
 # static nodes
 static-nodes-file="/config/static-nodes.json"
-#p2p_enabled=true
-discovery-enabled=true
+discovery-enabled=false
