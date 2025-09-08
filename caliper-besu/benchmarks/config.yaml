@@ -2,13 +2,11 @@
 
 # Common SSI benchmark arguments with optimized gas settings
 ssiArgs: &ssi-args
-  gasLimit: 6500000
   gasPrice: 1000000000
-  web3signerUrl: "http://127.0.0.1:18545"
   besuEndpoint: "ws://172.16.239.15:8546"
   chainId: 1337
   blockTime: 3 # 3-second block time
-  transactionDelayMs: 2500 # Add delay between transactions to prevent network congestion
+  transactionDelayMs: 2000 # Add delay between transactions to prevent network congestion
 
   # CRITICAL: Contract addresses must match deployed contracts
   contractAddresses:
@@ -20,7 +18,7 @@ ssiArgs: &ssi-args
   gasConfig:
     # Role Control operations
     RoleControl:
-      assignRole: 110000 # Increased for authorization checks
+      assignRole: 100000 # Increased for authorization checks
       revokeRole: 70000
       getRole: 20000 # Read operations need more gas for complex contracts
       hasRole: 20000
@@ -28,7 +26,7 @@ ssiArgs: &ssi-args
 
     # DID Registry operations
     DidRegistry:
-      createDid: 150000 # Increased for cross-contract validation
+      createDid: 140000 # Increased for cross-contract validation
       updateDid: 80000
       deactivateDid: 50000
       resolveDid: 20000
@@ -36,7 +34,7 @@ ssiArgs: &ssi-args
 
     # Credential Registry operations
     CredentialRegistry:
-      issueCredential: 150000 # Highest gas for complex credential logic
+      issueCredential: 130000 # Highest gas for complex credential logic
       updateCredentialStatus: 100000
       resolveCredential: 20000
 
@@ -46,18 +44,18 @@ test:
   description: >
     Comprehensive benchmark of SSI operations on Besu CLIQUE PoA network.
     Tests various DID and Verifiable Credential operations with optimized gas configuration.
-    Block time: 3 seconds, Gas limit: 12M, Target utilization: 80%
+    Block time: 3 seconds, Gas limit: 15M, Target utilization: 80%
   workers:
     number: 1
   rounds:
     # Phase 1: Role Management (Low Load)
     - label: Role_Assignment_Low
       description: Assign roles to entities in the network (baseline test)
-      txNumber: 25
+      txNumber: 50
       rateControl:
         type: fixed-rate
         opts:
-          tps: 5 # Conservative start (reduced from 20 to prevent overloading)
+          tps: 30 # Conservative start (reduced from 20 to prevent overloading)
       workload:
         module: workloads/auth/simplifiedAssignRole.js
         arguments:
@@ -67,11 +65,11 @@ test:
     # Phase 2: DID Creation (Low Load)
     - label: DID_Creation_Low
       description: Create DID documents for issuers and holders
-      txNumber: 24
+      txNumber: 49
       rateControl:
         type: fixed-rate
         opts:
-          tps: 5 # Reduced rate for complex DID operations
+          tps: 30 # Reduced rate for complex DID operations
       workload:
         module: workloads/did/simplifiedCreateDid.js
         arguments:
@@ -81,11 +79,11 @@ test:
     # Phase 3: Credential Issuance (Low Load)
     - label: Credential_Issuance_Low
       description: Issue verifiable credentials at high throughput
-      txNumber: 24
+      txNumber: 49
       rateControl:
         type: fixed-rate
         opts:
-          tps: 5  # ~65% block utilization
+          tps: 30 # ~65% block utilization
       workload:
         module: workloads/vc/simplifiedIssueCredential.js
         arguments:
@@ -95,11 +93,11 @@ test:
     # Phase 4: Role Management (Medium Load)
     - label: Role_Assignment_Medium
       description: Assign roles to entities in the network (baseline test)
-      txNumber: 50
+      txNumber: 150
       rateControl:
         type: fixed-rate
         opts:
-          tps: 10 # Conservative start (reduced from 20 to prevent overloading)
+          tps: 30 # Conservative start (reduced from 20 to prevent overloading)
       workload:
         module: workloads/auth/simplifiedAssignRole.js
         arguments:
@@ -109,11 +107,11 @@ test:
     # Phase 5: DID Creation (Medium Load)
     - label: DID_Creation_Medium
       description: Create DID documents for issuers and holders
-      txNumber: 49
+      txNumber: 149
       rateControl:
         type: fixed-rate
         opts:
-          tps: 10 # Reduced rate for complex DID operations
+          tps: 30 # Reduced rate for complex DID operations
       workload:
         module: workloads/did/simplifiedCreateDid.js
         arguments:
@@ -123,25 +121,25 @@ test:
     # Phase 6: Credential Issuance (Medium Load)
     - label: Credential_Issuance_Medium
       description: Issue verifiable credentials at high throughput
-      txNumber: 49
+      txNumber: 149
       rateControl:
         type: fixed-rate
         opts:
-          tps: 10  # ~65% block utilization
+          tps: 30 # ~65% block utilization
       workload:
         module: workloads/vc/simplifiedIssueCredential.js
         arguments:
           <<: *ssi-args
           operationType: "issueCredential"
-    
+
     # Phase 7: Role Management (High Load)
     - label: Role_Assignment_High
       description: Assign roles to entities in the network (baseline test)
-      txNumber: 100
+      txNumber: 300
       rateControl:
         type: fixed-rate
         opts:
-          tps: 20 # Conservative start (reduced from 20 to prevent overloading)
+          tps: 30 # Conservative start (reduced from 20 to prevent overloading)
       workload:
         module: workloads/auth/simplifiedAssignRole.js
         arguments:
@@ -151,11 +149,11 @@ test:
     # Phase 8: DID Creation (High Load)
     - label: DID_Creation_High
       description: Create DID documents for issuers and holders
-      txNumber: 99
+      txNumber: 299
       rateControl:
         type: fixed-rate
         opts:
-          tps: 20 # Reduced rate for complex DID operations
+          tps: 30 # Reduced rate for complex DID operations
       workload:
         module: workloads/did/simplifiedCreateDid.js
         arguments:
@@ -165,11 +163,11 @@ test:
     # Phase 9: Credential Issuance (High Load)
     - label: Credential_Issuance_High
       description: Issue verifiable credentials at high throughput
-      txNumber: 99
+      txNumber: 299
       rateControl:
         type: fixed-rate
         opts:
-          tps: 20  # ~65% block utilization
+          tps: 30 # ~65% block utilization
       workload:
         module: workloads/vc/simplifiedIssueCredential.js
         arguments:
@@ -235,15 +233,17 @@ test:
 
 # Monitor configuration for performance tracking
 monitors:
-  - none # Disable built-in monitors, use custom monitoring
-
-# Resource monitoring configuration
-observer:
-  type: local
-  interval: 5 # 5-second intervals to match block time
+  resource:
+  - module: docker
+    options:
+      interval: 5
+      cpuUsageNormalization: true
+      containers:
+      - all
 
 # # Custom performance thresholds
 # performance:
 #   success_rate: 0.99      # 99% success rate minimum
 #   max_latency: 10000      # 10 second max latency
 #   avg_latency: 3000       # 3 second average latency target
+
