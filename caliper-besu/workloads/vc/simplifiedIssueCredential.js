@@ -13,6 +13,7 @@ class SimplifiedIssueCredential extends SimplifiedSSIOperationBase {
   constructor() {
     super();
     this.operationType = 'issueCredential';
+    this.debugMode = false; // Set to true for verbose logging
   }
 
   /**
@@ -29,7 +30,9 @@ class SimplifiedIssueCredential extends SimplifiedSSIOperationBase {
    */
   async submitTransaction() {
     try {
-      console.log(`Worker ${this.workerIndex}: Starting Issue Credential...`);
+      if (this.debugMode) {
+        console.log(`Worker ${this.workerIndex}: Starting Issue Credential...`);
+      }
       
       // Get Issue Credential arguments from state manager - now async
       const credentialArgs = await this.ssiState.getCredentialIssuanceArguments();
@@ -38,11 +41,13 @@ class SimplifiedIssueCredential extends SimplifiedSSIOperationBase {
         throw new Error('Failed to generate credential arguments');
       }
 
-      console.log(`Credential args:`, {
-        identity: credentialArgs.identity.substring(0, 10) + '...',
-        credentialId: `${credentialArgs.credentialId.substring(0, 10)}...`,
-        cidLength: credentialArgs.credentialCid.length
-      });
+      if (this.debugMode) {
+        console.log(`Credential args:`, {
+          identity: credentialArgs.identity.substring(0, 10) + '...',
+          credentialId: `${credentialArgs.credentialId.substring(0, 10)}...`,
+          cidLength: credentialArgs.credentialCid.length
+        });
+      }
 
       // Execute credential issuance operation using WebSocket provider
       // For issueCredential(address identity, bytes32 credentialId, string calldata credentialCid)
@@ -53,8 +58,6 @@ class SimplifiedIssueCredential extends SimplifiedSSIOperationBase {
         credentialCid: credentialArgs.credentialCid
       };
 
-      console.log(`args_array:`, Object.values(issueCredentialArgs));
-
       const result = await this.executeSSIOperation(
         SimplifiedSSIOperationBase.CONTRACTS.CREDENTIAL_REGISTRY,
         SimplifiedSSIOperationBase.OPERATIONS.ISSUE_CREDENTIAL,
@@ -62,7 +65,9 @@ class SimplifiedIssueCredential extends SimplifiedSSIOperationBase {
         // The caller address (issuer) is now handled by the contract via msg.sender
       );
 
-      console.log(`✅ Credential issuance successful for Worker ${this.workerIndex}`);
+      if (this.debugMode) {
+        console.log(`✅ Credential issuance successful for Worker ${this.workerIndex}`);
+      }
       
       return result;
     } catch (error) {

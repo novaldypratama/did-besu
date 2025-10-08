@@ -14,6 +14,7 @@ class SimplifiedAssignRole extends SimplifiedSSIOperationBase {
   constructor() {
     super();
     this.operationType = 'assignRole';
+    this.debugMode = false; // Set to true for verbose logging
   }
 
   /**
@@ -30,7 +31,9 @@ class SimplifiedAssignRole extends SimplifiedSSIOperationBase {
    */
   async submitTransaction() {
     try {
-      console.log(`Worker ${this.workerIndex}: Starting role assignment...`);
+      if (this.debugMode) {
+        console.log(`Worker ${this.workerIndex}: Starting role assignment...`);
+      }
       
       // Get role assignment arguments from state manager
       const roleArgs = this.ssiState.getRoleAssignmentArguments();
@@ -39,10 +42,12 @@ class SimplifiedAssignRole extends SimplifiedSSIOperationBase {
         throw new Error('Failed to generate role assignment arguments');
       }
       
-      console.log(`Role assignment args:`, {
-        role: roleArgs.role,
-        account: roleArgs.account
-      });
+      if (this.debugMode) {
+        console.log(`Role assignment args:`, {
+          role: roleArgs.role,
+          account: roleArgs.account
+        });
+      }
       
       // Use optimized Caliper Ethereum connector for transaction submission
       const result = await this.executeSSIOperation(
@@ -51,7 +56,9 @@ class SimplifiedAssignRole extends SimplifiedSSIOperationBase {
         roleArgs
       );
       
-      console.log(`✅ Role assignment successful for Worker ${this.workerIndex}`);
+      if (this.debugMode) {
+        console.log(`✅ Role assignment successful for Worker ${this.workerIndex}`);
+      }
       
       return result;
     } catch (error) {
