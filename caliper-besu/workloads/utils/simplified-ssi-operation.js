@@ -76,12 +76,6 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
     // Store reference as stateManager for consistency across methods
     this.stateManager = this.ssiState;
 
-    // Add transaction delay configuration if not already present
-    if (!this.ssiConfig.transactionDelayMs) {
-      this.ssiConfig.transactionDelayMs = this.roundArguments.transactionDelayMs || 250;
-      console.log(`⏱️ Setting transaction delay to ${this.ssiConfig.transactionDelayMs}ms`);
-    }
-
     console.log(`🔗 Worker ${this.workerIndex} initialized with account: ${this.fromAddress}`);
   }
 
@@ -110,7 +104,7 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
    */
   initializeSSIConfiguration() {
     // Extract required configuration (simplified for Caliper Ethereum)
-    const requiredSettings = ['gasLimit', 'chainId'];
+    const requiredSettings = ['besuEndpoint', 'chainId'];
 
     requiredSettings.forEach(setting => {
       if (!this.roundArguments.hasOwnProperty(setting)) {
@@ -120,7 +114,6 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Store SSI configuration optimized for Caliper Ethereum
     this.ssiConfig = {
-      gasLimit: this.roundArguments.gasLimit || 8000000,
       chainId: this.roundArguments.chainId || 1337,
       besuEndpoint: this.roundArguments.besuEndpoint,
       contractAddresses: this.roundArguments.contractAddresses || {},
@@ -296,11 +289,11 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Fallback to reasonable defaults optimized for SSI operations
     const defaultGasLimits = {
-      'assignRole': 110000,
+      'assignRole': 90000,
       'revokeRole': 70000,
-      'createDid': 150000,
+      'createDid': 135000,
       'updateDid': 80000,
-      'issueCredential': 150000,
+      'issueCredential': 130000,
       'updateCredentialStatus': 100000,
       // Read operations (should not be used as they're read-only)
       'getRole': 20000,
@@ -340,12 +333,6 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
       const executionTime = Date.now() - startTime;
       console.log(`✅ ${contractName}.${operation} completed in ${executionTime}ms`);
-
-      // Add a delay after successful transaction to prevent network congestion
-      // Only add delay for write operations to avoid slowing down reads
-      if (!READ_ONLY_OPERATIONS.has(operation) && this.stateManager) {
-        await this.stateManager.waitForTransactionDelay(this.ssiConfig.transactionDelayMs || 250);
-      }
 
       return result;
     } catch (error) {
