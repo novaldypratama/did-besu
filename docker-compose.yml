@@ -81,14 +81,14 @@ services:
       - 30303
       - 9545
     environment:
-      - BESU_OPTS=-Xmx4g
+      # - BESU_OPTS=-Xmx4g
       - BESU_MINER_COINBASE=06d06c366b213f716b51bca6dc1874afc05467d0
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator1,service.version=${BESU_VERSION:-latest}
     labels:
       - "consensus=besu"
     volumes:
       - ./network/config/besu/:/config
-      - ./network/config/nodes/node-test1:/opt/besu/keys
+      - ./network/config/nodes/validator1:/opt/besu/keys
       - ./network/logs/besu:/tmp/besu
     networks:
       quorum-dev-quickstart:
@@ -101,14 +101,14 @@ services:
       - 30303
       - 9545
     environment:
-      - BESU_OPTS=-Xmx4g
+      # - BESU_OPTS=-Xmx4g
       - BESU_MINER_COINBASE=2d501ff683a6dcb43b4b12cf334ea7a9692a9f1c
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator2,service.version=${BESU_VERSION:-latest}
     labels:
       - "consensus=besu"
     volumes:
       - ./network/config/besu/:/config
-      - ./network/config/nodes/node-test2:/opt/besu/keys
+      - ./network/config/nodes/validator2:/opt/besu/keys
       - ./network/logs/besu:/tmp/besu
     depends_on:
       - validator1
@@ -123,14 +123,14 @@ services:
       - 30303
       - 9545
     environment:
-      - BESU_OPTS=-Xmx4g
+      # - BESU_OPTS=-Xmx4g
       - BESU_MINER_COINBASE=8dd478dee59d3b7c16a2e34cb5d321ed23d2677d
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator3,service.version=${BESU_VERSION:-latest}
     labels:
       - "consensus=besu"
     volumes:
       - ./network/config/besu/:/config
-      - ./network/config/nodes/node-test3:/opt/besu/keys
+      - ./network/config/nodes/validator3:/opt/besu/keys
       - ./network/logs/besu:/tmp/besu
     depends_on:
       - validator1
@@ -145,14 +145,14 @@ services:
       - 30303
       - 9545
     environment:
-      - BESU_OPTS=-Xmx4g
+      # - BESU_OPTS=-Xmx4g
       - BESU_MINER_COINBASE=991e5c9c31ba0733eb8526b2033909dcc5cc1a5a
       - OTEL_RESOURCE_ATTRIBUTES=service.name=validator4,service.version=${BESU_VERSION:-latest}
     labels:
       - "consensus=besu"
     volumes:
       - ./network/config/besu/:/config
-      - ./network/config/nodes/node-test4:/opt/besu/keys
+      - ./network/config/nodes/validator4:/opt/besu/keys
       - ./network/logs/besu:/tmp/besu
     depends_on:
       - validator1
@@ -173,7 +173,7 @@ services:
   #     - "consensus=besu"
   #   volumes:
   #     - ./network/config/besu/:/config
-  #     - ./network/config/nodes/node-test5:/opt/besu/keys
+  #     - ./network/config/nodes/validator5:/opt/besu/keys
   #     - ./network/logs/besu:/tmp/besu
   #   networks:
   #     quorum-dev-quickstart:
@@ -183,7 +183,7 @@ services:
     <<: *besu-rpc-def
     container_name: rpcnode
     environment:
-      - BESU_OPTS=-Xmx4g
+      # - BESU_OPTS=-Xmx4g
       - OTEL_RESOURCE_ATTRIBUTES=service.name=rpcnode,service.version=${BESU_VERSION:-latest}
     volumes:
       - ./network/config/besu/:/config

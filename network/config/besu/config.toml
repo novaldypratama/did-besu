@@ -1,22 +1,32 @@
-
-genesis-file="/config/genesis.json"
-node-private-key-file="/opt/besu/keys/nodekey"
-logging="INFO"
-data-path="/opt/besu/data"
-host-allowlist=["*"]
-max-peers=5
+# main
+genesis-file = "/config/genesis.json"
+node-private-key-file = "/opt/besu/keys/nodekey"
+logging = "INFO"
+data-path = "/opt/besu/data"
+host-allowlist = ["*"]
 # revert-reason-enabled=true
 
+# txpool (choose one of the two configurations below)
+# Layered (default)
+# tx-pool-max-future-by-sender = "9216"
+# tx-pool-layer-max-capacity = "18432000"
+# tx-pool-max-prioritized = "9216"
+
+# Sequenced (option)
+tx-pool = "sequenced"
+tx-pool-max-size = "9216"
+tx-pool-limit-by-account-percentage = 1
+
 # rpc
-rpc-http-enabled=true
-rpc-http-host="0.0.0.0"
-rpc-http-port=8545
-rpc-http-cors-origins=["*"]
+rpc-http-enabled = true
+rpc-http-host = "0.0.0.0"
+rpc-http-port = 8545
+rpc-http-cors-origins = ["*"]
 
 # ws
-rpc-ws-enabled=true
-rpc-ws-host="0.0.0.0"
-rpc-ws-port=8546
+rpc-ws-enabled = true
+rpc-ws-host = "0.0.0.0"
+rpc-ws-port = 8546
 
 # graphql
 # graphql-http-enabled=true
@@ -41,5 +51,6 @@ rpc-ws-port=8546
 
 # Discovery at boot is set to a list of static files, but will also discover new nodes should they be added
 # static nodes
-static-nodes-file="/config/static-nodes.json"
-discovery-enabled=false
+static-nodes-file = "/config/static-nodes.json"
+discovery-enabled = false
+max-peers = 5

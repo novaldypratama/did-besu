@@ -98,7 +98,7 @@ setup_contracts() {
 bind_caliper() {
   log $CYAN "Binding Caliper to Besu..."
 
-  caliper bind --caliper-bind-sut besu:latest \
+  caliper bind --caliper-bind-sut ethereum:latest \
     --caliper-bind-cwd ./ \
     --caliper-bind-args="-g" \
     >"${RUN_DIR}/logs/caliper-bind.log" 2>&1
@@ -315,7 +315,7 @@ run_single_benchmark() {
     echo "Running benchmarks optimized for CLIQUE consensus..."
     caliper launch manager \
       --caliper-workspace ./ \
-      --caliper-benchconfig benchmarks/config.yaml \
+      --caliper-benchconfig benchmarks/config-ultimate.yaml \
       --caliper-networkconfig "${network_config}" \
       --caliper-flow-only-test \
       --caliper-worker-remote=false \
