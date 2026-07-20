@@ -28,7 +28,7 @@ const ROLE_NAMES = new Map([
 ]);
 
 // Special addresses
-const DEPLOYER_ADDRESS = '0x06d06c366b213f716b51bca6dc1874afc05467d0';
+const DEPLOYER_ADDRESS = '0xc9c913c8c3c1cd416d80a0abf475db2062f161f6';
 const DEPLOYER_ADDRESS_LOWER = DEPLOYER_ADDRESS.toLowerCase();
 
 // Static cache to persist accounts between round initializations
@@ -286,11 +286,12 @@ class SimplifiedSSIStateManager {
       { address: '0xfe3b557e8fb62b89f4916b721be55ceb828dbd73', role: SSI_ROLES.HOLDER, name: 'Primary Holder' },
       { address: '0x627306090abaB3A6e1400e9345bC60c78a8BEf57', role: SSI_ROLES.ISSUER, name: 'Secondary Issuer' },
       { address: '0xf17f52151EbEF6C7334FAD080c5704D77216b732', role: SSI_ROLES.HOLDER, name: 'Secondary Holder' },
-      { address: '0xc9c913c8c3c1cd416d80a0abf475db2062f161f6', role: SSI_ROLES.ISSUER, name: 'Primary Issuer' },
+      { address: '0xed9d02e382b34818e88b88a309c7fe71e65f419d', role: SSI_ROLES.ISSUER, name: 'Primary Issuer' },
       { address: '0xb30f304642de3fee4365ed5cd06ea2e69d3fd0ca', role: SSI_ROLES.HOLDER, name: 'Additional Holder' },
       { address: '0x0886328869e4e1f401e1052a5f4aae8b45f42610', role: SSI_ROLES.HOLDER, name: 'Additional Holder' },
       { address: '0xf48de4a0c2939e62891f3c6aca68982975477e45', role: SSI_ROLES.HOLDER, name: 'Additional Holder' },
-      { address: '0xe43f47c497e0eFC3fe96a85B2041aFF2F0d317A5', role: SSI_ROLES.HOLDER, name: 'Additional Holder' }
+      { address: '0xe43f47c497e0eFC3fe96a85B2041aFF2F0d317A5', role: SSI_ROLES.ISSUER, name: 'Additional Holder' },
+      { address: '0x9b790656b9ec0db1936ed84b3bea605873558198', role: SSI_ROLES.HOLDER, name: 'Additional Holder' }
     ];
     
     // Add accounts to map

@@ -53,7 +53,7 @@ fi
 # Bind Caliper to Ethereum
 echo "Binding Caliper to Besu..."
 # Use the correct binding syntax with version
-caliper bind --caliper-bind-sut besu:latest --caliper-bind-cwd ./ --caliper-bind-args="-g"
+caliper bind --caliper-bind-sut ethereum:latest --caliper-bind-cwd ./ --caliper-bind-args="-g"
 
 # Run the benchmarks with CLIQUE-specific settings
 echo "Running benchmarks optimized for CLIQUE consensus..."

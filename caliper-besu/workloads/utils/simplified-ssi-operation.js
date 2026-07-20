@@ -137,12 +137,24 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
     const networkAccounts = this.getNetworkAccounts();
 
     if (networkAccounts && networkAccounts.length > 0) {
-      // Select account based on worker index
+      // CRITICAL FIX: Store ALL network accounts for round-robin distribution
+      // This prevents single-account nonce bottleneck at high TPS
+      this.networkAccounts = networkAccounts;
+      this.accountIndex = 0; // Initialize round-robin counter
+      this.transactionCount = 0; // Track total transactions
+      
+      // Initialize nonce tracker for all accounts
+      networkAccounts.forEach(account => {
+        this.nonceTracker[account.address] = 0;
+      });
+
+      // Set initial fromAddress (will rotate per transaction)
       const availableAccounts = networkAccounts.length;
       this.clientIdx = this.workerIndex % availableAccounts;
       this.fromAddress = networkAccounts[this.clientIdx].address;
-
-      console.log(`👤 Worker ${this.workerIndex} using network account ${this.clientIdx}: ${this.fromAddress}`);
+      
+      console.log(`👤 Worker ${this.workerIndex} initialized with ${networkAccounts.length} accounts for round-robin distribution`);
+      console.log(`📊 This prevents nonce bottleneck by distributing transactions across multiple accounts`);
     } else {
       // Fallback to connector's default account
       this.fromAddress = this.sutAdapter.defaultAccount || null;
@@ -152,10 +164,10 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       }
 
       console.log(`👤 Worker ${this.workerIndex} using default account: ${this.fromAddress}`);
+      
+      // Initialize nonce tracker for this account
+      this.nonceTracker[this.fromAddress] = 0;
     }
-
-    // Initialize nonce tracker for this account
-    this.nonceTracker[this.fromAddress] = 0;
   }
 
   /**
@@ -183,6 +195,31 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
       console.warn(`⚠️ Could not access network accounts: ${error.message}`);
       return null;
     }
+  }
+
+  /**
+   * Get next account in round-robin fashion
+   * This distributes transactions across all available accounts to prevent nonce bottleneck
+   * @returns {string} Account address to use for next transaction
+   * @protected
+   */
+  getNextAccount() {
+    // If we don't have multiple accounts, return the default
+    if (!this.networkAccounts || this.networkAccounts.length <= 1) {
+      return this.fromAddress;
+    }
+
+    // Round-robin through all available accounts
+    const account = this.networkAccounts[this.accountIndex];
+    this.accountIndex = (this.accountIndex + 1) % this.networkAccounts.length;
+    this.transactionCount++;
+
+    // Log every 100 transactions to show distribution
+    if (this.transactionCount % 100 === 0) {
+      console.log(`📊 Distributed ${this.transactionCount} transactions across ${this.networkAccounts.length} accounts`);
+    }
+
+    return account.address;
   }
 
   /**
@@ -227,11 +264,15 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
    */
   createSSIRequest(contractName, operation, args, options = {}) {
     const isReadOnly = READ_ONLY_OPERATIONS.has(operation);
-    // const limit = this.getGasLimitFromConfig(contractName, operation);
 
-    // if (typeof limit !== 'number' || !Number.isFinite(limit) || limit <= 100000) {
-    //   throw new Error(`Invalid gas limit resolved for ${contractName}.${operation}: ${limit}`);   
-    // }
+    // CRITICAL FIX: Use round-robin account selection for write operations
+    // This prevents single-account nonce bottleneck at high TPS
+    let fromAddress = this.fromAddress; // Default
+    if (!isReadOnly && !options.fromAddress) {
+      fromAddress = this.getNextAccount();
+    } else if (options.fromAddress) {
+      fromAddress = options.fromAddress;
+    }
 
     // Create basic request optimized for Caliper Ethereum
     const request = {
@@ -244,15 +285,14 @@ class SimplifiedSSIOperationBase extends WorkloadModuleBase {
 
     // Add transaction-specific fields for write operations
     if (!isReadOnly) {
-      // Use Caliper Ethereum's gas configuration
-      request.gas = {
-        limit: this.getGasLimitFromConfig(contractName, operation),
-        price: this.ssiConfig.gasPrice
-      };
-
-      // // Caliper Ethereum expects flat fields: gas (limit) and gasPrice
-      // request.gas = limit;
-      // request.gasPrice = this.ssiConfig.gasPrice;
+      // CRITICAL FIX: Caliper Ethereum expects FLAT fields, not nested object
+      // Using nested object {limit: X, price: Y} causes transactions to get stuck
+      const gasLimit = this.getGasLimitFromConfig(contractName, operation);
+      request.gas = gasLimit;  // Use gas limit directly
+      request.gasPrice = this.ssiConfig.gasPrice;  // Separate gasPrice field
+      
+      // Set the fromAddress for this transaction
+      request.fromAddress = fromAddress;
 
       // Let Caliper Ethereum handle transaction signing and nonce management
     }
